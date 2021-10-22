@@ -1,0 +1,5 @@
+# Don't track content of these folders
+rsconnect/
+
+
+# Don't track these file types 

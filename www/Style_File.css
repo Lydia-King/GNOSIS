@@ -1,0 +1,62 @@
+/* Title */
+.main-header .logo {font-family: Tahoma, sans-serif;
+font-size: 22px;
+font-weight: bold;}
+
+/* Peacock Banner */
+.skin-blue .main-header .navbar {background-image: url("navbackground.png"); background-size: 350px;}
+
+/* Radio Buttons */
+.radio-primary input[type="radio"]+label::after   {background-color: #012B45;}
+.awesome-radio label::after   {background-color: #012B45;}
+.radio-primary input[type="radio"]:checked+label::after   {background-color: #012B45;}
+.radio-primary input[type="radio"]:checked+label::before   {border-color: #012B45;}
+
+/* Collapsible Boxes */
+.btn-primary {color: #012B45; background-color: #012B45; border-color: #012B45;}
+.btn-primary:focus {color: #012B45; background-color: #012B45; border-color: #012B45;}
+
+/* Tick Boxes */
+.pretty input:checked~.state.p-primary-o .icon, .pretty input:checked~.state.p-primary-o .svg, .pretty input:checked~.state.p-primary-o svg, .pretty.p-toggle .state.p-primary-o .icon, .pretty.p-toggle .state.p-primary-o .svg, .pretty.p-toggle .state.p-primary-o svg {
+    color: #012B45;
+    stroke: #012B45;
+    border-top-color: #012B45;
+    border-bottom-color: #012B45;
+    border-left-color: #012B45;
+    border-right-color: #012B45;
+    border: 1px solid #012B45;
+    border-radius: 4px;
+}
+
+.awesome-checkbox label::after {
+    object-position: center;
+    border-top-color: #012B45;
+    border-bottom-color: #012B45;
+    border-left-color: #012B45;
+    border-right-color: #012B45;
+    border-radius: 4px;
+    background-color: #012B45;}
+
+.skin-blue .main-header .logo {
+    background-color: #012B45;
+    color: #fff;
+    border-bottom: 0 solid transparent;
+}
+
+.skin-blue .main-header .navbar .sidebar-toggle {
+    background: #012B45;
+    color: #fff;
+}
+
+.skin-blue .main-sidebar {
+  background: rgb(1,43,69);
+  background: linear-gradient(0deg, rgba(1,43,69,1) 20%, rgba(96,205,214,1) 50%, rgba(1,43,69,1) 80%);
+  }
+  
+/* Error Colour */
+.shiny-output-error-validation{
+    color: #012B45;
+    white-space: pre-wrap;
+}
+
+.shiny-output-error{color: #012B45;}
