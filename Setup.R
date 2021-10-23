@@ -5,8 +5,6 @@ if (!requireNamespace("shiny", quietly = TRUE))
   BiocManager::install("shiny")
 if (!requireNamespace("shinymeta", quietly = TRUE))
   BiocManager::install("shinymeta")
-if (!requireNamespace("shinydashboard", quietly = TRUE))
-  BiocManager::install("shinydashboard")
 if (!requireNamespace("dashboardthemes", quietly = TRUE))
   BiocManager::install("dashboardthemes")
 if (!requireNamespace("shinydashboardPlus", quietly = TRUE))
@@ -17,8 +15,6 @@ if (!requireNamespace("shinycssloaders", quietly = TRUE))
   BiocManager::install("shinycssloaders")
 if (!requireNamespace("shinylogs", quietly = TRUE))
   BiocManager::install("shinylogs")
-if (!requireNamespace("fontawesome", quietly = TRUE))
-  BiocManager::install("fontawesome")
 
 library(shiny) # Build shiny app
 library(shinymeta) # R Script
@@ -49,35 +45,26 @@ library(reshape2) # Melt function
 library(operator.tools) # not in
 
 # Figures (Exploratory plots, survival KM curves and Survival Trees)
-if (!requireNamespace("RColorBrewer", quietly = TRUE))
-  BiocManager::install("RColorBrewer")
-if (!requireNamespace("rpart", quietly = TRUE))
+ if (!requireNamespace("rpart", quietly = TRUE))
   BiocManager::install("rpart")
 if (!requireNamespace("rpart.plot", quietly = TRUE))
   BiocManager::install("rpart.plot")
 if (!requireNamespace("partykit", quietly = TRUE))
   BiocManager::install("partykit")
-if (!requireNamespace("survival", quietly = TRUE))
-  BiocManager::install("survival")
 if (!requireNamespace("survminer", quietly = TRUE))
   BiocManager::install("survminer")
 
-library(RColorBrewer) # Color palette 
 library(rpart) # Survival trees (rpart)
 library(rpart.plot) # Survival trees (rpart)
 library(partykit) # Survival trees (Ctree)
-library(survival) # Survival analysis
 library(survminer) # Survival analysis
+library(survival) # Survival analysis
 
 # Association/Stat test 
-if (!requireNamespace("stats", quietly = TRUE))
-  BiocManager::install("stats")
 if (!requireNamespace("rstatix", quietly = TRUE))
   BiocManager::install("rstatix")
 if (!requireNamespace("DescTools", quietly = TRUE))
   BiocManager::install("DescTools")
-if (!requireNamespace("car", quietly = TRUE))
-  BiocManager::install("car")
 
 library(stats)
 library(rstatix)
@@ -89,14 +76,12 @@ if (!requireNamespace("R.utils", quietly = TRUE))
   BiocManager::install("R.utils")
 library(R.utils)
 
-if (!requireNamespace("BiocManager", quietly = TRUE))
-  BiocManager::install("BiocManager")
-
 options(repos = BiocManager::repositories())
 library(BiocManager)
 if (!requireNamespace("maftools", quietly = TRUE))
   BiocManager::install("maftools")
 library(maftools)
+library(RColorBrewer) # Color palette
 
 validate <- shiny::validate
 
