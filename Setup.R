@@ -1,6 +1,10 @@
 ## Install and load up libraries 
 # Shiny Dashboard setup
 
+if (!requireNamespace("BiocManager", quietly = TRUE))
+  install.packages("BiocManager")
+library(BiocManager)
+
 if (!requireNamespace("shiny", quietly = TRUE))
   BiocManager::install("shiny")
 if (!requireNamespace("shinymeta", quietly = TRUE))
@@ -77,7 +81,6 @@ if (!requireNamespace("R.utils", quietly = TRUE))
 library(R.utils)
 
 options(repos = BiocManager::repositories())
-library(BiocManager)
 if (!requireNamespace("maftools", quietly = TRUE))
   BiocManager::install("maftools")
 library(maftools)
