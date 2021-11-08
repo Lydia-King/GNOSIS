@@ -2026,7 +2026,7 @@ shinyServer(function(input, output, session) {
         content = function(file) {
             ggcode <- expandChain(
                 "#' ---",
-                "#' title: 'GEOXAR Session Code'",
+                "#' title: 'GNOSIS Session Code'",
                 "#' ---",
                 "#'",
                 "#'",
