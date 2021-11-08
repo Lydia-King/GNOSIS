@@ -4,8 +4,7 @@ source("Setup.R")
 ui <- dashboardPage( 
     
     # Set title, title width, logo 
-    header = dashboardHeader(title = tagList(span(class = "logo-lg", "GEOXAR"), 
-                                             img(src = "logo.svg")), titleWidth = 195), 
+    header = dashboardHeader(title = tagList(span(class = "logo-lg", "GNOSIS"))), 
     
     # Create side-bar menu with all tab options:
     sidebar = dashboardSidebar(tags$style(".left-side, .main-sidebar {padding-top: 60px}"), width = 195,
@@ -22,7 +21,7 @@ ui <- dashboardPage(
                                                     menuSubItem("Scatterplots", tabName = "scatterplot", icon = fa_i(name ="braille")),
                                                     menuSubItem("Barplots", tabName = "Explor", icon = fa_i(name ="chart-bar")),
                                                     menuSubItem("Histograms/Density Plots", tabName = "Dist", icon = fa_i(name ="chart-area"))), 
-                                           menuItem("Survival Analysis", tabName = "survival", icon = fa_i(name ="heartbeat"),
+                                           menuItem("Kaplan-Meier Plots", tabName = "survival", icon = fa_i(name ="heartbeat"),
                                                     menuSubItem("KM Plot Clinical Variables", tabName = "KMplot"),
                                                     menuSubItem("KM Plot CNA Score", tabName = "KMOver"),
                                                     menuSubItem("KM Plot by Treatment", tabName = "KMplotRadio")),
