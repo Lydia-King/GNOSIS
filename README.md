@@ -8,4 +8,7 @@ Available at: https://lydiaking.shinyapps.io/GNOSIS/
 
 Also can be run using: ```shiny::runGitHub(repo = 'GNOSIS', username = 'Lydia-King', ref="main")```
 
+Demo videos available at: https://youtube.com/playlist?list=PL3tZnjbBSLRX-HkCmkRzitbS8XQmIPQyl  
+
+
 
