@@ -75,16 +75,17 @@ library(rstatix)
 library(DescTools) # Dunns Test
 library(car) # leveneTest
 
-# maftools
 if (!requireNamespace("R.utils", quietly = TRUE))
   BiocManager::install("R.utils")
 library(R.utils)
 
+library(RColorBrewer) # Color palette
+
+# maftools
 options(repos = BiocManager::repositories())
 if (!requireNamespace("maftools", quietly = TRUE))
   BiocManager::install("maftools")
 library(maftools)
-library(RColorBrewer) # Color palette
 
 validate <- shiny::validate
 

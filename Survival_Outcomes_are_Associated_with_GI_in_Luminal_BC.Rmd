@@ -1,0 +1,716 @@
+---
+title: "Survival Outcomes are Associated with GI in Luminal BC Rmarkdown Script"
+author: "Lydia King"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## **1) Load up Data and Libraries**
+```{r, message=FALSE}
+# Libraries
+library(tidyverse)
+library(survival)
+library(survminer)
+library(ggplot2)
+library(fabricatr)
+library(RColorBrewer)
+library(operator.tools)
+library(MASS)
+library(rpart)
+library(rpart.plot)
+library(partykit)
+
+# Downloaded from cBioPortal Feb 2019
+setwd("/home/lydia/Desktop/METABRIC_Data_Paper")
+
+# METABRIC Clinical Files 
+## Patient and Sample Data 
+Clinical <- read.csv("data_clinical_patient.txt", sep="\t", na.strings=c(""," ","NA"), skip = 4)
+Sample <- read.csv("data_clinical_sample.txt", sep="\t", na.strings=c(""," ","NA"), skip = 4)
+
+## Combine Clinical and Sample data into one dataset
+Clinical_Sample <- merge(Clinical, Sample, by.x="PATIENT_ID", by.y="PATIENT_ID")
+
+# CNA File
+CNA <- read.csv("data_CNA.txt", sep="\t", na.strings=c(""," ","NA"), check.names = F)
+```
+
+## **2) Format Clinical Variables**
+```{r}
+dim(Clinical_Sample)
+colnames(Clinical_Sample)
+
+# 1) Reformat Levels (Change selected character variables to factor)
+Clinical_Sample <- Clinical_Sample %>% mutate_at(c(), funs(as.numeric(.))) %>% mutate_at(c("CELLULARITY", "CHEMOTHERAPY","ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "CLAUDIN_SUBTYPE", "THREEGENE", "LATERALITY", "RADIO_THERAPY", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY", "CANCER_TYPE_DETAILED","ER_STATUS", "HER2_STATUS","GRADE", "PR_STATUS", "TUMOR_STAGE"), funs(as.factor(.)))
+
+Clinical_Sample[] <- lapply(Clinical_Sample, function(x) if(is.factor(x)) factor(x) else x)
+
+# 2) Recode Overall and Disease Specific Survival 
+Clinical_Sample <- Clinical_Sample %>% mutate(OS = ifelse(OS_STATUS == "LIVING", 0, 1), DSS = ifelse(VITAL_STATUS == "Died of Disease", 1, 0))
+
+# 3) Extract Only Luminal A and B Cases
+Clinical_Luminal <- Clinical_Sample %>% filter(CLAUDIN_SUBTYPE %in% c("LumA", "LumB"))
+Clinical_Luminal[] <- lapply(Clinical_Luminal, function(x) if(is.factor(x)) factor(x) else x)
+
+# 4) Ref Levels 
+Clinical_Luminal$CANCER_TYPE_DETAILED <- relevel(Clinical_Luminal$CANCER_TYPE_DETAILED, ref = "Breast Invasive Ductal Carcinoma")
+```
+
+## **3) Calculate CNA Scores and Quartiles**
+```{r}
+# Total Luminal Dataset (n = 1175) 
+# Where na.rm = T and NAs ignored (Use All Available Data)
+
+PATIENT_ID <- colnames(CNA[,3:ncol(CNA)]) 
+CNA_Scores <- as.data.frame(PATIENT_ID)
+CNA_Scores$CNA_Score <- colSums(abs(CNA[,3:2175]), na.rm=T) # Calculate Absolute CNA Score for each Patient
+
+Clin_CNA_Lum_All <- merge(Clinical_Luminal, CNA_Scores, by="PATIENT_ID") # Merge with Clinical Data
+Clin_CNA_Lum_All$Subset_Quartile <- split_quantile(Clin_CNA_Lum_All$CNA_Score, type = 4) # Quartile
+```
+
+## **4) Segmented Density Plot of CNA Scores**
+```{r, fig.width=11, fig.height=6}
+# Density Plot
+## Setup
+colourCount = 4
+getPalette = colorRampPalette(brewer.pal(9, "Blues"))
+lab <- as.character(1:4)
+                
+dt <- data.frame(x=c(1:length(Clin_CNA_Lum_All$CNA_Score)), y=Clin_CNA_Lum_All$CNA_Score)
+dt <- na.omit(dt)
+dens <- density(dt$y)
+df <- data.frame(x=dens$x, y=dens$y)
+probs1 = c(0:4/4)
+probs <- probs1[-c(1,length(probs1))]
+quantiles <- quantile(dt$y, prob=probs)
+df$quant <- factor(findInterval(df$x,quantiles))
+
+## Plot 
+ggplot(df, aes(x,y)) + geom_line() + geom_ribbon(aes(ymin=0, ymax=y, fill=quant)) + scale_x_continuous(breaks=quantiles) + xlab("CNA Score") + ylab("Density") + ggtitle("Segmented Density Plot of CNA Scores") + theme(legend.position = c(0.9, 0.5)) + theme(legend.key.size = unit(0.9, "cm")) + theme(plot.title = element_text(hjust = 0.5, size =18)) + theme(axis.title.x = element_text(hjust = 0.5, size=18)) + theme(axis.title.y = element_text(hjust = 0.5, size=18)) + 
+theme(axis.text.x=element_text(size=15)) +  theme(axis.text.y=element_text(size=15)) + theme(legend.title = element_text(colour="black", size=15, face="bold")) + theme(strip.text = element_text(size=15)) + theme(legend.text=element_text(size=15)) + scale_fill_manual(values = getPalette(colourCount), labels = paste("CNA Q", lab, sep = ""), name="Legend")
+```
+
+## **5) Kaplan-Meier Curves**
+### **OS with CNA Quartiles in Luminal Patients**
+```{r fig.height = 6, fig.width = 10}
+# OS
+## Setup
+surv_data <- data.frame(Time = Clin_CNA_Lum_All$OS_MONTHS, Strata = Clin_CNA_Lum_All$Subset_Quartile, Cen  = Clin_CNA_Lum_All$OS)
+    
+datafit <- survfit(Surv(as.numeric(Time), as.numeric(as.character(Cen))) ~ Strata, data = surv_data)
+
+## Plot 
+ggsurvplot(datafit, censor.shape="", data = surv_data, size = 1, conf.int = F, pval = T, risk.table = T, legend = c("right"), xlab = "Overall Survival time (months)", ylab = "Survival probability", legend.title = "CNA Quartile", legend.labs = paste("Q", 1:4, sep = ""), pval.size = 6, risk.table.height = 0.25, ggtheme = theme_gray() + theme(plot.title = element_text(size= 18, hjust = 0.5)) + theme(legend.title = element_text(colour="black", size=15, face="bold")), break.time.by = 50, risk.table.y.text.col = T, risk.table.y.text = FALSE, title = "Luminal Breast Cancer Patients in METABRIC Data", font.main = c(18, "plain", "black"), font.x = c(15, "plain", "black"), font.y = c(15, "plain", "black"), font.legend = c(14, "plain", "black"), font.tickslab = c(12, "plain", "black")) 
+
+## Logrank test 
+survdiff(Surv(as.numeric(Time), as.numeric(as.character(Cen))) ~ Strata, data = surv_data)
+```
+
+### **DSS with CNA Quartiles in Luminal Patients**
+```{r fig.height = 6, fig.width = 10}
+# DSS
+## Setup
+surv_data <- data.frame(Time = Clin_CNA_Lum_All$OS_MONTHS, Strata = Clin_CNA_Lum_All$Subset_Quartile, Cen  = Clin_CNA_Lum_All$DSS)
+    
+datafit <- survfit(Surv(as.numeric(Time), as.numeric(as.character(Cen))) ~ Strata, data = surv_data)
+
+## Plot 
+ggsurvplot(datafit, censor.shape="", data = surv_data, size = 1, conf.int = F, pval = T, risk.table = T, legend = c("right"), xlab = "Disease Specific Survival time (months)", ylab = "Survival probability", legend.title = "CNA Quartile", legend.labs = paste("Q", 1:4, sep = ""), pval.size = 6, risk.table.height = 0.25, ggtheme = theme_gray() + theme(plot.title = element_text(size= 18, hjust = 0.5)) + theme(legend.title = element_text(colour="black", size=15, face="bold")), break.time.by = 50, risk.table.y.text.col = T, risk.table.y.text = FALSE, title = "Luminal Breast Cancer Patients in METABRIC Data", font.main = c(18, "plain", "black"), font.x = c(15, "plain", "black"), font.y = c(15, "plain", "black"), font.legend = c(14, "plain", "black"), font.tickslab = c(12, "plain", "black")) 
+
+## Logrank test 
+survdiff(Surv(as.numeric(Time), as.numeric(as.character(Cen))) ~ Strata, data = surv_data)
+```
+
+## **6) Univariate Cox Models**
+### **Overall Survival**
+```{r}
+# Identify Variables Associated with Survival
+## Univariate Cox 
+
+colnames(Clin_CNA_Lum_All)
+
+# 34 variables: 
+# 5 of these correspond to survival variables (OS_MONTHS, OS_STATUS, VITAL_STATUS, OS, DSS)
+# 2 of these correspond to patient ID and Sample ID (The same)
+# 2 of these correspond to 1 level variables (Cancer Type, Sample Type)
+# 2 of these correspond to variables that are not used (Cohort and OncoTree Code)
+# 23 of these correspond to other clinical variables e.g. Grade, Stage etc.
+
+# Overall Had 23 Clinical Variables to Consider: 
+UniVarList <- c("LYMPH_NODES_EXAMINED_POSITIVE", "NPI", "CELLULARITY", "CHEMOTHERAPY", "ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE", "THREEGENE","LATERALITY", "RADIO_THERAPY", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY","CANCER_TYPE_DETAILED", "ER_STATUS", "HER2_STATUS", "GRADE", "PR_STATUS", "TUMOR_SIZE", "TUMOR_STAGE")
+
+# OS 
+univ_formulas <- sapply(UniVarList, function(x) as.formula(paste('Surv(OS_MONTHS, OS)~', x)))
+univ_models <- lapply(univ_formulas, function(x){summary(coxph(x, data = Clin_CNA_Lum_All))})
+
+Variable <- c()
+P.val_LRT <- c()
+P.val_Wald <- c()
+
+# Carry out Univariate Cox for All 23 Clinical Variables 
+for(i in 1:23){
+  res.cox <- univ_models[i]
+  n <- res.cox[1]
+  m <-  n[[UniVarList[i]]]
+  pval_LRT <- m$logtest[[3]]
+  pval_Wald <- m$waldtest[[3]]
+  Variable <- c(Variable, UniVarList[i])
+  P.val_LRT <- c(P.val_LRT, pval_LRT)
+  P.val_Wald <- c(P.val_Wald, pval_Wald)
+}
+
+UV_OS_All <- cbind.data.frame(Variable, P.val_LRT, P.val_Wald)
+UV_OS_All$P.val.Adj_LRT <- p.adjust(UV_OS_All$P.val_LRT, method = "BH", n = length(UV_OS_All$P.val_LRT)) # Adjust P-values
+UV_OS_All$P.val.Adj_Wald <- p.adjust(UV_OS_All$P.val_Wald, method = "BH", n = length(UV_OS_All$P.val_Wald)) # Adjust P-values
+
+# View(Sort by decreasing p-value)
+UV_OS_All[order(-UV_OS_All$P.val.Adj_LRT),]
+
+# Significantly Associated with Survival 
+Association_OS_All <- UV_OS_All[UV_OS_All$P.val.Adj_LRT < 0.05 | UV_OS_All$P.val.Adj_Wald < 0.05,]
+A_OS_All <- as.character(Association_OS_All$Variable)
+
+# Survival Associated variables List
+A_OS_All 
+
+# For these Luminal Patients we have 19 clinical variables associated with survival in the OS Univariate Model i.e. "LYMPH_NODES_EXAMINED_POSITIVE", "NPI" , "ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE", "THREEGENE", "RADIO_THERAPY", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY", "CANCER_TYPE_DETAILED", "HER2_STATUS", "GRADE", "PR_STATUS","TUMOR_SIZE", "TUMOR_STAGE".
+
+UniVarList[which(UniVarList %!in% Association_OS_All$Variable)]
+
+# Not Associated with survival: ER_STATUS, CELLULARITY, LATERALITY,CHEMOTHERAPY
+```
+
+### **Disease Specific Survival**
+```{r}
+# Identify Variables Associated with Survival
+## Univariate Cox DSS
+
+colnames(Clin_CNA_Lum_All)
+
+# 34 variables: 
+# 5 of these correspond to survival variables (OS_MONTHS, OS_STATUS, VITAL_STATUS, OS, DSS)
+# 2 of these correspond to patient ID and Sample ID (The same)
+# 2 of these correspond to 1 level variables (Cancer Type, Sample Type)
+# 2 of these correspond to variables that are not used (Cohort and OncoTree Code)
+# 23 of these correspond to other clinical variables e.g. Grade, Stage etc.
+
+# Overall Had 23 Clinical Variables to Consider: 
+UniVarList <- c("LYMPH_NODES_EXAMINED_POSITIVE", "NPI", "CELLULARITY", "CHEMOTHERAPY", "ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE", "THREEGENE","LATERALITY", "RADIO_THERAPY", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY","CANCER_TYPE_DETAILED", "ER_STATUS", "HER2_STATUS", "GRADE", "PR_STATUS", "TUMOR_SIZE", "TUMOR_STAGE")
+
+# OS 
+univ_formulas <- sapply(UniVarList, function(x) as.formula(paste('Surv(OS_MONTHS, DSS)~', x)))
+univ_models <- lapply(univ_formulas, function(x){summary(coxph(x, data = Clin_CNA_Lum_All))})
+
+Variable <- c()
+P.val_LRT <- c()
+P.val_Wald <- c()
+
+# Carry out Univariate Cox for All 23 Clinical Variables 
+for(i in 1:23){
+  res.cox <- univ_models[i]
+  n <- res.cox[1]
+  m <-  n[[UniVarList[i]]]
+  pval_LRT <- m$logtest[[3]]
+  pval_Wald <- m$waldtest[[3]]
+  Variable <- c(Variable, UniVarList[i])
+  P.val_LRT <- c(P.val_LRT, pval_LRT)
+  P.val_Wald <- c(P.val_Wald, pval_Wald)
+}
+
+UV_DSS_All <- cbind.data.frame(Variable, P.val_LRT, P.val_Wald)
+UV_DSS_All$P.val.Adj_LRT <- p.adjust(UV_DSS_All$P.val_LRT, method = "BH", n = length(UV_DSS_All$P.val_LRT)) # Adjust P-values
+UV_DSS_All$P.val.Adj_Wald <- p.adjust(UV_DSS_All$P.val_Wald, method = "BH", n = length(UV_DSS_All$P.val_Wald)) # Adjust P-values
+
+# View(Sort by decreasing p-value)
+UV_DSS_All[order(-UV_DSS_All$P.val.Adj_LRT),]
+
+# Significantly Associated with Survival 
+Association_DSS_All <- UV_DSS_All[UV_DSS_All$P.val.Adj_LRT < 0.05 | UV_DSS_All$P.val.Adj_Wald < 0.05,]
+A_DSS_All <- as.character(Association_DSS_All$Variable)
+
+# Survival Associated variables List
+A_DSS_All 
+
+# For these Luminal Patients we have 18 clincial variables associated with survival in the DSS Univariate Model i.e. "LYMPH_NODES_EXAMINED_POSITIVE", "NPI" , "ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE", "THREEGENE", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY", "HER2_STATUS", "GRADE", "PR_STATUS","TUMOR_SIZE", "TUMOR_STAGE", CHEMOTHERAPY
+
+UniVarList[which(UniVarList %!in% Association_DSS_All$Variable)]
+
+# Not Associated with survival: CELLULARITY, LATERALITY, RADIO_THERAPY, CANCER_TYPE_DETAILED, ER_STATUS
+```
+
+## **7) Association Tests (Multicollinearity)**
+### **Association between CNA Quartiles and Clinical Variables**
+
+For these Luminal Patients we have 19 clinical variables associated with survival in the OS Univariate Model i.e. "LYMPH_NODES_EXAMINED_POSITIVE", "NPI", "ER_IHC","HER2_SNP6","HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE", "THREEGENE", "RADIO_THERAPY", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY", "CANCER_TYPE_DETAILED", "HER2_STATUS", "GRADE", "PR_STATUS","TUMOR_SIZE", "TUMOR_STAGE".
+
+For these Luminal Patients we have 18 clincial variables associated with survival in the DSS Univariate Model i.e. "LYMPH_NODES_EXAMINED_POSITIVE", "NPI", "ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE", "THREEGENE", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY", "HER2_STATUS", "GRADE", "PR_STATUS", "TUMOR_SIZE", "TUMOR_STAGE", "CHEMOTHERPAPY".
+
+So overall we have 20 clinical variables to consider i.e. test for association with CNA Quartiles.
+
+20 Variables: "LYMPH_NODES_EXAMINED_POSITIVE", "NPI", "ER_IHC","HER2_SNP6","HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE", "THREEGENE", "RADIO_THERAPY", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY", "CANCER_TYPE_DETAILED", "HER2_STATUS", "GRADE", "PR_STATUS","TUMOR_SIZE", "TUMOR_STAGE", "CHEMOTHERPAPY".
+
+```{r}
+# Chi-squared/Fishers Exact Test
+## Chi-squared
+Chi <- c("ER_IHC","HER2_SNP6","HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "CLAUDIN_SUBTYPE", "THREEGENE", "RADIO_THERAPY", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY", "CANCER_TYPE_DETAILED", "HER2_STATUS", "GRADE", "PR_STATUS", "TUMOR_STAGE", "CHEMOTHERAPY")
+
+Variable <- c()
+P.val_Chi <- c()
+  
+for(i in 1:length(Chi)){
+  C <- chisq.test(Clin_CNA_Lum_All[,Chi[i]], Clin_CNA_Lum_All$Subset_Quartile, correct=FALSE)
+  Variable <- c(Variable, Chi[i])
+  pval <- C$p.value
+  P.val_Chi <- c(P.val_Chi, pval)
+}
+
+Chi_S <- cbind.data.frame(Variable, P.val_Chi)
+
+## Fishers Exact Test
+Fish_name <- c("ER_IHC","HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "RADIO_THERAPY", "BREAST_SURGERY", "HER2_STATUS", "PR_STATUS", "CHEMOTHERAPY")
+
+Fish_Sim <- c("CLAUDIN_SUBTYPE", "INTCLUST", "GRADE", "TUMOR_STAGE", "HER2_SNP6",  "THREEGENE", "HISTOLOGICAL_SUBTYPE", "CANCER_TYPE_DETAILED")
+
+Variable <- c()
+P.val_FE <- c()
+  
+for(i in 1:length(Fish_name)){
+  C <- fisher.test(Clin_CNA_Lum_All[,Fish_name[i]], Clin_CNA_Lum_All$Subset_Quartile)
+  Variable <- c(Variable, Fish_name[i])
+  pval <- C$p.value
+  P.val_FE <- c(P.val_FE, pval)
+}
+
+Fish_name <- cbind.data.frame(Variable, P.val_FE)
+
+Variable <- c()
+P.val_FE <- c()
+  
+for(i in 1:length(Fish_Sim)){
+  C <- fisher.test(Clin_CNA_Lum_All[,Fish_Sim[i]], Clin_CNA_Lum_All$Subset_Quartile, simulate.p.value = T)
+  Variable <- c(Variable, Fish_Sim[i])
+  pval <- C$p.value
+  P.val_FE <- c(P.val_FE, pval)
+}
+
+Fish_Sim <- cbind.data.frame(Variable, P.val_FE)
+Fish_All <- rbind.data.frame(Fish_name, Fish_Sim)
+
+## Kruskal-Wallis
+KW <- c("LYMPH_NODES_EXAMINED_POSITIVE", "NPI", "AGE_AT_DIAGNOSIS", "TUMOR_SIZE")
+
+Variable <- c()
+P.val_KW <- c()
+
+for(i in 1:length(KW)){
+  K <- kruskal.test(Clin_CNA_Lum_All[,KW[i]]  ~ Clin_CNA_Lum_All$Subset_Quartile) 
+  Variable <- c(Variable, KW[i])
+  pval <- K$p.value 
+  P.val_KW <- c(P.val_KW, pval)
+}
+
+KW1 <- cbind.data.frame(Variable, P.val_KW)
+
+# Create Dataframe with all Results
+Tot <- merge(Chi_S, Fish_All, by="Variable")
+Tot$P.val_KW <- c("-")
+
+KW1$P.val_FE <- c("-")
+KW1$P.val_Chi <- c("-")
+
+Total_Association_All <- rbind.data.frame(Tot, KW1)
+
+## Multiple testing correction 
+Total_Association_All$P.val.adj <- p.adjust(c(Total_Association_All$P.val_Chi[1:16], Total_Association_All$P.val_KW[17:20]), "BH", n=20) 
+
+Total_Association_All <-  dplyr::rename(Total_Association_All,
+                                        "Clinical Variable" = Variable,
+                                        "Chi-Squared Test" = P.val_Chi,
+                                        "Fisher's Exact Test" = P.val_FE,
+                                        "Kruskal-Wallis Test" = P.val_KW,
+                                        "Adjusted P-value" = P.val.adj)
+ 
+Total_Association_All$`Clinical Variable` <- dplyr::recode(as.character(Total_Association_All$`Clinical Variable`), "BREAST_SURGERY" = "Breast Surgery", "CHEMOTHERAPY" = "Chemotherapy", "CLAUDIN_SUBTYPE" = "PAM50", "ER_IHC" = "ER Immunohistochemistry", "GRADE" = "Histologic Grade", "HER2_SNP6" = "HER2 SNP6", "HER2_STATUS" = "HER2 Status", "HISTOLOGICAL_SUBTYPE" = "Histological Subtype", "HORMONE_THERAPY" = "Hormone Therapy", "INFERRED_MENOPAUSAL_STATE" = "Inferred Menopausal State", "INTCLUST" = "Integrative Cluster", "PR_STATUS" = "PR Status", "THREEGENE" = "Three Gene Classification", "TUMOR_STAGE" = "Clinical Stage", "AGE_AT_DIAGNOSIS" = "Age at Diagnosis", "LYMPH_NODES_EXAMINED_POSITIVE" = "Positive Lymph Nodes", "NPI" = "NPI", "TUMOR_SIZE" = "Tumour Size", "RADIO_THERAPY" = "Radiotherapy", "CANCER_TYPE_DETAILED" = "Cancer Type Detailed")
+
+Total_Association_All$`Chi-Squared Test` <- as.numeric(Total_Association_All$`Chi-Squared Test`)
+Total_Association_All$`Fisher's Exact Test` <- as.numeric(Total_Association_All$`Fisher's Exact Test`)
+Total_Association_All$`Kruskal-Wallis Test` <- as.numeric(Total_Association_All$`Kruskal-Wallis Test`)
+Total_Association_All$`Adjusted P-value` <- as.numeric(Total_Association_All$`Adjusted P-value`)
+
+Total_Association_All 
+```
+
+### **Clinical Variable Selection**
+We carried out a univariate Cox regression for each of the clinical variables and subsequently determined if any of the OS or DSS associated clinical variables were also associated
+with the CNA Quartiles. Clinical variables associated with OS and DSS which were also associated with our CNA Quartiles included PAM50 Subtype, Integrative Cluster, Histological Grade, Tumour Size, Clinical Stage, Positive Lymph Nodes, NPI, Age at Diagnosis, PR Status, HER2 Status, HER2 SNP6, Three Gene Classification, Histological Subtype and Hormone Therapy. Clinical variables associated solely with OS and CNA Quartiles include Cancer Type Detailed and Radiotherapy, while clinical variables associated solely with DSS and CNA Quartiles include Chemotherapy.
+
+Before constructing multivariable Cox models for OS and DSS we carried out clinical variable selection to remove high correlations among the predictor variables. This was because high correlations among predictor variables may lead to unreliable and unstable estimates of regression coefficients. The clinical variables considered for selection are as follows:
+
+1.) Integrative cluster: Within the METABRIC cohort two breast cancer classifications are recorded PAM50 Subtype and Integrative Cluster. Clustering analysis of joint copy number and gene expression data from the cis-associated genes revealed 10 novel molecular subgroups or Integrative Clusters (IntClusts) [3]. Each of these IntClusts have distinct CNAs and gene expression profiles. Although PAM50 and IntClusts are different methods of breast cancer classification, associations between the two were observed, with luminal A and luminal B cases being more likely to fall into certain IntClusts. For example, IntClusts 1 and 6 predominantly contain luminal B cases, while IntClusts 3 and 7 are primarily composed of luminal A
+cases [3]. As a result of this association and the fact PAM50 Subtype is a clinically utilised classification, the decision was made to exclude Integrative cluster from the analysis and focus on PAM50 Subtype.
+
+```{r}
+## INTCLUST and PAM50 
+
+ggplot(Clin_CNA_Lum_All, aes(x=factor(INTCLUST), fill=factor(CLAUDIN_SUBTYPE))) + geom_bar(position="fill") + 
+ggtitle("Barplot of HER2_STATUS and THREEGENE") + ylab("Count") + xlab("Clinical Variable") + theme(plot.title = element_text(hjust = 0.5, size =18)) + theme(axis.title.x = element_text(hjust = 0.5, size=18)) +  theme(axis.title.y = element_text(hjust = 0.5, size=18)) + theme(axis.text.x=element_text(size=8)) +  theme(axis.text.y=element_text(size=15)) + theme(legend.title = element_text(colour="black", size=13, face="bold")) + theme(strip.text = element_text(size=15)) + theme(legend.text=element_text(size=13)) + labs(fill="Variable Levels")
+
+chisq.test(Clin_CNA_Lum_All$INTCLUST, Clin_CNA_Lum_All$CLAUDIN_SUBTYPE)
+fisher.test(Clin_CNA_Lum_All$INTCLUST, Clin_CNA_Lum_All$CLAUDIN_SUBTYPE, simulate.p.value = T)
+
+# INTCLUST is a breast cancer classification based on the genomic landscape of the tumour. 
+# Remove INTCLUST as it is associated with PAM50 subtype. 
+```
+
+2.) Clinical stage: Clinical stage is determined using the TNM system which classifies cancers by the size and extent of the primary tumor (T), involvement of regional lymph nodes (N), and the presence or absence of distant metastases (M). For some cancer types, in addition to T, N, and M categories, prognostic factors are required to assign a stage group. Examples include histological grade, age at diagnosis, histological type, mitotic rate, serum tumor markers, hormone receptors [5]. As such, within the METABRIC cohort clinical stage is directly associated with the clinical variables tumour size and number of lymph nodes positive and possibly other variables like histological grade. Due to this clinical stage was excluded from the
+analysis.
+
+3.) NPI: NPI is a prognostic indicator that takes into account the size of the tumour, the number of lymph nodes involved, and the histological grade [7]. The decision was made to utilise the three components of NPI rather than NPI itself in order to investigate the relationship between the CNA Quartiles and a number of widely used clinical variables such as histological grade. 
+
+4.) HER SNP6: The HER2 Status and HER2 SNP6 clinical variables recorded within the METABRIC
+cohort are seen to be correlated with each other. HER2 Status was determined by mRNA expression where each patient was categorised as HER2- or HER2+. However, HER2 Status can also be determined through the use of high-density single nucleotide polymorphism (SNP) arrays. Within the METABRIC cohort they utilised the Affymetrix SNP6 array [9] to produce the variable HER2 SNP6. These arrays detect CNVs which can determine whether there is a copy number change associated with HER2. HER2 SNP6 can be categorised as gain, loss, neutral or undefined. Tumours possessing a HER2 gain may have higher expression of HER2 and as such are more likely to be categorised as HER2+. As these two clinical variables aim to capture similar information, and as such are correlated, the decision was made to exclude HER2 SNP6 from our analysis. Reasons for this include that HER Status provides binary information on HER2 positivity and that the other two breast cancer biomarkers measured in the METABRIC cohort i.e. ER Status and PR Status were also determined by mRNA expression [9]. Therefore, in the interest of clarity and consistency
+HER2 Status was used.
+
+5.) Three Gene Classification: Three Gene Classification was determined by classifying samples into the four Gene Expression progNostic Index Using Subtypes (GENIUS) subgroups using the genefu package in Bioconductor. These subgroups included HER2+, ER-/HER2-, ER+/HER2- high proliferation and ER+/HER2- low proliferation [9]. As the Three Gene Classification utilises HER Status and ER Status it was seen to be highly correlated with the HER2 and ER Status clinical variables. Three gene classification is also seen to be associated with PAM50 Subtype as luminal B tumours are more likely to have higher expression of proliferation/cell cycle-related genes or proteins (e.g., MKI67 and AURKA) [20] and as such are more likely to be cateogrised as ER+/HER2- high proliferation. To eliminate these correlations Three Gene Classification was excluded from the downstream analysis.
+
+6.) Treatment: Other clinical variables that were not considered in the analysis include the treatment variables i.e. Chemotherapy, Radiotherapy, Hormone Therapy and Breast Surgery
+
+7.) Other things to note: INFERRED_MENOPAUSAL_STATE closely related to with Age at Diagnosis and HISTOLOGICAL_SUBTYPE and Cancer Type detailed correlated. 
+
+## **8) Baseline Cox PH Models**
+### **Overall Survival**
+Clinical Variables included in our baseline Multivariable Cox Model: LYMPH_NODES_EXAMINED_POSITIVE, GRADE, TUMOR SIZE, AGE_AT_DIAGNOSIS, PR_STATUS, CLAUDIN_SUBTYPE, CANCER_TYPE_DETAILED/HISTOLOGICAL SUBTYPE and HER2_STATUS.
+
+#### **OS Backward Selection**
+```{r}
+## Step 1 (Full Model)
+res.cox_OS <- coxph(Surv(OS_MONTHS, OS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + CANCER_TYPE_DETAILED + HER2_STATUS + GRADE + PR_STATUS + TUMOR_SIZE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_OS)
+
+## Step 2 (Remove PR Status - pval = 0.1501)
+
+res.cox_OS <- coxph(Surv(OS_MONTHS, OS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + CANCER_TYPE_DETAILED + HER2_STATUS + GRADE + TUMOR_SIZE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_OS)
+
+## Step 3 (Remove Grade - lowest pval = 0.11912)
+res.cox_OS <- coxph(Surv(OS_MONTHS, OS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + CANCER_TYPE_DETAILED + HER2_STATUS + TUMOR_SIZE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_OS)
+
+# Step 4 (Remove CTD - lowest pval = 0.06681)
+res.cox_OS <- coxph(Surv(OS_MONTHS, OS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + TUMOR_SIZE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_OS)
+
+# Final Model with LNEP, Age, Claudin_Subtype, HER2, Size
+```
+
+#### **AIC Model Selection**
+```{r, message= FALSE, warning=FALSE}
+completeFun <- function(data, desiredCols) {
+  completeVec <- complete.cases(data[, desiredCols])
+  return(data[completeVec, ])
+}
+
+AIC_MODEL1 <- completeFun(Clin_CNA_Lum_All, c("LYMPH_NODES_EXAMINED_POSITIVE", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE",  "CANCER_TYPE_DETAILED", "HER2_STATUS", "GRADE", "PR_STATUS", "TUMOR_SIZE"))
+
+full.model_OS <-coxph(Surv(OS_MONTHS, OS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + CANCER_TYPE_DETAILED+ HER2_STATUS + GRADE + PR_STATUS + TUMOR_SIZE, data =  AIC_MODEL1)
+
+step.model_OS <- stepAIC(full.model_OS, direction = "both", trace = FALSE)
+summary(step.model_OS)
+
+# Remove  PR_STATUS (p-value  = 0.08753)
+res.cox_OS <- coxph(Surv(OS_MONTHS, OS) ~ LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + TUMOR_SIZE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_OS)
+
+# Model with LNEP, Age, Claudin_Subtype, HER2, Size
+```
+
+### **Disease Specific Survival**
+Clinical Variables included in our baseline Multivariable Cox Model:
+"LYMPH_NODES_EXAMINED_POSITIVE", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE", "HISTOLOGICAL_SUBTYPE", "HER2_STATUS", "GRADE", "PR_STATUS", "TUMOR_SIZE".
+
+#### **DSS Backward Selection**
+```{r}
+## Step 1 (Full Model)
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HISTOLOGICAL_SUBTYPE + HER2_STATUS + GRADE + PR_STATUS + TUMOR_SIZE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_DSS) 
+
+## Step 2 (Remove Histological Subtype lowest pval = 0.268546)
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + GRADE + PR_STATUS + TUMOR_SIZE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_DSS) 
+
+## Step 2 (Remove PR_Status pval = 0.155419)
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + GRADE + TUMOR_SIZE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_DSS) 
+
+# Final Model with LNEP, Age, Claudin_Subtype, HER2, Grade, Size
+```
+
+#### **AIC Model Selection**
+```{r, message= FALSE, warning=FALSE}
+AIC_MODEL1 <- completeFun(Clin_CNA_Lum_All, c("LYMPH_NODES_EXAMINED_POSITIVE", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE",  "HISTOLOGICAL_SUBTYPE", "HER2_STATUS", "GRADE", "PR_STATUS", "TUMOR_SIZE"))
+
+full.model_DSS <-coxph(Surv(OS_MONTHS, DSS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HISTOLOGICAL_SUBTYPE + HER2_STATUS + GRADE + PR_STATUS + TUMOR_SIZE, data =  AIC_MODEL1)
+
+step.model_DSS <- stepAIC(full.model_DSS, direction = "both", trace = FALSE)
+summary(step.model_DSS)
+
+# Remove  PR_STATUS (p-values = 0.151607)
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~ LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + GRADE + TUMOR_SIZE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_DSS)
+
+# Final Model with LNEP, Age, Claudin_Subtype, HER2, Grade, Size
+```
+
+## **9) Add CNA Score/Quartiles to Models**
+### **Overall Survival**
+```{r}
+# Final Model with LNEP, Age, Claudin_Subtype, HER2, Size:
+res.cox_OS <- coxph(Surv(OS_MONTHS, OS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + TUMOR_SIZE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_OS)
+
+# Add CNA Score
+res.cox_OS <- coxph(Surv(OS_MONTHS, OS) ~ LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + TUMOR_SIZE + CNA_Score, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_OS)
+
+# Add CNA Quartiles 
+res.cox_OS <- coxph(Surv(OS_MONTHS, OS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + TUMOR_SIZE + Subset_Quartile, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_OS)
+```
+
+### **Disease Specific Survival**
+```{r}
+# Final Model with LNEP, Age, Claudin_Subtype, HER2, Grade, Size:
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + GRADE + TUMOR_SIZE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_DSS)
+
+# Add CNA Score
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~ LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + GRADE + TUMOR_SIZE + CNA_Score, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_DSS)
+
+# Add CNA Quartiles 
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + GRADE + TUMOR_SIZE + Subset_Quartile, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_DSS)
+```
+
+## **10) Interaction Terms**
+### **Overall Survival**
+```{r}
+# Final Model: 
+res.cox_OS <- coxph(Surv(OS_MONTHS, OS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + TUMOR_SIZE + Subset_Quartile, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_OS)
+
+# Add interaction term between CNA Quartiles and Claudin Subtype
+res.cox_OS <- coxph(Surv(OS_MONTHS, OS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + HER2_STATUS + TUMOR_SIZE + Subset_Quartile*CLAUDIN_SUBTYPE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_OS)
+```
+
+### **Disease Specific Survival**
+```{r}
+# Final Model:
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~   LYMPH_NODES_EXAMINED_POSITIVE + TUMOR_SIZE + GRADE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + Subset_Quartile, data =  Clin_CNA_Lum_All)
+
+# Add in 3-way interaction between Subtype, Quartile and Grade: 
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~   LYMPH_NODES_EXAMINED_POSITIVE + TUMOR_SIZE + AGE_AT_DIAGNOSIS + HER2_STATUS + CLAUDIN_SUBTYPE*Subset_Quartile*GRADE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_DSS)
+
+# Remove 3rd order interaction (lowest pval = 0.37118)
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~ LYMPH_NODES_EXAMINED_POSITIVE + TUMOR_SIZE + AGE_AT_DIAGNOSIS + HER2_STATUS + CLAUDIN_SUBTYPE*Subset_Quartile + Subset_Quartile*GRADE + GRADE*CLAUDIN_SUBTYPE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_DSS)
+
+# Remove Claudin_Subtype*Grade (lowest pval = 0.11258)
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~   LYMPH_NODES_EXAMINED_POSITIVE + TUMOR_SIZE + AGE_AT_DIAGNOSIS + HER2_STATUS + CLAUDIN_SUBTYPE*Subset_Quartile + Subset_Quartile*GRADE, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_DSS)
+
+# Remove Quartile*Grade (lowest pval = 0.066025)
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~   LYMPH_NODES_EXAMINED_POSITIVE + TUMOR_SIZE + AGE_AT_DIAGNOSIS + HER2_STATUS + GRADE + CLAUDIN_SUBTYPE*Subset_Quartile, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_DSS)
+```
+
+## **11) Final Cox PH Model Assumptions**
+### **Overall Survival**
+```{r}
+# Final Model: 
+res.cox_OS <- coxph(Surv(OS_MONTHS, OS) ~  LYMPH_NODES_EXAMINED_POSITIVE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + TUMOR_SIZE + Subset_Quartile, data =  Clin_CNA_Lum_All)
+
+summary(res.cox_OS)
+
+test.ph <- cox.zph(res.cox_OS)
+test.ph
+
+ggcoxzph(test.ph)
+```
+
+### **Disease Specific Survival**
+```{r, fig.width = 12, fig.height = 7}
+# Testing Proportional Hazards assumption
+## Final Model (without interactions)
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~   LYMPH_NODES_EXAMINED_POSITIVE + TUMOR_SIZE + GRADE + AGE_AT_DIAGNOSIS + CLAUDIN_SUBTYPE + HER2_STATUS + Subset_Quartile, data =  Clin_CNA_Lum_All)
+
+test.ph <- cox.zph(res.cox_DSS)
+test.ph
+
+ggcoxzph(test.ph)
+
+# #Final Model Include Interactions 
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~   LYMPH_NODES_EXAMINED_POSITIVE + TUMOR_SIZE + GRADE + AGE_AT_DIAGNOSIS + HER2_STATUS + CLAUDIN_SUBTYPE*Subset_Quartile, data =  Clin_CNA_Lum_All)
+
+test.ph <- cox.zph(res.cox_DSS)
+test.ph
+
+ggcoxzph(test.ph)
+
+# Cox PH assumption violated!
+```
+
+## **12) Adjusted Survival Curves**
+### **Disease Specific Survival**
+```{r, fig.height=6, fig.width=10}
+# Final Model
+res.cox_DSS <- coxph(Surv(OS_MONTHS, DSS) ~ LYMPH_NODES_EXAMINED_POSITIVE + TUMOR_SIZE + GRADE + AGE_AT_DIAGNOSIS +  CLAUDIN_SUBTYPE*Subset_Quartile + HER2_STATUS, data =  Clin_CNA_Lum_All)
+
+getmode <- function(v) {
+   uniqv <- unique(v)
+   uniqv[which.max(tabulate(match(v, uniqv)))]}
+ 
+NewData_Lum<-cbind("Subset_Quartile"=rep(1:4, 2), "CLAUDIN_SUBTYPE"=c(rep("LumA",4), rep("LumB",4)))
+NewData_Lum <- as.data.frame(NewData_Lum)
+
+# Hold everything else constant
+NewData_Lum <- NewData_Lum %>% mutate(
+"LYMPH_NODES_EXAMINED_POSITIVE" = mean(Clin_CNA_Lum_All$LYMPH_NODES_EXAMINED_POSITIVE, na.rm=T),
+"AGE_AT_DIAGNOSIS" =  mean(Clin_CNA_Lum_All$AGE_AT_DIAGNOSIS, na.rm=T),
+"TUMOR_SIZE" = mean(Clin_CNA_Lum_All$TUMOR_SIZE, na.rm=T),
+"GRADE" = getmode(Clin_CNA_Lum_All$GRADE),
+"HER2_STATUS" = getmode(Clin_CNA_Lum_All$HER2_STATUS))
+
+## Luminal A and Luminal B
+fit<- survfit(res.cox_DSS, newdata = NewData_Lum)
+survminer::ggsurvplot(fit, data = NewData_Lum, conf.int = F,  censor.shape="", xlab="Survival Time", ylab="Survival Probability", size = 1, legend = c("right"), legend.labs = paste("CNA Q", 1:8, sep=""), risk.table.height = 0.25, pval.size = 6, ggtheme = theme_gray() + theme(plot.title = element_text(size= 18, hjust = 0.5)) + theme(legend.title = element_text(colour="black", size=15, face="bold")), break.time.by =50, risk.table.y.text.col = T, risk.table.y.text = FALSE, 
+legend.title = "CNA Quartiles", title = ("Adjusted Survival Curves for DSS (All)"), font.main = c(18, "plain", "black"), font.x = c(15, "plain", "black"), font.y = c(15, "plain", "black"), font.legend = c(14, "plain", "black"), font.tickslab = c(12, "plain", "black"))
+
+## Luminal A
+fit<- survfit(res.cox_DSS, newdata = NewData_Lum[NewData_Lum$CLAUDIN_SUBTYPE == "LumA",])
+survminer::ggsurvplot(fit, data = NewData_Lum, conf.int = F,  censor.shape="", xlab="Survival Time", ylab="Survival Probability", size = 1, legend = c("right"), legend.labs = paste("CNA Q", 1:4, sep=""), risk.table.height = 0.25, pval.size = 6, ggtheme = theme_gray() + theme(plot.title = element_text(size= 18, hjust = 0.5)) + theme(legend.title = element_text(colour="black", size=15, face="bold")), break.time.by =50, risk.table.y.text.col = T, risk.table.y.text = FALSE, 
+legend.title = "CNA Quartiles", title = ("Adjusted Survival Curves for DSS (LumA)"), font.main = c(18, "plain", "black"), font.x = c(15, "plain", "black"), font.y = c(15, "plain", "black"), font.legend = c(14, "plain", "black"), font.tickslab = c(12, "plain", "black"))
+
+## Luminal B
+fit<- survfit(res.cox_DSS, newdata = NewData_Lum[NewData_Lum$CLAUDIN_SUBTYPE == "LumB",])
+survminer::ggsurvplot(fit, data = NewData_Lum, conf.int = F,  censor.shape="", xlab="Survival Time", ylab="Survival Probability", size = 1, legend = c("right"), legend.labs = paste("CNA Q", 1:4, sep=""), risk.table.height = 0.25, pval.size = 6, ggtheme = theme_gray() + theme(plot.title = element_text(size= 18, hjust = 0.5)) + theme(legend.title = element_text(colour="black", size=15, face="bold")), break.time.by =50, risk.table.y.text.col = T, risk.table.y.text = FALSE, 
+legend.title = "CNA Quartiles", title = ("Adjusted Survival Curves for DSS (LumB)"), font.main = c(18, "plain", "black"), font.x = c(15, "plain", "black"), font.y = c(15, "plain", "black"), font.legend = c(14, "plain", "black"), font.tickslab = c(12, "plain", "black"))
+```
+
+## **13) Survival Trees**
+### **Overall Survival with CNA Quartiles**
+```{r fig.width = 14, fig.height = 8}
+Clin_CNA_Lum_All <- Clin_CNA_Lum_All %>% rename("LNEP" = "LYMPH_NODES_EXAMINED_POSITIVE", "Age" = "AGE_AT_DIAGNOSIS", "Subtype" = "CLAUDIN_SUBTYPE", "Tumour_Size" = "TUMOR_SIZE", "Her2" = "HER2_STATUS", "CNA_Quartile" = "Subset_Quartile", "Tumour_Grade" = "GRADE")
+
+# Rpart Trees
+pfit <- rpart(Surv(OS_MONTHS, OS) ~  LNEP + Age + Subtype + Her2 + Tumour_Size + CNA_Quartile, data =  Clin_CNA_Lum_All, method = "exp")
+
+summary(pfit)
+
+## Rpart Survival Trees
+## 1) 
+rpart.plot(pfit, uniform = TRUE, compress = TRUE)
+
+## 2)
+tfit <- as.party(pfit)
+plot(tfit)
+
+# Ctree Trees
+set.seed(1004)
+CTREE <- ctree(Surv(OS_MONTHS, OS) ~ LNEP + Age + Subtype + Her2 + Tumour_Size + CNA_Quartile, data = Clin_CNA_Lum_All)
+
+plot(CTREE)
+```
+
+### **Overall Survival with CNA Scores**
+```{r fig.width = 14, fig.height = 8}
+# Rpart Trees
+pfit <- rpart(Surv(OS_MONTHS, OS) ~  LNEP + Age + Subtype + Her2 + Tumour_Size + CNA_Score, data =  Clin_CNA_Lum_All, method = "exp")
+
+summary(pfit)
+
+## Rpart Survival Trees
+## 1) 
+rpart.plot(pfit, uniform = TRUE, compress = TRUE)
+
+## 2)
+tfit <- as.party(pfit)
+plot(tfit)
+
+# Ctree Trees
+set.seed(1004)
+CTREE <- ctree(Surv(OS_MONTHS, OS) ~ LNEP + Age + Subtype + Her2 + Tumour_Size + CNA_Score, data = Clin_CNA_Lum_All)
+
+plot(CTREE)
+```
+
+### **Disease Specific Survival with CNA Quartiles**
+```{r fig.width = 14, fig.height = 8}
+# Rpart Trees
+pfit <- rpart(Surv(OS_MONTHS, DSS) ~  LNEP + Age + Her2 + Tumour_Size + Tumour_Grade + Subtype + CNA_Quartile, data =  Clin_CNA_Lum_All, method = "exp")
+
+summary(pfit)
+
+## Rpart Survival Trees
+## 1) 
+rpart.plot(pfit, uniform = TRUE, compress = TRUE)
+
+## 2)
+tfit <- as.party(pfit)
+plot(tfit)
+
+# Ctree Trees
+set.seed(1004)
+CTREE <- ctree(Surv(OS_MONTHS, DSS) ~ LNEP + Age + Her2 + Tumour_Size + Tumour_Grade + Subtype + CNA_Quartile, data = Clin_CNA_Lum_All)
+
+plot(CTREE)
+```
+
+### **Disease Specific Survival with CNA Scores**
+```{r fig.width = 14, fig.height = 8}
+# Rpart Trees
+pfit <- rpart(Surv(OS_MONTHS, DSS) ~  LNEP + Age + Her2 + Tumour_Size + Tumour_Grade + Subtype + CNA_Score, data =  Clin_CNA_Lum_All, method = "exp")
+
+summary(pfit)
+
+## Rpart Survival Trees
+## 1) 
+rpart.plot(pfit, uniform = TRUE, compress = TRUE)
+
+## 2)
+tfit <- as.party(pfit)
+plot(tfit)
+
+# Ctree Trees
+set.seed(1004)
+CTREE <- ctree(Surv(OS_MONTHS, DSS) ~ LNEP + Age + Her2 + Tumour_Size + Tumour_Grade + Subtype + CNA_Score, data = Clin_CNA_Lum_All)
+
+plot(CTREE)
+```

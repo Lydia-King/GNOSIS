@@ -551,7 +551,7 @@ ui <- dashboardPage(
                                                            prettyToggle(inputId = "Tab9_Ctree_Use_Complete_Cases_Only", label_on = "Complete Cases Only", label_off = "Complete Cases Only", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),
                                                            selectInput(inputId = "Tab9_Ctree_Teststat", label = "teststat:", choices = c("quadratic", "maximum"), selected = "quadratic"),
                                                            selectInput(inputId = "Tab9_Ctree_Splitstat", label = "splitstat:", choices = c("quadratic", "maximum"), selected = "quadratic"),
-                                                           selectInput(inputId = "Tab9_Ctree_Testtype", label = "testtype:", choices = c("Bonferroni", "MonteCarlo", "Univariate", "Teststatistic"), selected = "Univariate"),
+                                                           selectInput(inputId = "Tab9_Ctree_Testtype", label = "testtype:", choices = c("Bonferroni", "MonteCarlo", "Univariate", "Teststatistic"), selected = "Bonferroni"),
                                                            sliderInput(inputId = "Tab9_Ctree_Alpha", label = "alpha:", value = 0.05, max = 1, min = 0),
                                                            sliderInput(inputId = "Tab9_Ctree_Minsplit", label = "minsplit:", value = 20, min = 0, max = 200),
                                                            sliderInput(inputId = "Tab9_Ctree_Minbucket", label = "minbucket:", value = 20, min = 0, max = 200),

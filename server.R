@@ -865,7 +865,7 @@ shinyServer(function(input, output, session) {
    Chi <- metaReactive2({
        validate(need(!is.null(input$Input_Patient_File) | !is.null(input$Input_Sample_File) | !is.null(input$Input_CNA_File), paste("Please input clinical file, sample file and/or CNA file", "\n", "\n")))
        validate(need(!is.null(input$Tab6_Select_Categorical_Variable_2) | input$Tab6_Select_Categorical_Variable_2 == "None Selected" | input$Tab6_Select_Categorical_Variable_1 == "None Selected", paste("Please select categorical variables of interest", "\n", "\n")))
-       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" | input$Tab6_Select_Categorical_Variable_2 == "None Selected"){return(NULL)}
+       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" || input$Tab6_Select_Categorical_Variable_2 == "None Selected"){return(NULL)}
        else{metaExpr({for(i in 1:length(c(..(input$Tab6_Select_Categorical_Variable_2)))){
            cat(noquote(paste("Categorical Variable 1:", ..(input$Tab6_Select_Categorical_Variable_1), "and", "Categorical Variable 2:", ..(input$Tab6_Select_Categorical_Variable_2)[i], "\n")))
            print(chisq.test(..(data_Association2())[[i]]))}})}
@@ -874,7 +874,7 @@ shinyServer(function(input, output, session) {
    Chi_Code <- metaReactive2({
        validate(need(!is.null(input$Input_Patient_File) | !is.null(input$Input_Sample_File) | !is.null(input$Input_CNA_File), paste("Please input clinical file, sample file and/or CNA file", "\n", "\n")))
        validate(need(!is.null(input$Tab6_Select_Categorical_Variable_2) | input$Tab6_Select_Categorical_Variable_2 == "None Selected" | input$Tab6_Select_Categorical_Variable_1 == "None Selected", paste("Please select categorical variables of interest", "\n", "\n")))
-       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" | input$Tab6_Select_Categorical_Variable_2 == "None Selected"){return(NULL)}
+       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" || input$Tab6_Select_Categorical_Variable_2 == "None Selected"){return(NULL)}
        else{metaExpr({
            Chi_List <- list()
            for(i in 1:length(..(input$Tab6_Select_Categorical_Variable_2))){
@@ -889,7 +889,7 @@ shinyServer(function(input, output, session) {
        validate(need(!is.null(input$Input_Patient_File) | !is.null(input$Input_Sample_File) | !is.null(input$Input_CNA_File), "Please input clinical file, sample file and/or CNA file"))
        validate(need(!is.null(input$Tab6_Select_Categorical_Variable_2) | input$Tab6_Select_Categorical_Variable_2 == "None Selected" | input$Tab6_Select_Categorical_Variable_1 == "None Selected", "Please select categorical variables of interest"))
        
-       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" | input$Tab6_Select_Categorical_Variable_2 == "None Selected"){
+       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" || input$Tab6_Select_Categorical_Variable_2 == "None Selected"){
            data.frame(Variables = character(10),
                                 X = character(10),
                                 df = character(10),
@@ -897,19 +897,18 @@ shinyServer(function(input, output, session) {
                                 Adj_Pval = character(10))}
        else{
            metaExpr({
-               Variables <- Pval <- Adj_Pval <- X <- df <- c()
+               Variables <- Pval <- X <- df <- c()
                
                for(i in 1:length(..(input$Tab6_Select_Categorical_Variable_2))){
                    Variables <- c(Variables, paste(..(input$Tab6_Select_Categorical_Variable_1), "&", ..(input$Tab6_Select_Categorical_Variable_2)[i], sep=" "))
                    Test <- chisq.test(..(data_Association2())[[i]])
                    X <- c(X, round(as.numeric(Test$statistic), digits = 3))
                    df <- c(df, as.numeric(Test$parameter))
-                   Pval <- c(Pval, signif(Test$p.value, digits=3))
-                   AdjP <- p.adjust(Test$p.value, method = "BH", n=length(..(input$Tab6_Select_Categorical_Variable_2)))
-                   Adj_Pval <- c(Adj_Pval, signif(AdjP, digits=3))
+                   Pval <- c(Pval, signif(Test$p.value, digits=3)) 
                }
-               
-               cbind.data.frame(Variables, X, df, Pval, Adj_Pval) })
+               Table <- cbind.data.frame(Variables, X, df, Pval) 
+               Table$Adj_Pval <- signif(p.adjust(Table$Pval, method = "BH", n=length(..(input$Tab6_Select_Categorical_Variable_2))), digits=3)
+               Table %>% select(Variables, X, df, Pval, Adj_Pval)})
        }})
    
    # Data Table with Adjusted P-values
@@ -921,7 +920,7 @@ shinyServer(function(input, output, session) {
    SimF <- metaReactive2({
        validate(need(!is.null(input$Input_Patient_File) | !is.null(input$Input_Sample_File) | !is.null(input$Input_CNA_File), paste("Please input clinical file, sample file and/or CNA file", "\n", "\n")))
        validate(need(!is.null(input$Tab6_Select_Categorical_Variable_2), paste("Please select categorical variables of interest", "\n", "\n")))
-       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" | input$Tab6_Select_Categorical_Variable_2 == "None Selected"){return(NULL)}
+       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" || input$Tab6_Select_Categorical_Variable_2 == "None Selected"){return(NULL)}
        else{metaExpr({for(i in 1:length(c(..(input$Tab6_Select_Categorical_Variable_2)))){
            cat(noquote(paste("Categorical Variable 1:", ..(input$Tab6_Select_Categorical_Variable_1), "and", "Categorical Variable 2:", ..(input$Tab6_Select_Categorical_Variable_2)[i], "\n")))
            print(fisher.test(..(data_Association2())[[i]], simulate.p.value = T))}})}
@@ -930,7 +929,7 @@ shinyServer(function(input, output, session) {
    SimF_Code <- metaReactive2({
        validate(need(!is.null(input$Input_Patient_File) | !is.null(input$Input_Sample_File) | !is.null(input$Input_CNA_File), paste("Please input clinical file, sample file and/or CNA file", "\n", "\n")))
        validate(need(!is.null(input$Tab6_Select_Categorical_Variable_2), paste("Please select categorical variables of interest", "\n", "\n")))
-       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" | input$Tab6_Select_Categorical_Variable_2 == "None Selected"){return(NULL)}
+       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" || input$Tab6_Select_Categorical_Variable_2 == "None Selected"){return(NULL)}
        else{metaExpr({
            SimF_List <- list()
            for(i in 1:length(..(input$Tab6_Select_Categorical_Variable_2))){
@@ -944,23 +943,23 @@ shinyServer(function(input, output, session) {
        validate(need(!is.null(input$Input_Patient_File) | !is.null(input$Input_Sample_File) | !is.null(input$Input_CNA_File), "Please input clinical file, sample file and/or CNA file"))
        validate(need(!is.null(input$Tab6_Select_Categorical_Variable_2), "Please select categorical variables of interest"))
        
-       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" | input$Tab6_Select_Categorical_Variable_2 == "None Selected"){ 
+       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" || input$Tab6_Select_Categorical_Variable_2 == "None Selected"){ 
            data.frame(Variables = character(10),
                                 Pval = character(10),
                                 Adj_Pval = character(10))}
        else{
            metaExpr({ 
-               Variables <- Pval <- Adj_Pval <- c()
+               Variables <- Pval <- c()
                
                for(i in 1:length(..(input$Tab6_Select_Categorical_Variable_2))){
                    Variables <- c(Variables, paste(..(input$Tab6_Select_Categorical_Variable_1), "&", ..(input$Tab6_Select_Categorical_Variable_2)[i], sep=" "))
                    Test <- fisher.test(..(data_Association2())[[i]], simulate.p.value = T)
                    Pval <- c(Pval, signif(Test$p.value, digits=3))
-                   AdjP <- p.adjust(Test$p.value, method = "BH", n=length(..(input$Tab6_Select_Categorical_Variable_2)))
-                   Adj_Pval <- c(Adj_Pval, signif(AdjP, digits=3))
                }
                
-               cbind.data.frame(Variables, Pval, Adj_Pval) })}
+               Table <- cbind.data.frame(Variables, Pval) 
+               Table$Adj_Pval <- signif(p.adjust(Table$Pval, method = "BH", n=length(..(input$Tab6_Select_Categorical_Variable_2))), digits=3)
+               Table %>% select(Variables, Pval, Adj_Pval)})}
    })
    
    output$Cat2Ad <- metaRender(renderDataTable, {
@@ -970,7 +969,7 @@ shinyServer(function(input, output, session) {
    Fis <- metaReactive2({
        validate(need(!is.null(input$Input_Patient_File) | !is.null(input$Input_Sample_File) | !is.null(input$Input_CNA_File), paste("Please input clinical file, sample file and/or CNA file", "\n", "\n")))
        validate(need(!is.null(input$Tab6_Select_Categorical_Variable_2), paste("Please select categorical variables of interest", "\n", "\n")))
-       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" | input$Tab6_Select_Categorical_Variable_2 == "None Selected"){return(NULL)}
+       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" || input$Tab6_Select_Categorical_Variable_2 == "None Selected"){return(NULL)}
        else{metaExpr({ for(i in 1:length(c(..(input$Tab6_Select_Categorical_Variable_2)))){
            tryCatch({
                cat(noquote(paste("Categorical Variable 1:", ..(input$Tab6_Select_Categorical_Variable_1), "and", "Categorical Variable 2:", ..(input$Tab6_Select_Categorical_Variable_2)[i], "\n")))
@@ -982,7 +981,7 @@ shinyServer(function(input, output, session) {
    F_Code <- metaReactive2({
        validate(need(!is.null(input$Input_Patient_File) | !is.null(input$Input_Sample_File) | !is.null(input$Input_CNA_File), paste("Please input clinical file, sample file and/or CNA file", "\n", "\n")))
        validate(need(!is.null(input$Tab6_Select_Categorical_Variable_2), paste("Please select categorical variables of interest", "\n", "\n")))
-       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" | input$Tab6_Select_Categorical_Variable_2 == "None Selected"){return(NULL)}
+       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" || input$Tab6_Select_Categorical_Variable_2 == "None Selected"){return(NULL)}
        else{metaExpr({
            F_List <- list()
            for(i in 1:length(..(input$Tab6_Select_Categorical_Variable_2))){
@@ -996,27 +995,26 @@ shinyServer(function(input, output, session) {
    output$Cat3 <-  metaRender(renderPrint, { ..(Fis()) })
    
    data_Association3Ad <- metaReactive2({
-       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" | input$Tab6_Select_Categorical_Variable_2 == "None Selected"){
+       if(input$Tab6_Select_Categorical_Variable_1 == "None Selected" || input$Tab6_Select_Categorical_Variable_2 == "None Selected"){
            data.frame(Variables = character(10),
                                 Pval = character(10),
                                 Adj_Pval = character(10))
        }
        else{
            metaExpr({
-               Variables <- Pval <- Adj_Pval <- c()
+               Variables <- Pval <- c()
                
                for(i in 1:length(..(input$Tab6_Select_Categorical_Variable_2))){
                    tryCatch({
                        Test <- fisher.test(..(data_Association2())[[i]])
                        Pval <- c(Pval, signif(Test$p.value, digits=3))
-                       AdjP <- p.adjust(Test$p.value, method = "BH", n=length(..(input$Tab6_Select_Categorical_Variable_2)))
-                       Adj_Pval <- c(Adj_Pval, signif(AdjP, digits=3))
                        Variables <- c(Variables, paste(..(input$Tab6_Select_Categorical_Variable_1), "&", ..(input$Tab6_Select_Categorical_Variable_2)[i], sep=" "))
                        # continue if error
                    }, error=function(e){cat("ERROR :",conditionMessage(e), "\n")})
                }
-               
-               cbind.data.frame(Variables, Pval, Adj_Pval) })
+               Table <- cbind.data.frame(Variables, Pval) 
+               Table$Adj_Pval <- signif(p.adjust(Table$Pval, method = "BH", n=length(..(input$Tab6_Select_Categorical_Variable_2))), digits=3)
+               Table %>% select(Variables, Pval, Adj_Pval) })
        }})
    
    output$Cat3Ad <- metaRender(renderDataTable, {
@@ -1125,17 +1123,17 @@ shinyServer(function(input, output, session) {
        }
        else{
            metaExpr({
-               Variables <- Pval <- Adj_Pval <- c()
+               Variables <- Pval <- c()
                
                for(i in 1:length(c(..(input$Tab6_Select_Continuous_Variable_1)))){
                    Variables <- c(Variables, paste(..(input$Tab6_Select_Categorical_Variable_3), "&", ..(input$Tab6_Select_Continuous_Variable_1)[i], sep=" "))
                    Test <- summary(aov(..(Whole_Data())[,..(input$Tab6_Select_Continuous_Variable_1)[i]] ~ ..(Whole_Data())[,..(input$Tab6_Select_Categorical_Variable_3)], data = ..(Whole_Data())))
                    Pval <- c(Pval, signif(as.numeric(Test[[1]]$`Pr(>F)`[1]), digits=3))
-                   AdjP <- p.adjust(as.numeric(Test[[1]]$`Pr(>F)`[1]), method = "BH", n=length(..(input$Tab6_Select_Continuous_Variable_1)))
-                   Adj_Pval <- c(Adj_Pval, signif(AdjP, digits=3))
+                  
                }
-               
-               cbind.data.frame(Variables, Pval, Adj_Pval) })}
+               Table <- cbind.data.frame(Variables, Pval) 
+               Table$Adj_Pval <- signif(p.adjust(Table$Pval, method = "BH", n=length(..(input$Tab6_Select_Continuous_Variable_1))), digits=3)
+               Table %>% select(Variables, Pval, Adj_Pval)})}
    })
    
    output$ANOVAAd <- metaRender(renderDataTable, {
@@ -1178,7 +1176,7 @@ shinyServer(function(input, output, session) {
                                 Adj_Pval = character(10))
        } else {
            metaExpr({
-               Variables <- Statistic <- df <- Pval <- Adj_Pval <- c()
+               Variables <- Statistic <- df <- Pval <- c()
                
                for(i in 1:length(..(input$Tab6_Select_Continuous_Variable_1))){
                    Variables <- c(Variables, paste(..(input$Tab6_Select_Categorical_Variable_3), "&", ..(input$Tab6_Select_Continuous_Variable_1)[i], sep=" "))
@@ -1186,11 +1184,12 @@ shinyServer(function(input, output, session) {
                    Statistic <- c(Statistic, signif(Test$statistic[[1]], digits = 3))
                    df <- c(df, Test$parameter[[1]])
                    Pval <- c(Pval, signif(as.numeric(Test$p.value[[1]]), digits=3))
-                   AdjP <- p.adjust(as.numeric(Test$p.value[[1]]), method = "BH", n=length(..(input$Tab6_Select_Continuous_Variable_1)))
-                   Adj_Pval <- c(Adj_Pval, signif(AdjP, digits=3))
                }
                
-               cbind.data.frame(Variables, Statistic, df, Pval, Adj_Pval) })}
+               Table <- cbind.data.frame(Variables, Statistic, df, Pval) 
+               Table$Adj_Pval <- signif(p.adjust(Table$Pval, method = "BH", n=length(..(input$Tab6_Select_Continuous_Variable_1))), digits=3)
+               Table %>% select(Variables, Statistic, df, Pval, Adj_Pval)
+               })}
    })
    
    output$KWAd <- metaRender(renderDataTable, {
@@ -1292,22 +1291,21 @@ shinyServer(function(input, output, session) {
                                 Adj_Logrank = character(10)) }
        else{
            metaExpr({
-               Variables <- LRT <- Adj_LRT <- Wald <- Adj_Wald <- Logrank <- Adj_Logrank <- c()
+               Variables <- LRT <- Wald <- Logrank <- c()
                
-               for(i in 1:length(c(..(input$Tab7_Univariate_Cox_Select_Variables)))){
+               for(i in 1:length(..(input$Tab7_Univariate_Cox_Select_Variables))){
                    Variables <- c(Variables, paste(..(input$Tab7_Univariate_Cox_Event_Status), "for", ..(input$Tab7_Univariate_Cox_Select_Variables)[i], sep=" "))
                    res.cox <- coxph(formula = as.formula(paste( "Surv(as.numeric(",..(input$Tab7_Univariate_Cox_Survival_Time),"), as.numeric(as.character(",..(input$Tab7_Univariate_Cox_Event_Status),"))) ~", noquote(paste(..(input$Tab7_Univariate_Cox_Select_Variables)[i], collapse="+")))), data = ..(surv_data_Cox()))
                    LRT <- c(LRT, signif(as.numeric(summary(res.cox)$logtest[3]), digits=3))
                    Wald <- c(Wald, signif(as.numeric(summary(res.cox)$waldtest[3]), digits=3))
                    Logrank <- c(Logrank, signif(as.numeric(summary(res.cox)$sctest[3]), digits=3))
-                   
-                   Adj_LRT <- c(Adj_LRT,  signif(p.adjust(as.numeric(summary(res.cox)$logtest[3]), method = "BH", n=length(..(input$Tab7_Univariate_Cox_Select_Variables))), digits=3))
-                   Adj_Wald <- c(Adj_Wald,  signif(p.adjust(as.numeric(summary(res.cox)$waldtest[3]), method = "BH", n=length(..(input$Tab7_Univariate_Cox_Select_Variables))), digits=3))
-                   Adj_Logrank <- c(Adj_Logrank,  signif(p.adjust(as.numeric(summary(res.cox)$sctest[3]), method = "BH", n=length(..(input$Tab7_Univariate_Cox_Select_Variables))), digits=3))
-                   
                }
                
-               cbind.data.frame(Variables, LRT, Adj_LRT, Wald, Adj_Wald, Logrank, Adj_Logrank) })}
+               Table <- cbind.data.frame(Variables, LRT, Wald, Logrank)
+               Table$Adj_LRT <- signif(p.adjust(as.numeric(Table$LRT), method = "BH", n=length(..(input$Tab7_Univariate_Cox_Select_Variables))), digits=3)
+               Table$Adj_Wald <- signif(p.adjust(as.numeric(Table$Wald), method = "BH", n=length(..(input$Tab7_Univariate_Cox_Select_Variables))), digits=3)
+               Table$Adj_Logrank <- signif(p.adjust(as.numeric(Table$Logrank), method = "BH", n=length(..(input$Tab7_Univariate_Cox_Select_Variables))), digits=3)
+               Table %>% select(Variables, LRT, Adj_LRT, Wald, Adj_Wald, Logrank, Adj_Logrank)})}
    })
    
    output$UniAdjusted <- metaRender(renderDataTable, {
@@ -1494,7 +1492,7 @@ shinyServer(function(input, output, session) {
                Levels_Vector_1 <- c(Levels_Vector_1, c(rep(levels(as.factor(..(Whole_Data())[,..(input$Tab8_Adjusted_Curves_Select_Variable_2)]))[n_levels_1], length(levels(as.factor(..(Whole_Data())[,..(input$Tab8_Adjusted_Curves_Select_Variable_1)]))))))} 
            
            for(n_levels_2 in 1:length(levels(as.factor(..(Whole_Data())[,..(input$Tab8_Adjusted_Curves_Select_Variable_1)])))){
-               Levels_Rep <- c(Levels_Rep, levels(as.factor(Whole_Data()[,..(input$Tab8_Adjusted_Curves_Select_Variable_1)]))[n_levels_2])}
+               Levels_Rep <- c(Levels_Rep, levels(as.factor(..(Whole_Data())[,..(input$Tab8_Adjusted_Curves_Select_Variable_1)]))[n_levels_2])}
            
            Levels_Vector_2 <- c(rep(Levels_Rep, length(levels(as.factor(..(Whole_Data())[,..(input$Tab8_Adjusted_Curves_Select_Variable_2)])))))
            
@@ -1502,7 +1500,7 @@ shinyServer(function(input, output, session) {
            
            for(constant_var in 1:length(..(input$Tab8_Adjusted_Curves_Select_Constant_Variable))){
                varname <- ..(input$Tab8_Adjusted_Curves_Select_Constant_Variable)[constant_var]
-               if(is.factor(Whole_Data()[,varname])){
+               if(is.factor(..(Whole_Data())[,varname])){
                    Lev[,c(varname)] <- getmode(..(Whole_Data())[,varname])
                } else {
                    Lev <- mutate(Lev,  !!varname :=  mean(..(Whole_Data())[,varname], na.rm=T))
@@ -1520,13 +1518,12 @@ shinyServer(function(input, output, session) {
        validate(need(!is.null(input$Input_Patient_File) | !is.null(input$Input_Sample_File) | !is.null(input$Input_CNA_File), "Please input clinical file, sample file and/or CNA file"))
        validate(need(!is.null(input$Tab8_Adjusted_Curves_Select_Variable_1) & !is.null(input$Tab8_Adjusted_Curves_Select_Variable_2) & !is.null(input$Tab8_Adjusted_Curves_Select_Constant_Variable), "Please make sure all select boxes are filled"))
       
-       metaExpr({ dat <- ..(NewData())
-       rownames(dat) <- do.call(paste,c(dat[c(..(input$Tab8_Adjusted_Curves_Select_Variable_1), ..(input$Tab8_Adjusted_Curves_Select_Variable_2))], sep="_"))
-       fit <- survfit(..(CoxAssump()), newdata = dat) })
-       
        if(is.null(Whole_Data()) | input$Tab8_Adjusted_Curves_Select_Variable_1 == "None Selected" | input$Tab8_Adjusted_Curves_Select_Variable_2 == "None Selected"){ggplot() + theme_void() }
        else{
-           metaExpr({ survminer::ggsurvplot(fit, data = ..(NewData()), censor.shape="", xlab=..(input$Tab8_Adjusted_Curves_X_Axis_Title), ylab=..(input$Tab8_Adjusted_Curves_Y_Axis_Title), size = 1, conf.int = ..(input$Tab8_Adjusted_Curves_Display_CI), risk.table = ..(input$Tab8_Adjusted_Curves_Display_Risk_Table), 
+           metaExpr({ dat <- ..(NewData())
+           rownames(dat) <- do.call(paste,c(dat[c(..(input$Tab8_Adjusted_Curves_Select_Variable_1), ..(input$Tab8_Adjusted_Curves_Select_Variable_2))], sep="_"))
+           fit <- survfit(..(CoxAssump()), newdata = dat)
+           survminer::ggsurvplot(fit, data = ..(NewData()), censor.shape="", xlab=..(input$Tab8_Adjusted_Curves_X_Axis_Title), ylab=..(input$Tab8_Adjusted_Curves_Y_Axis_Title), size = 1, conf.int = ..(input$Tab8_Adjusted_Curves_Display_CI), risk.table = ..(input$Tab8_Adjusted_Curves_Display_Risk_Table), 
                                             legend = c(..(input$Tab8_Adjusted_Curves_Legend_Position)), legend.labs = rownames(summary(fit$table)), risk.table.height = 0.25, pval.size = 6, ggtheme = theme_gray() + theme(plot.title = element_text(size= 18, hjust = 0.5)) + theme(legend.title = element_text(colour="black", size=15, face="bold")), break.time.by =50, risk.table.y.text.col = T, risk.table.y.text = FALSE, 
                                             legend.title = ..(input$Tab8_Adjusted_Curves_Legend_Title), title = (..(input$Tab8_Adjusted_Curves_Plot_Title)), font.main = c(18, "plain", "black"), font.x = c(15, "plain", "black"), font.y = c(15, "plain", "black"), font.legend = c(14, "plain", "black"), font.tickslab = c(12, "plain", "black"))})} })
    
@@ -2032,13 +2029,10 @@ shinyServer(function(input, output, session) {
                 "#'",
                 "#' Load up relevant libraries",
                 quote(library(DT)), # Used to create scrollable datatables 
-                quote(library(magrittr)), # Convert numeric/categorical
-                quote(library(dplyr)), # manipulate and select
+                quote(library(tidyverse)), # manipulate and select
                 quote(library(fabricatr)), # function split_quantile
                 quote(library(reshape2)), # Melt function
-                quote(library(stringr)), # formulas models
                 quote(library(operator.tools)), # not in
-                quote(library(ggplot2)), # ggplot
                 quote(library(RColorBrewer)), # Color palette 
                 quote(library(rpart)), # Survival trees (rpart)
                 quote(library(rpart.plot)), # Survival trees (rpart)
@@ -2058,6 +2052,12 @@ shinyServer(function(input, output, session) {
                     completeVec <- complete.cases(data[, desiredCols])
                     return(data[completeVec, ])}),
                 "#'",
+                "#' Get Mode function",
+                quote(getmode <- function(v) {uniqv <- unique(v)
+                uniqv[which.max(tabulate(match(v, uniqv)))]}),
+                "#'",
+                "#'Function",
+                quote(give.n <- function(x){return(c(y = median(x)*1.05, label = length(x)))}),
                 "#'",
                 "#' Tab 1: Load up clinical patient data and preview",
                 "##' Note: Please replace temporary file path with path to uploaded file",
@@ -2698,7 +2698,7 @@ shinyServer(function(input, output, session) {
                     !is.null(input$Input_Patient_File) && isTRUE(ncol(input$Input_Patient_File) > 2) && isTRUE("PATIENT_ID" %in% colnames(read.csv(input$Input_Patient_File$datapath, header = input$Tab1_Clin_Header_Yes_or_No, sep = input$Tab1_Clin_Separator, quote = input$Tab1_Clin_Quote, na.strings=c(""," ","NA"), skip = input$Tab1_Clin_Skip_Lines)))){PWD_Code()},
                 "#'",
                 "#'",
-                "#'Tab 7: Association Tests - Univariate Cox Models",
+                "#'Tab 7: Cox PH models - Univariate Cox Models",
                 "##' Individual univariate Cox models", 
                 if(!is.null(input$Tab7_Univariate_Cox_Select_Variables) && input$Tab7_Univariate_Cox_Survival_Time != "None Selected" && input$Tab7_Univariate_Cox_Event_Status  != "None Selected" && input$Tab7_Univariate_Cox_Select_Variables != "None Selected" && !is.null(input$Tab3_Subset_Variable_Levels_1) && !is.null(input$Tab3_Subset_Variable_Levels_2) && !is.null(input$Tab3_Subset_Variable_Levels_3) && is.null(input$Input_Sample_File) && is.null(input$Input_CNA_File) && !is.null(input$Input_Patient_File) && isTRUE(ncol(input$Input_Patient_File) > 2) && isTRUE("PATIENT_ID" %in% colnames(read.csv(input$Input_Patient_File$datapath, header = input$Tab1_Clin_Header_Yes_or_No, sep = input$Tab1_Clin_Separator, quote = input$Tab1_Clin_Quote, na.strings=c(""," ","NA"), skip = input$Tab1_Clin_Skip_Lines)))){output$CoxModelOut()}, 
                 if(!is.null(input$Tab7_Univariate_Cox_Select_Variables) && input$Tab7_Univariate_Cox_Survival_Time != "None Selected" && input$Tab7_Univariate_Cox_Event_Status  != "None Selected" && input$Tab7_Univariate_Cox_Select_Variables != "None Selected" && !is.null(input$Tab3_Subset_Variable_Levels_1) && !is.null(input$Tab3_Subset_Variable_Levels_2) && !is.null(input$Tab3_Subset_Variable_Levels_3) && is.null(input$Input_Patient_File) && is.null(input$Input_CNA_File) && !is.null(input$Input_Sample_File) && isTRUE(ncol(input$Input_Sample_File) > 2) && isTRUE("PATIENT_ID" %in% colnames(read.csv(input$Input_Sample_File$datapath, header = input$Tab1_Sample_Header_Yes_or_No, sep = input$Tab1_Sample_Separator, quote = input$Tab1_Sample_Quote, na.strings=c(""," ","NA"), skip = input$Tab1_Sample_Skip_Lines)))){output$CoxModelOut()}, 
@@ -2729,7 +2729,7 @@ shinyServer(function(input, output, session) {
                    !is.null(input$Input_Patient_File) && isTRUE(ncol(input$Input_Patient_File) > 2) && isTRUE("PATIENT_ID" %in% colnames(read.csv(input$Input_Patient_File$datapath, header = input$Tab1_Clin_Header_Yes_or_No, sep = input$Tab1_Clin_Separator, quote = input$Tab1_Clin_Quote, na.strings=c(""," ","NA"), skip = input$Tab1_Clin_Skip_Lines)))){output$UniAdjusted()},
                 "#'",
                 "#'", 
-                "#'Tab 7: Association Tests - Multivariable Cox Models",
+                "#'Tab 7: Cox PH models - Multivariable Cox Models",
                 if(!is.null(input$Tab7_Multivariable_Cox_Select_Variables) && !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_1) && !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_2) & !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3) && input$Tab7_Multivariable_Cox_Survival_Time != "None Selected" && input$Tab7_Multivariable_Cox_Event_Status  != "None Selected" && !is.null(input$Tab3_Subset_Variable_Levels_1) && !is.null(input$Tab3_Subset_Variable_Levels_2) && !is.null(input$Tab3_Subset_Variable_Levels_3) && is.null(input$Input_Sample_File) && is.null(input$Input_CNA_File) && !is.null(input$Input_Patient_File) && isTRUE(ncol(input$Input_Patient_File) > 2) && isTRUE("PATIENT_ID" %in% colnames(read.csv(input$Input_Patient_File$datapath, header = input$Tab1_Clin_Header_Yes_or_No, sep = input$Tab1_Clin_Separator, quote = input$Tab1_Clin_Quote, na.strings=c(""," ","NA"), skip = input$Tab1_Clin_Skip_Lines)))){output$CoxModelMultiOut()}, 
                 if(!is.null(input$Tab7_Multivariable_Cox_Select_Variables) && !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_1) && !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_2) & !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3) && input$Tab7_Multivariable_Cox_Survival_Time != "None Selected" && input$Tab7_Multivariable_Cox_Event_Status  != "None Selected" && !is.null(input$Tab3_Subset_Variable_Levels_1) && !is.null(input$Tab3_Subset_Variable_Levels_2) && !is.null(input$Tab3_Subset_Variable_Levels_3) && is.null(input$Input_Patient_File) && is.null(input$Input_CNA_File) && !is.null(input$Input_Sample_File) && isTRUE(ncol(input$Input_Sample_File) > 2) && isTRUE("PATIENT_ID" %in% colnames(read.csv(input$Input_Sample_File$datapath, header = input$Tab1_Sample_Header_Yes_or_No, sep = input$Tab1_Sample_Separator, quote = input$Tab1_Sample_Quote, na.strings=c(""," ","NA"), skip = input$Tab1_Sample_Skip_Lines)))){output$CoxModelMultiOut()}, 
                 if(!is.null(input$Tab7_Multivariable_Cox_Select_Variables) && !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_1) && !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_2) & !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3) && input$Tab7_Multivariable_Cox_Survival_Time != "None Selected" && input$Tab7_Multivariable_Cox_Event_Status  != "None Selected" && !is.null(input$Tab3_Subset_Variable_Levels_1) && !is.null(input$Tab3_Subset_Variable_Levels_2) && !is.null(input$Tab3_Subset_Variable_Levels_3) && is.null(input$Input_Patient_File) && is.null(input$Input_Sample_File) && !is.null(input$Input_CNA_File) && isTRUE(ncol(input$Input_CNA_File) > 1) && isTRUE("Hugo_Symbol" %in% colnames(read.csv(input$Input_CNA_File$datapath, header = input$Tab1_CNA_Header_Yes_or_No, sep = input$Tab1_CNA_Separator, quote = input$Tab1_CNA_Quote, check.names = F, na.strings=c(""," ","NA"), skip=input$Tab1_CNA_Skip_Lines)))){output$CoxModelMultiOut()},
@@ -2783,7 +2783,7 @@ shinyServer(function(input, output, session) {
                    !is.null(input$Input_Patient_File) && isTRUE(ncol(input$Input_Patient_File) > 2) && isTRUE("PATIENT_ID" %in% colnames(read.csv(input$Input_Patient_File$datapath, header = input$Tab1_Clin_Header_Yes_or_No, sep = input$Tab1_Clin_Separator, quote = input$Tab1_Clin_Quote, na.strings=c(""," ","NA"), skip = input$Tab1_Clin_Skip_Lines)))){output$Logrid()},
                 "#'",
                 "#'",
-                "#'Tab 7: Association Tests - Multivariable Cox Model Assumptions",
+                "#'Tab 7: Cox PH models - Multivariable Cox Model Assumptions",
                 if(!is.null(input$Tab3_Subset_Variable_Levels_1) && !is.null(input$Tab3_Subset_Variable_Levels_2) && !is.null(input$Tab3_Subset_Variable_Levels_3) && !is.null(input$Tab7_Multivariable_Cox_Select_Variables) && !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_1) && !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_2) & !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3) && input$Tab7_Multivariable_Cox_Survival_Time != "None Selected" && input$Tab7_Multivariable_Cox_Event_Status  != "None Selected" && is.null(input$Input_Sample_File) && is.null(input$Input_CNA_File) && !is.null(input$Input_Patient_File) && isTRUE(ncol(input$Input_Patient_File) > 2) && isTRUE("PATIENT_ID" %in% colnames(read.csv(input$Input_Patient_File$datapath, header = input$Tab1_Clin_Header_Yes_or_No, sep = input$Tab1_Clin_Separator, quote = input$Tab1_Clin_Quote, na.strings=c(""," ","NA"), skip = input$Tab1_Clin_Skip_Lines)))){output$AssumptionsCox()}, 
                 if(!is.null(input$Tab3_Subset_Variable_Levels_1) && !is.null(input$Tab3_Subset_Variable_Levels_2) && !is.null(input$Tab3_Subset_Variable_Levels_3) && !is.null(input$Tab7_Multivariable_Cox_Select_Variables) && !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_1) && !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_2) & !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3) && input$Tab7_Multivariable_Cox_Survival_Time != "None Selected" && input$Tab7_Multivariable_Cox_Event_Status  != "None Selected" && is.null(input$Input_Patient_File) && is.null(input$Input_CNA_File) && !is.null(input$Input_Sample_File) && isTRUE(ncol(input$Input_Sample_File) > 2) && isTRUE("PATIENT_ID" %in% colnames(read.csv(input$Input_Sample_File$datapath, header = input$Tab1_Sample_Header_Yes_or_No, sep = input$Tab1_Sample_Separator, quote = input$Tab1_Sample_Quote, na.strings=c(""," ","NA"), skip = input$Tab1_Sample_Skip_Lines)))){output$AssumptionsCox()}, 
                 if(!is.null(input$Tab3_Subset_Variable_Levels_1) && !is.null(input$Tab3_Subset_Variable_Levels_2) && !is.null(input$Tab3_Subset_Variable_Levels_3) && !is.null(input$Tab7_Multivariable_Cox_Select_Variables) && !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_1) && !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_2) & !is.null(input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3) && input$Tab7_Multivariable_Cox_Survival_Time != "None Selected" && input$Tab7_Multivariable_Cox_Event_Status  != "None Selected" && is.null(input$Input_Patient_File) && is.null(input$Input_Sample_File) && !is.null(input$Input_CNA_File) && isTRUE(ncol(input$Input_CNA_File) > 1) && isTRUE("Hugo_Symbol" %in% colnames(read.csv(input$Input_CNA_File$datapath, header = input$Tab1_CNA_Header_Yes_or_No, sep = input$Tab1_CNA_Separator, quote = input$Tab1_CNA_Quote, check.names = F, na.strings=c(""," ","NA"), skip=input$Tab1_CNA_Skip_Lines)))){output$AssumptionsCox()},
