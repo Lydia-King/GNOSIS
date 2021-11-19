@@ -79,8 +79,8 @@ if (!requireNamespace("R.utils", quietly = TRUE))
   BiocManager::install("R.utils")
 library(R.utils)
 
-# if (!requireNamespace("coin", quietly = TRUE))
-#  BiocManager::install("coin")
+if (!requireNamespace("coin", quietly = TRUE))
+   BiocManager::install("coin")
 
 library(RColorBrewer) # Color palette
 
