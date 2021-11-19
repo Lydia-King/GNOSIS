@@ -317,8 +317,10 @@ shinyServer(function(input, output, session) {
     # CNA Score Calculation 
     CNA_Clin <- metaReactive2({
         if(is.null(input$Input_CNA_File)){validate(need(input$Input_CNA_File, "Please input CNA summary file."))
-        } else if(!is.null(input$Input_CNA_File) & input$Tab3_CNA_of_Interest == "None"){
-            metaExpr({..(dataInputCNA())})
+        } else if(!is.null(input$Input_CNA_File) & input$Tab3_CNA_of_Interest == "None" & (!is.null(input$Input_Patient_File) | !is.null(input$Input_Sample_File))){
+            validate(need("PATIENT_ID" %in% colnames(dataInputCNA()) | input$Tab3_CNA_of_Interest != "None", "Please choose to calculate CNA Scores, select specific genes to analyse or make sure CNA file has PATIENT_ID column."))
+            metaExpr({CNA_Status <- merge(..(dataClinicalSurv()), ..(dataInputCNA()), by.x = "PATIENT_ID", by.y = "PATIENT_ID") # Make sure both files have PATIENT_ID 
+            CNA_Status })
         } else if(!is.null(input$Input_CNA_File) & is.null(input$Input_Sample_File) & is.null(input$Input_Patient_File) & input$Tab3_CNA_of_Interest == "Single Gene"){
             gene_list <- unlist(str_split(c(input$Tab3_Select_Genes), pattern = ", "))
             if(sum(gene_list %in% dataInputCNA()[,c("Hugo_Symbol")]) != length(gene_list)){
@@ -388,8 +390,9 @@ shinyServer(function(input, output, session) {
             } 
             
             CNA_Metrics_All })
-        } else {
-            validate(need(input$Input_CNA_File, "Please input CNA summary file."))
+        } else if(!is.null(input$Input_CNA_File) & is.null(input$Input_Sample_File) & is.null(input$Input_Patient_File) & input$Tab3_CNA_of_Interest == "None"){ 
+            metaExpr({ return(..(dataInputCNA())) })}
+        else {validate(need(input$Input_CNA_File, "Please input CNA summary file."))
             metaExpr({ return(NULL) })}
     })
     
