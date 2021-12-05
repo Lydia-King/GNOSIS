@@ -1,0 +1,226 @@
+Timestamp	Tab	Name	Value	Binding
+2021-12-05 12:18:29.967+0000	Tab1	Input_Patient_File	data_clinical_patient.txt	fileInputBinding
+2021-12-05 12:18:34.513+0000	Tab1	Input_Sample_File	data_clinical_sample.txt	fileInputBinding
+2021-12-05 12:18:38.831+0000	Tab1	Input_CNA_File	data_CNA.txt	fileInputBinding
+2021-12-05 12:20:41.235+0000	Tab2	Tab2_Clinical_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:20:44.631+0000	Tab2	Tab2_Clin_Column1_Variable	PATIENT_ID	selectInput
+2021-12-05 12:20:47.692+0000	Tab2	Tab2_Clin_Column2_Variable	GRADE	selectInput
+2021-12-05 12:20:51.903+0000	Tab2	Tab2_Clin_Column3_Variable	TUMOR_SIZE	selectInput
+2021-12-05 12:20:56.351+0000	Tab2	Tab2_Clin_Column4_Variable	TUMOR_STAGE	selectInput
+2021-12-05 12:21:04.374+0000	Tab2	Tab2_Clin_Column5_Variable	THREEGENE	selectInput
+2021-12-05 12:21:05.818+0000	Tab2	Tab2_Clin_Column5_Variable	CLAUDIN_SUBTYPE	selectInput
+2021-12-05 12:21:07.698+0000	Tab2	Tab2_Clinical_Sidebar	FALSE	box-sidebar-input
+2021-12-05 12:21:11.841+0000	Tab2	Tab2_CNA_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:21:15.364+0000	Tab2	Tab2_CNA_Column1_Variable	Hugo_Symbol	selectInput
+2021-12-05 12:21:18.408+0000	Tab2	Tab2_CNA_Column2_Variable	Entrez_Gene_Id	selectInput
+2021-12-05 12:21:21.352+0000	Tab2	Tab2_CNA_Column3_Variable	MB-0000	selectInput
+2021-12-05 12:18:30.322+0000	Tab3	Tab3_Subset_Variable_1	PATIENT_ID	selectInput
+2021-12-05 12:18:30.322+0000	Tab3	Tab3_Subset_Variable_1	PATIENT_ID	selectInput
+2021-12-05 12:18:30.333+0000	Tab3	Tab3_Subset_Variable_2	LYMPH_NODES_EXAMINED_POSITIVE	selectInput
+2021-12-05 12:18:30.335+0000	Tab3	Tab3_Subset_Variable_2	LYMPH_NODES_EXAMINED_POSITIVE	selectInput
+2021-12-05 12:18:30.345+0000	Tab3	Tab3_Subset_Variable_3	NPI	selectInput
+2021-12-05 12:18:30.345+0000	Tab3	Tab3_Subset_Variable_3	NPI	selectInput
+2021-12-05 12:18:34.722+0000	Tab3	Tab3_Subset_Variable_1	PATIENT_ID	selectInput
+2021-12-05 12:18:34.722+0000	Tab3	Tab3_Subset_Variable_1	PATIENT_ID	selectInput
+2021-12-05 12:18:34.734+0000	Tab3	Tab3_Subset_Variable_2	LYMPH_NODES_EXAMINED_POSITIVE	selectInput
+2021-12-05 12:18:34.734+0000	Tab3	Tab3_Subset_Variable_2	LYMPH_NODES_EXAMINED_POSITIVE	selectInput
+2021-12-05 12:18:34.744+0000	Tab3	Tab3_Subset_Variable_3	NPI	selectInput
+2021-12-05 12:18:34.745+0000	Tab3	Tab3_Subset_Variable_3	NPI	selectInput
+2021-12-05 12:21:43.510+0000	Tab3	Tab3_Convert_Type_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:21:46.520+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY	selectInput
+2021-12-05 12:21:47.199+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY	selectInput
+2021-12-05 12:21:48.462+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC	selectInput
+2021-12-05 12:21:49.494+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6	selectInput
+2021-12-05 12:21:51.634+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY	selectInput
+2021-12-05 12:21:52.378+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE	selectInput
+2021-12-05 12:21:53.627+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE INTCLUST	selectInput
+2021-12-05 12:21:57.149+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE INTCLUST CLAUDIN_SUBTYPE	selectInput
+2021-12-05 12:21:59.895+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE INTCLUST CLAUDIN_SUBTYPE RADIO_THERAPY	selectInput
+2021-12-05 12:22:01.849+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE INTCLUST CLAUDIN_SUBTYPE RADIO_THERAPY THREEGENE	selectInput
+2021-12-05 12:22:04.313+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE INTCLUST CLAUDIN_SUBTYPE RADIO_THERAPY THREEGENE BREAST_SURGERY	selectInput
+2021-12-05 12:22:12.519+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE INTCLUST CLAUDIN_SUBTYPE RADIO_THERAPY THREEGENE BREAST_SURGERY HISTOLOGICAL_SUBTYPE	selectInput
+2021-12-05 12:22:14.684+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE INTCLUST CLAUDIN_SUBTYPE RADIO_THERAPY THREEGENE BREAST_SURGERY HISTOLOGICAL_SUBTYPE HER2_STATUS	selectInput
+2021-12-05 12:22:22.542+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE INTCLUST CLAUDIN_SUBTYPE RADIO_THERAPY THREEGENE BREAST_SURGERY HISTOLOGICAL_SUBTYPE HER2_STATUS PR_STATUS	selectInput
+2021-12-05 12:22:25.099+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE INTCLUST CLAUDIN_SUBTYPE RADIO_THERAPY THREEGENE BREAST_SURGERY HISTOLOGICAL_SUBTYPE HER2_STATUS PR_STATUS GRADE	selectInput
+2021-12-05 12:22:26.758+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE INTCLUST CLAUDIN_SUBTYPE RADIO_THERAPY THREEGENE BREAST_SURGERY HISTOLOGICAL_SUBTYPE HER2_STATUS PR_STATUS GRADE TUMOR_STAGE	selectInput
+2021-12-05 12:22:30.897+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE INTCLUST CLAUDIN_SUBTYPE RADIO_THERAPY THREEGENE BREAST_SURGERY HISTOLOGICAL_SUBTYPE HER2_STATUS PR_STATUS GRADE TUMOR_STAGE CANCER_TYPE_DETAILED	selectInput
+2021-12-05 12:22:33.519+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE INTCLUST CLAUDIN_SUBTYPE RADIO_THERAPY THREEGENE BREAST_SURGERY HISTOLOGICAL_SUBTYPE HER2_STATUS PR_STATUS GRADE TUMOR_STAGE CANCER_TYPE_DETAILED ER_STATUS	selectInput
+2021-12-05 12:22:35.526+0000	Tab3	Tab3_Variables_to_Factor	CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE INTCLUST CLAUDIN_SUBTYPE RADIO_THERAPY THREEGENE BREAST_SURGERY HISTOLOGICAL_SUBTYPE HER2_STATUS PR_STATUS GRADE TUMOR_STAGE CANCER_TYPE_DETAILED ER_STATUS LATERALITY	selectInput
+2021-12-05 12:23:04.182+0000	Tab3	Tab3_Convert_Type_Sidebar	FALSE	box-sidebar-input
+2021-12-05 12:23:07.134+0000	Tab3	Tab3_Subset_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:23:11.109+0000	Tab3	Tab3_Subset_Variable_1	CLAUDIN_SUBTYPE	selectInput
+2021-12-05 12:23:12.959+0000	Tab3	Tab3_Subset_Variable_Levels_1	None Selected LumA	selectInput
+2021-12-05 12:23:13.662+0000	Tab3	Tab3_Subset_Variable_Levels_1	None Selected LumA LumB	selectInput
+2021-12-05 12:23:14.921+0000	Tab3	Tab3_Subset_Variable_Levels_1	LumA LumB	selectInput
+2021-12-05 12:23:20.070+0000	Tab3	Tab3_Recode_Survival_Yes_or_No	Yes	awesomeRadio
+2021-12-05 12:23:23.922+0000	Tab3	Tab3_Select_OS_Column	OS_STATUS	selectInput
+2021-12-05 12:23:27.495+0000	Tab3	Tab3_Select_DSS_Column	VITAL_STATUS	selectInput
+2021-12-05 12:23:30.694+0000	Tab3	Tab3_CNA_Calculation_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:23:32.026+0000	Tab3	Tab3_CNA_of_Interest	CNA Score	awesomeRadio
+2021-12-05 12:23:48.234+0000	Tab3	Tab3_Segment_CNA_Yes_or_No	TRUE	checkboxInput
+2021-12-05 12:23:49.134+0000	Tab3	Tab3_CNA_Remove_NAs_Yes_or_No	TRUE	checkboxInput
+2021-12-05 12:24:13.423+0000	Tab4	Tab4_Boxplot_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:24:18.857+0000	Tab4	Tab4_Boxplot_Select_X_Variable	CNA_Score	selectInput
+2021-12-05 12:24:24.002+0000	Tab4	Tab4_Boxplot_Select_Y_Variable	CLAUDIN_SUBTYPE	selectInput
+2021-12-05 12:24:30.255+0000	Tab4	Tab4_Boxplot_Select_X_Variable	CLAUDIN_SUBTYPE	selectInput
+2021-12-05 12:24:33.755+0000	Tab4	Tab4_Boxplot_Select_Y_Variable	CNA_Score	selectInput
+2021-12-05 12:24:35.583+0000	Tab4	Tab4_Boxplot_Sidebar	FALSE	box-sidebar-input
+2021-12-05 12:24:40.846+0000	Tab4	Tab4_Boxplot_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:24:48.252+0000	Tab4	Tab4_Boxplot_by_Sample_Size	TRUE	checkboxInput
+2021-12-05 12:24:58.032+0000	Tab4	Tab4_Boxplot_Title	 Boxplot	textInput
+2021-12-05 12:24:58.799+0000	Tab4	Tab4_Boxplot_Title	Boxplot	textInput
+2021-12-05 12:25:02.991+0000	Tab4	Tab4_Boxplot_Title	Boxplot of CNA Score by 	textInput
+2021-12-05 12:25:03.479+0000	Tab4	Tab4_Boxplot_Title	Boxplot of CNA Score by 	textInput
+2021-12-05 12:25:05.083+0000	Tab4	Tab4_Boxplot_Title	Boxplot of CNA Score by SUbty	textInput
+2021-12-05 12:25:05.586+0000	Tab4	Tab4_Boxplot_Title	Boxplot of CNA Score by SUbtype	textInput
+2021-12-05 12:25:06.717+0000	Tab4	Tab4_Boxplot_Title	Boxplot of CNA Score by SU	textInput
+2021-12-05 12:25:07.142+0000	Tab4	Tab4_Boxplot_Title	Boxplot of CNA Score by S	textInput
+2021-12-05 12:25:07.984+0000	Tab4	Tab4_Boxplot_Title	Boxplot of CNA Score by Subt	textInput
+2021-12-05 12:25:08.467+0000	Tab4	Tab4_Boxplot_Title	Boxplot of CNA Score by Subtpe	textInput
+2021-12-05 12:25:09.978+0000	Tab4	Tab4_Boxplot_Title	Boxplot of CNA Score by Sub	textInput
+2021-12-05 12:25:11.200+0000	Tab4	Tab4_Boxplot_Title	Boxplot of CNA Score by Subtype	textInput
+2021-12-05 12:25:11.899+0000	Tab4	Tab4_Boxplot_Title	Boxplot of CNA Score by Subtype	textInput
+2021-12-05 12:25:15.067+0000	Tab4	Tab4_Boxplot_X_Axis_Title	Subtypew	textInput
+2021-12-05 12:25:15.720+0000	Tab4	Tab4_Boxplot_X_Axis_Title	Subtype	textInput
+2021-12-05 12:25:16.358+0000	Tab4	Tab4_Boxplot_X_Axis_Title	Subtype	textInput
+2021-12-05 12:25:18.298+0000	Tab4	Tab4_Boxplot_Y_Axis_Title	CCNA	textInput
+2021-12-05 12:25:19.014+0000	Tab4	Tab4_Boxplot_Y_Axis_Title	C	textInput
+2021-12-05 12:25:19.484+0000	Tab4	Tab4_Boxplot_Y_Axis_Title	CN	textInput
+2021-12-05 12:25:20.330+0000	Tab4	Tab4_Boxplot_Y_Axis_Title	CNA 	textInput
+2021-12-05 12:25:21.401+0000	Tab4	Tab4_Boxplot_Y_Axis_Title	CNA Score	textInput
+2021-12-05 12:25:22.963+0000	Tab4	Tab4_Boxplot_Y_Axis_Title	CNA Score	textInput
+2021-12-05 12:25:25.458+0000	Tab4	Tab4_Scatterplot_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:25:28.820+0000	Tab4	Tab4_Scatterplot_Select_X_Variable	CNA_Score	selectInput
+2021-12-05 12:25:33.259+0000	Tab4	Tab4_Scatterplot_Select_Y_Variable	Amp_Score	selectInput
+2021-12-05 12:25:40.169+0000	Tab4	Tab4_Scatterplot_Select_Colour_Var	CLAUDIN_SUBTYPE	selectInput
+2021-12-05 12:25:43.829+0000	Tab4	Tab4_Scatterplot_Legend_Position	top	selectInput
+2021-12-05 12:25:50.296+0000	Tab4	Tab4_Scatterplot_Title	Scatterplot of 	textInput
+2021-12-05 12:25:51.356+0000	Tab4	Tab4_Scatterplot_Title	Scatterplot of 	textInput
+2021-12-05 12:25:53.646+0000	Tab4	Tab4_Scatterplot_Title	Scatterplot of CNA Score 	textInput
+2021-12-05 12:25:55.753+0000	Tab4	Tab4_Scatterplot_Title	Scatterplot of CNA Score vs	textInput
+2021-12-05 12:25:58.281+0000	Tab4	Tab4_Scatterplot_Title	Scatterplot of CNA Score vs 	textInput
+2021-12-05 12:25:59.243+0000	Tab4	Tab4_Scatterplot_Title	Scatterplot of CNA Score vs Amp	textInput
+2021-12-05 12:26:01.102+0000	Tab4	Tab4_Scatterplot_Title	Scatterplot of CNA Score vs Amp Score	textInput
+2021-12-05 12:26:02.129+0000	Tab4	Tab4_Scatterplot_Title	Scatterplot of CNA Score vs Amp Score	textInput
+2021-12-05 12:26:07.393+0000	Tab4	Tab4_Scatterplot_X_Axis_Title	CNA Score	textInput
+2021-12-05 12:26:08.296+0000	Tab4	Tab4_Scatterplot_X_Axis_Title	CNA Score	textInput
+2021-12-05 12:26:12.494+0000	Tab4	Tab4_Scatterplot_Y_Axis_Title	Amp A	textInput
+2021-12-05 12:26:13.314+0000	Tab4	Tab4_Scatterplot_Y_Axis_Title	Amp Acr	textInput
+2021-12-05 12:26:15.235+0000	Tab4	Tab4_Scatterplot_Y_Axis_Title	Amp Score	textInput
+2021-12-05 12:26:16.413+0000	Tab4	Tab4_Scatterplot_Y_Axis_Title	Amp Score	textInput
+2021-12-05 12:26:22.554+0000	Tab4	Tab4_Barplot_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:26:27.363+0000	Tab4	Tab4_Barplot_Select_X_Variable	CLAUDIN_SUBTYPE	selectInput
+2021-12-05 12:26:28.735+0000	Tab4	Tab4_Barplot_Select_Y_Variable	Subset_Score_Quartile	selectInput
+2021-12-05 12:26:32.919+0000	Tab4	Tab4_Barplot_Legend_Position	top	selectInput
+2021-12-05 12:26:37.093+0000	Tab4	Tab4_Barplot_Title	Barplot of 	textInput
+2021-12-05 12:26:37.915+0000	Tab4	Tab4_Barplot_Title	Barplot of 	textInput
+2021-12-05 12:26:41.485+0000	Tab4	Tab4_Barplot_Title	Barplot of Quartiles 	textInput
+2021-12-05 12:26:42.686+0000	Tab4	Tab4_Barplot_Title	Barplot of Quartiles and 	textInput
+2021-12-05 12:26:43.159+0000	Tab4	Tab4_Barplot_Title	Barplot of Quartiles and S	textInput
+2021-12-05 12:26:44.130+0000	Tab4	Tab4_Barplot_Title	Barplot of Quartiles and Subtype	textInput
+2021-12-05 12:26:44.901+0000	Tab4	Tab4_Barplot_Title	Barplot of Quartiles and Subtype	textInput
+2021-12-05 12:26:47.456+0000	Tab4	Tab4_Barplot_X_Axis_Title	Subtype	textInput
+2021-12-05 12:26:48.163+0000	Tab4	Tab4_Barplot_X_Axis_Title	Subtype	textInput
+2021-12-05 12:26:52.370+0000	Tab4	Tab4_Barplot_Y_Axis_Title	P	textInput
+2021-12-05 12:26:53.181+0000	Tab4	Tab4_Barplot_Y_Axis_Title	Propo	textInput
+2021-12-05 12:26:54.631+0000	Tab4	Tab4_Barplot_Y_Axis_Title	Propo	textInput
+2021-12-05 12:26:56.737+0000	Tab4	Tab4_Barplot_Y_Axis_Title	Propotyion	textInput
+2021-12-05 12:26:57.646+0000	Tab4	Tab4_Barplot_Y_Axis_Title	Propot	textInput
+2021-12-05 12:26:58.664+0000	Tab4	Tab4_Barplot_Y_Axis_Title	Propo	textInput
+2021-12-05 12:27:00.176+0000	Tab4	Tab4_Barplot_Y_Axis_Title	Proportion	textInput
+2021-12-05 12:27:01.311+0000	Tab4	Tab4_Barplot_Y_Axis_Title	Proportion	textInput
+2021-12-05 12:27:04.550+0000	Tab4	Tab4_Density_Histogram_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:27:06.590+0000	Tab4	Tab4_Select_Plot_Variable	CNA_Score	selectInput
+2021-12-05 12:27:07.996+0000	Tab4	Tab4_Select_Plot_Type	Both	awesomeRadio
+2021-12-05 12:27:08.919+0000	Tab4	Tab4_Select_Plot_Type	Density Plot	awesomeRadio
+2021-12-05 12:27:11.699+0000	Tab4	Tab4_Select_Density_Plot_Type	Segmented	selectInput
+2021-12-05 12:27:13.518+0000	Tab4	Tab4_Segmented_Density_Plot_Display_Legend	TRUE	checkboxInput
+2021-12-05 12:27:41.954+0000	Tab5	Tab5_KM_Clinical_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:27:45.948+0000	Tab5	Tab5_KM_Clinical_Survival_Time	OS_MONTHS	selectInput
+2021-12-05 12:27:48.054+0000	Tab5	Tab5_KM_Clinical_Event_Status	DSS	selectInput
+2021-12-05 12:27:51.935+0000	Tab5	Tab5_KM_Clinical_Select_Variable	CLAUDIN_SUBTYPE	selectInput
+2021-12-05 12:27:54.058+0000	Tab5	Tab5_KM_Clinical_Display_Risk_Table	TRUE	checkboxInput
+2021-12-05 12:27:54.509+0000	Tab5	Tab5_KM_Clinical_Display_Pval	TRUE	checkboxInput
+2021-12-05 12:28:01.426+0000	Tab5	Tab5_KM_CNA_Quartile_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:28:09.217+0000	Tab5	Tab5_KM_CNA_Survival_Time	OS_MONTHS	selectInput
+2021-12-05 12:28:10.728+0000	Tab5	Tab5_KM_CNA_Event_Status	DSS	selectInput
+2021-12-05 12:28:12.413+0000	Tab5	Tab5_KM_CNA_Select_Variable	Subset_Score_Quartile	selectInput
+2021-12-05 12:28:13.395+0000	Tab5	Tab5_KM_CNA_Display_Risk_Table	TRUE	checkboxInput
+2021-12-05 12:28:13.832+0000	Tab5	Tab5_KM_CNA_Display_Pval	TRUE	checkboxInput
+2021-12-05 12:28:23.146+0000	Tab5	Tab5_KM_Treatment_Sidebar_Yes	TRUE	box-sidebar-input
+2021-12-05 12:28:26.401+0000	Tab5	Tab5_KM_Treatment_Survival_Time	OS_MONTHS	selectInput
+2021-12-05 12:28:27.771+0000	Tab5	Tab5_KM_Treatment_Event_Status	DSS	selectInput
+2021-12-05 12:28:30.429+0000	Tab5	Tab5_KM_Treatment_Select_Variable	Subset_Score_Quartile	selectInput
+2021-12-05 12:28:34.918+0000	Tab5	Tab5_KM_Treatment_Variable	RADIO_THERAPY	selectInput
+2021-12-05 12:29:41.669+0000	Tab6	Tab6_Association_Test_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:29:51.425+0000	Tab6	Tab6_Select_Categorical_Variable_1	Subset_Score_Quartile	selectInput
+2021-12-05 12:29:58.275+0000	Tab6	Tab6_Select_Categorical_Variable_2	None Selected CELLULARITY	selectInput
+2021-12-05 12:29:59.183+0000	Tab6	Tab6_Select_Categorical_Variable_2	None Selected CELLULARITY CHEMOTHERAPY	selectInput
+2021-12-05 12:30:01.993+0000	Tab6	Tab6_Select_Categorical_Variable_2	None Selected CELLULARITY CHEMOTHERAPY HER2_SNP6	selectInput
+2021-12-05 12:30:04.276+0000	Tab6	Tab6_Select_Categorical_Variable_2	CELLULARITY CHEMOTHERAPY HER2_SNP6	selectInput
+2021-12-05 12:30:09.277+0000	Tab6	Tab6_Select_Categorical_Variable_2	HORMONE_THERAPY CELLULARITY CHEMOTHERAPY HER2_SNP6	selectInput
+2021-12-05 12:30:10.390+0000	Tab6	Tab6_Select_Categorical_Variable_2	HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE CELLULARITY CHEMOTHERAPY HER2_SNP6	selectInput
+2021-12-05 12:30:13.968+0000	Tab6	Tab6_Select_Categorical_Variable_2	HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE LATERALITY CELLULARITY CHEMOTHERAPY HER2_SNP6	selectInput
+2021-12-05 12:30:15.381+0000	Tab6	Tab6_Select_Categorical_Variable_2	HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE LATERALITY CLAUDIN_SUBTYPE CELLULARITY CHEMOTHERAPY HER2_SNP6	selectInput
+2021-12-05 12:30:17.504+0000	Tab6	Tab6_Select_Association_Test	ANOVA test	selectInput
+2021-12-05 12:30:27.399+0000	Tab6	Tab6_Select_Categorical_Variable_3	Subset_Score_Quartile	selectInput
+2021-12-05 12:30:29.157+0000	Tab6	Tab6_Select_Continuous_Variable_1	None Selected LYMPH_NODES_EXAMINED_POSITIVE	selectInput
+2021-12-05 12:30:29.958+0000	Tab6	Tab6_Select_Continuous_Variable_1	None Selected LYMPH_NODES_EXAMINED_POSITIVE NPI	selectInput
+2021-12-05 12:30:32.156+0000	Tab6	Tab6_Select_Continuous_Variable_1	LYMPH_NODES_EXAMINED_POSITIVE NPI	selectInput
+2021-12-05 12:30:34.922+0000	Tab6	Tab6_Select_Continuous_Variable_1	AGE_AT_DIAGNOSIS LYMPH_NODES_EXAMINED_POSITIVE NPI	selectInput
+2021-12-05 12:30:38.289+0000	Tab6	Tab6_Select_Continuous_Variable_1	AGE_AT_DIAGNOSIS TUMOR_SIZE LYMPH_NODES_EXAMINED_POSITIVE NPI	selectInput
+2021-12-05 12:30:41.707+0000	Tab7	Tab7_Univariate_Cox_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:30:47.851+0000	Tab7	Tab7_Univariate_Cox_Survival_Time	OS_MONTHS	selectInput
+2021-12-05 12:30:49.199+0000	Tab7	Tab7_Univariate_Cox_Event_Status	DSS	selectInput
+2021-12-05 12:30:51.767+0000	Tab7	Tab7_Univariate_Cox_Select_Variables	None Selected LYMPH_NODES_EXAMINED_POSITIVE	selectInput
+2021-12-05 12:30:52.423+0000	Tab7	Tab7_Univariate_Cox_Select_Variables	None Selected LYMPH_NODES_EXAMINED_POSITIVE NPI	selectInput
+2021-12-05 12:30:53.216+0000	Tab7	Tab7_Univariate_Cox_Select_Variables	None Selected LYMPH_NODES_EXAMINED_POSITIVE NPI CELLULARITY	selectInput
+2021-12-05 12:30:53.818+0000	Tab7	Tab7_Univariate_Cox_Select_Variables	None Selected LYMPH_NODES_EXAMINED_POSITIVE NPI CELLULARITY CHEMOTHERAPY	selectInput
+2021-12-05 12:30:54.983+0000	Tab7	Tab7_Univariate_Cox_Select_Variables	None Selected LYMPH_NODES_EXAMINED_POSITIVE NPI CELLULARITY CHEMOTHERAPY ER_IHC	selectInput
+2021-12-05 12:30:55.781+0000	Tab7	Tab7_Univariate_Cox_Select_Variables	None Selected LYMPH_NODES_EXAMINED_POSITIVE NPI CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6	selectInput
+2021-12-05 12:30:56.566+0000	Tab7	Tab7_Univariate_Cox_Select_Variables	None Selected LYMPH_NODES_EXAMINED_POSITIVE NPI CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY	selectInput
+2021-12-05 12:30:57.436+0000	Tab7	Tab7_Univariate_Cox_Select_Variables	None Selected LYMPH_NODES_EXAMINED_POSITIVE NPI CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE	selectInput
+2021-12-05 12:31:00.715+0000	Tab7	Tab7_Univariate_Cox_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE NPI CELLULARITY CHEMOTHERAPY ER_IHC HER2_SNP6 HORMONE_THERAPY INFERRED_MENOPAUSAL_STATE	selectInput
+2021-12-05 12:31:06.406+0000	Tab7	Tab7_Multivariable_Cox_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:31:11.324+0000	Tab7	Tab7_Multivariable_Cox_Survival_Time	OS_MONTHS	selectInput
+2021-12-05 12:31:12.771+0000	Tab7	Tab7_Multivariable_Cox_Event_Status	DSS	selectInput
+2021-12-05 12:31:17.470+0000	Tab7	Tab7_Multivariable_Cox_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE	selectInput
+2021-12-05 12:31:36.832+0000	Tab7	Tab7_Multivariable_Cox_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE AGE_AT_DIAGNOSIS	selectInput
+2021-12-05 12:31:38.574+0000	Tab7	Tab7_Multivariable_Cox_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE AGE_AT_DIAGNOSIS TUMOR_SIZE	selectInput
+2021-12-05 12:31:40.262+0000	Tab7	Tab7_Multivariable_Cox_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE AGE_AT_DIAGNOSIS TUMOR_SIZE GRADE	selectInput
+2021-12-05 12:31:42.669+0000	Tab7	Tab7_Multivariable_Cox_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE AGE_AT_DIAGNOSIS TUMOR_SIZE GRADE Subset_Score_Quartile	selectInput
+2021-12-05 12:31:44.052+0000	Tab7	Tab7_Multivariable_Cox_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE AGE_AT_DIAGNOSIS TUMOR_SIZE GRADE Subset_Score_Quartile CLAUDIN_SUBTYPE	selectInput
+2021-12-05 12:31:46.344+0000	Tab7	Tab7_Multivariable_Cox_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE AGE_AT_DIAGNOSIS TUMOR_SIZE GRADE Subset_Score_Quartile CLAUDIN_SUBTYPE HER2_STATUS	selectInput
+2021-12-05 12:32:33.562+0000	Tab7	Tab7_Multivariable_Cox_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE AGE_AT_DIAGNOSIS TUMOR_SIZE GRADE Subset_Score_Quartile HER2_STATUS	selectInput
+2021-12-05 12:32:34.614+0000	Tab7	Tab7_Multivariable_Cox_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE AGE_AT_DIAGNOSIS TUMOR_SIZE GRADE HER2_STATUS	selectInput
+2021-12-05 12:32:38.147+0000	Tab7	Tab7_Multivariable_Cox_Select_Interaction_Variables_1	None Selected CLAUDIN_SUBTYPE	selectInput
+2021-12-05 12:32:40.422+0000	Tab7	Tab7_Multivariable_Cox_Select_Interaction_Variables_1	None Selected CLAUDIN_SUBTYPE Subset_Score_Quartile	selectInput
+2021-12-05 12:32:41.471+0000	Tab7	Tab7_Multivariable_Cox_Select_Interaction_Variables_1	CLAUDIN_SUBTYPE Subset_Score_Quartile	selectInput
+2021-12-05 12:31:57.092+0000	Tab8	Tab8_New_Data_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:32:02.520+0000	Tab8	Tab8_Adjusted_Curves_Select_Variable_1	CLAUDIN_SUBTYPE	selectInput
+2021-12-05 12:32:03.947+0000	Tab8	Tab8_Adjusted_Curves_Select_Variable_2	Subset_Score_Quartile	selectInput
+2021-12-05 12:32:06.277+0000	Tab8	Tab8_Adjusted_Curves_Select_Constant_Variable	None Selected LYMPH_NODES_EXAMINED_POSITIVE	selectInput
+2021-12-05 12:32:08.169+0000	Tab8	Tab8_Adjusted_Curves_Select_Constant_Variable	None Selected LYMPH_NODES_EXAMINED_POSITIVE AGE_AT_DIAGNOSIS	selectInput
+2021-12-05 12:32:11.028+0000	Tab8	Tab8_Adjusted_Curves_Select_Constant_Variable	None Selected LYMPH_NODES_EXAMINED_POSITIVE AGE_AT_DIAGNOSIS TUMOR_SIZE	selectInput
+2021-12-05 12:32:12.872+0000	Tab8	Tab8_Adjusted_Curves_Select_Constant_Variable	None Selected LYMPH_NODES_EXAMINED_POSITIVE AGE_AT_DIAGNOSIS TUMOR_SIZE GRADE	selectInput
+2021-12-05 12:32:14.262+0000	Tab8	Tab8_Adjusted_Curves_Select_Constant_Variable	LYMPH_NODES_EXAMINED_POSITIVE AGE_AT_DIAGNOSIS TUMOR_SIZE GRADE	selectInput
+2021-12-05 12:32:18.244+0000	Tab8	Tab8_Adjusted_Curves_Select_Constant_Variable	HER2_STATUS LYMPH_NODES_EXAMINED_POSITIVE AGE_AT_DIAGNOSIS TUMOR_SIZE GRADE	selectInput
+2021-12-05 12:34:34.455+0000	Tab9	Tab9_Rpart_Tree_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:34:47.345+0000	Tab9	Tab9_Rpart_Survival_Time	OS_MONTHS	selectInput
+2021-12-05 12:34:49.533+0000	Tab9	Tab9_Rpart_Event_Status	DSS	selectInput
+2021-12-05 12:35:03.726+0000	Tab9	Tab9_Rpart_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE	selectInput
+2021-12-05 12:35:05.181+0000	Tab9	Tab9_Rpart_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE Subset_Score_Quartile	selectInput
+2021-12-05 12:35:06.655+0000	Tab9	Tab9_Rpart_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE Subset_Score_Quartile CLAUDIN_SUBTYPE	selectInput
+2021-12-05 12:35:08.510+0000	Tab9	Tab9_Rpart_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE Subset_Score_Quartile CLAUDIN_SUBTYPE AGE_AT_DIAGNOSIS	selectInput
+2021-12-05 12:35:10.347+0000	Tab9	Tab9_Rpart_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE Subset_Score_Quartile CLAUDIN_SUBTYPE AGE_AT_DIAGNOSIS TUMOR_SIZE	selectInput
+2021-12-05 12:35:12.093+0000	Tab9	Tab9_Rpart_Select_Variables	LYMPH_NODES_EXAMINED_POSITIVE Subset_Score_Quartile CLAUDIN_SUBTYPE AGE_AT_DIAGNOSIS TUMOR_SIZE HER2_STATUS	selectInput
+2021-12-05 12:35:25.684+0000	Tab9	Tab9_Ctree_Tree_Sidebar	TRUE	box-sidebar-input
+2021-12-05 12:35:30.933+0000	Tab9	Tab9_Ctree_Survival_Time	OS_MONTHS	selectInput
+2021-12-05 12:35:37.108+0000	Tab9	Tab9_Ctree_Event_Status	DSS	selectInput
+2021-12-05 12:35:40.562+0000	Tab9	Tab9_Ctree_Select_Variables	AGE_AT_DIAGNOSIS	selectInput
+2021-12-05 12:35:42.160+0000	Tab9	Tab9_Ctree_Select_Variables	AGE_AT_DIAGNOSIS TUMOR_SIZE	selectInput
+2021-12-05 12:35:44.240+0000	Tab9	Tab9_Ctree_Select_Variables	AGE_AT_DIAGNOSIS TUMOR_SIZE HER2_STATUS	selectInput
+2021-12-05 12:35:45.522+0000	Tab9	Tab9_Ctree_Select_Variables	AGE_AT_DIAGNOSIS TUMOR_SIZE HER2_STATUS GRADE	selectInput
+2021-12-05 12:35:56.395+0000	Tab9	Tab9_Ctree_Select_Variables	AGE_AT_DIAGNOSIS TUMOR_SIZE HER2_STATUS GRADE Subset_Score_Quartile	selectInput
+2021-12-05 12:35:57.615+0000	Tab9	Tab9_Ctree_Select_Variables	AGE_AT_DIAGNOSIS TUMOR_SIZE HER2_STATUS GRADE Subset_Score_Quartile CLAUDIN_SUBTYPE	selectInput
+2021-12-05 12:36:19.811+0000	Tab9	Tab9_Ctree_Select_Variables	AGE_AT_DIAGNOSIS TUMOR_SIZE HER2_STATUS GRADE Subset_Score_Quartile CLAUDIN_SUBTYPE LYMPH_NODES_EXAMINED_POSITIVE	selectInput

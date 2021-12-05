@@ -794,10 +794,10 @@ shinyServer(function(input, output, session) {
    dataRYes <- metaReactive2({ metaExpr({ ..(Whole_Data())[..(Whole_Data())[,..(input$Tab5_KM_Treatment_Variable)] == "YES",]}) })
    dataRNo <- metaReactive2({ metaExpr({ ..(Whole_Data())[..(Whole_Data())[,..(input$Tab5_KM_Treatment_Variable)] == "NO",]}) })
    
-   surv_data_R <-metaReactive2({ metaExpr({
+   surv_data_R <- metaReactive2({ metaExpr({
        data.frame(Time =  ..(dataRYes())[[..(input$Tab5_KM_Treatment_Survival_Time)]], Strata =  ..(dataRYes())[[..(input$Tab5_KM_Treatment_Select_Variable)]], Cen  =  ..(dataRYes())[[..(input$Tab5_KM_Treatment_Event_Status)]]) }) })
    
-   datafit_R <- metaReactive2({ metaExpr({survfit(Surv(as.numeric(Time), as.numeric(as.character(Cen))) ~ Strata, data = surv_data_R()) }) })
+   datafit_R <- metaReactive2({ metaExpr({survfit(Surv(as.numeric(Time), as.numeric(as.character(Cen))) ~ Strata, data = ..(surv_data_R())) }) })
    
    KMR1Plot <- metaReactive2({
        if(is.null(Whole_Data()) | input$Tab5_KM_Treatment_Survival_Time  == "None Selected" | input$Tab5_KM_Treatment_Event_Status  == "None Selected" | input$Tab5_KM_Treatment_Select_Variable  == "None Selected" | input$Tab5_KM_Treatment_Variable == "None Selected"){

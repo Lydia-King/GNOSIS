@@ -28,13 +28,19 @@ completeFun <- function(data, desiredCols) {
   completeVec <- complete.cases(data[, desiredCols])
   return(data[completeVec, ])
 }
+#'
 #' Get Mode function
-getmode <- function(v) {uniqv <- unique(v)
-uniqv[which.max(tabulate(match(v, uniqv)))]}
+getmode <- function(v) {
+  uniqv <- unique(v)
+  uniqv[which.max(tabulate(match(v, uniqv)))]
+}
 #'
+#' Function
+give.n <- function(x) {
+  return(c(y = median(x) * 1.05, label = length(x)))
+}
 #'
-#'
-setwd("/home/lydia/Desktop/METABRIC_Data_Paper")
+setwd("/home/lydia/GNOSIS/GNOSIS_Data_Paper/")
 #' Tab 1: Load up clinical patient data and preview
 ##' Note: Please replace temporary file path with path to uploaded file
 dataInputClinicalP <- read.csv("data_clinical_patient.txt", header = TRUE, sep = "\t", quote = "\"", na.strings = c("", " ", "NA"), skip = 4L)
@@ -94,9 +100,13 @@ Tot_CNA_Row
 #'
 #'
 #' Tab 2: Clinical variables datatable
+Clinical_Table <- dataClinical[, c("PATIENT_ID", "GRADE", "TUMOR_SIZE", "TUMOR_STAGE", "CLAUDIN_SUBTYPE")]
+Clinical_Table
 #'
 #'
 #' Tab 2: CNA datatable
+CNA_Table <- dataInputCNA[, c("Hugo_Symbol", "Entrez_Gene_Id", "MB-0000")]
+CNA_Table
 #'
 #'
 #' Tab 2: MAF datatable
@@ -106,11 +116,10 @@ Tot_CNA_Row
 ##' Check clinical variable types
 Formatted_Data <- dataClinical %>%
   mutate_at(NULL, funs(as.numeric(.))) %>%
-  mutate_at(c("CELLULARITY", "CHEMOTHERAPY","ER_IHC", "HER2_SNP6", 
-              "HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", 
-              "CLAUDIN_SUBTYPE", "THREEGENE", "LATERALITY", "RADIO_THERAPY", 
-              "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY", "CANCER_TYPE_DETAILED",
-              "ER_STATUS", "HER2_STATUS","GRADE", "PR_STATUS", "TUMOR_STAGE"), funs(as.factor(.)))
+  mutate_at(c("CELLULARITY", "CHEMOTHERAPY", "ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", 
+              "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "CLAUDIN_SUBTYPE", "RADIO_THERAPY", 
+              "THREEGENE", "BREAST_SURGERY", "HISTOLOGICAL_SUBTYPE", "HER2_STATUS", "PR_STATUS", 
+              "GRADE", "TUMOR_STAGE", "CANCER_TYPE_DETAILED", "ER_STATUS", "LATERALITY"), funs(as.factor(.)))
 
 str(Formatted_Data, list.len = ncol(Formatted_Data))
 #'
@@ -122,10 +131,10 @@ sapply(Formatted_Data, levels)
 ##' Filter and preview clinical data
 Clinical_Sub_1 <- filter(Formatted_Data, Formatted_Data[, "CLAUDIN_SUBTYPE"] %in% c("LumA", "LumB"))
 Clinical_Sub <- Clinical_Sub_1 %>%
-  mutate_at(c("CELLULARITY", "CHEMOTHERAPY","ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", 
-              "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "CLAUDIN_SUBTYPE", "THREEGENE", 
-              "LATERALITY", "RADIO_THERAPY", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY", 
-              "CANCER_TYPE_DETAILED","ER_STATUS", "HER2_STATUS","GRADE", "PR_STATUS", "TUMOR_STAGE"), funs(as.factor(as.character(.))))
+  mutate_at(c("CELLULARITY", "CHEMOTHERAPY", "ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", 
+              "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "CLAUDIN_SUBTYPE", "RADIO_THERAPY", 
+              "THREEGENE", "BREAST_SURGERY", "HISTOLOGICAL_SUBTYPE", "HER2_STATUS", "PR_STATUS", 
+              "GRADE", "TUMOR_STAGE", "CANCER_TYPE_DETAILED", "ER_STATUS", "LATERALITY"), funs(as.factor(as.character(.))))
 
 datatable(Clinical_Sub, options = list(lengthMenu = c(10, 30, 50, 100), pageLength = 30, scrollX = TRUE, scrollY = "350px"))
 #'
@@ -168,20 +177,73 @@ datatable(Whole_Data, options = list(lengthMenu = c(10, 30, 50, 100), pageLength
 #'
 #'
 #' Tab 4: Exploratory Plots - Boxplot
+Box1 <- ggplot(data = Whole_Data, mapping = aes(x = Whole_Data[, "CLAUDIN_SUBTYPE"], y = Whole_Data[, "CNA_Score"], color = Whole_Data[, "CLAUDIN_SUBTYPE"])) +
+  geom_boxplot(varwidth = TRUE, na.rm = TRUE, aes(fill = Whole_Data[, "CLAUDIN_SUBTYPE"]), alpha = 0.35) +
+  geom_jitter(alpha = 0.3) +
+  ggtitle("Boxplot of CNA Score by Subtype") +
+  ylab("CNA Score") +
+  xlab("Subtype") +
+  theme(plot.title = element_text(hjust = 0.5, size = 18)) +
+  theme(axis.title.x = element_text(hjust = 0.5, size = 18)) +
+  theme(axis.title.y = element_text(hjust = 0.5, size = 18)) +
+  theme(axis.text.x = element_text(size = 15)) +
+  theme(axis.text.y = element_text(size = 15)) +
+  theme(legend.title = element_text(colour = "black", size = 15, face = "bold")) +
+  theme(strip.text = element_text(size = 15)) +
+  theme(legend.text = element_text(size = 15)) +
+  stat_summary(fun.data = give.n, geom = "text", fun = median, col = "black", size = 4) +
+  labs(fill = "Legend") +
+  scale_color_discrete(guide = FALSE) +
+  scale_x_discrete(na.translate = FALSE) +
+  theme(legend.position = "none")
+Box1
 #'
 #'
 #' Tab 4: Exploratory Plots - Scatterplot
+Scat1 <- ggplot(Whole_Data) +
+  geom_point(aes(x = Whole_Data[, "CNA_Score"], y = Whole_Data[, "Amp_Score"], colour = Whole_Data[, "CLAUDIN_SUBTYPE"]), size = 1.5) +
+  ggtitle("Scatterplot of CNA Score vs Amp Score") +
+  ylab("Amp Score") +
+  xlab("CNA Score") +
+  theme(plot.title = element_text(hjust = 0.5, size = 18)) +
+  theme(axis.title.x = element_text(hjust = 0.5, size = 18)) +
+  theme(axis.title.y = element_text(hjust = 0.5, size = 18)) +
+  theme(axis.text.x = element_text(size = 15)) +
+  theme(axis.text.y = element_text(size = 15)) +
+  theme(legend.title = element_text(colour = "black", size = 15, face = "bold")) +
+  theme(strip.text = element_text(size = 15)) +
+  theme(legend.text = element_text(size = 15)) +
+  scale_colour_discrete("Legend", na.translate = FALSE) +
+  theme(legend.position = "top")
+Scat1
 #'
 #'
 #' Tab 4: Exploratory Plots - Barplots
+Bar1 <- ggplot(Whole_Data, aes(x = factor(Whole_Data[, "CLAUDIN_SUBTYPE"]), fill = factor(Whole_Data[, "Subset_Score_Quartile"]))) +
+  geom_bar(position = "fill") +
+  ggtitle("Barplot of Quartiles and Subtype") +
+  ylab("Proportion") +
+  xlab("Subtype") +
+  theme(plot.title = element_text(hjust = 0.5, size = 18)) +
+  theme(axis.title.x = element_text(hjust = 0.5, size = 18)) +
+  theme(axis.title.y = element_text(hjust = 0.5, size = 18)) +
+  theme(axis.text.x = element_text(size = 15)) +
+  theme(axis.text.y = element_text(size = 15)) +
+  theme(legend.title = element_text(colour = "black", size = 15, face = "bold")) +
+  theme(strip.text = element_text(size = 15)) +
+  theme(legend.text = element_text(size = 15)) +
+  labs(fill = "Legend") +
+  theme(legend.position = "top") +
+  scale_x_discrete(na.translate = FALSE)
+Bar1
 #'
 #'
 #' Tab 4: Exploratory Plots - Histogram
 CNAHistogram <- ggplot(Whole_Data, aes(Whole_Data[, "CNA_Score"])) +
   geom_histogram(aes(color = "Color", fill = "Color"), show.legend = FALSE, binwidth = 1000L, alpha = 0.4) +
-  ggtitle("Histogram of absolute CNA Scores") +
+  ggtitle("Histogram of CNA Score") +
   ylab("Frequency") +
-  xlab("CNA Scores") +
+  xlab("CNA Score") +
   scale_color_manual(values = c(Color = "#2ac0db")) +
   scale_fill_manual(values = c(Color = "#2ac0db")) +
   theme(plot.title = element_text(hjust = 0.5, size = 18)) +
@@ -201,9 +263,9 @@ CNAHistogram
 #' Tab 4: Exploratory Plots - Density Plot
 CNADense <- ggplot(Whole_Data) +
   geom_density(aes(x = Whole_Data[, "CNA_Score"], color = "Color", fill = "Color"), na.rm = FALSE, alpha = 0.4) +
-  xlab("CNA Scores") +
+  xlab("CNA Score") +
   ylab("Density") +
-  ggtitle("Density plots of absolute CNA Scores") +
+  ggtitle("Density Plot of CNA Score") +
   theme(plot.title = element_text(hjust = 0.5, size = 18)) +
   theme(axis.title.x = element_text(hjust = 0.5, size = 18)) +
   theme(axis.title.y = element_text(hjust = 0.5, size = 18)) +
@@ -236,9 +298,9 @@ CNADist1Plot <- {
     geom_line() +
     geom_ribbon(aes(ymin = 0, ymax = y, fill = quant)) +
     scale_x_continuous(breaks = quantiles) +
-    xlab("CNA Scores") +
+    xlab("CNA Score") +
     ylab("Density") +
-    ggtitle("Segmented Density Plots of CNA Scores") +
+    ggtitle("Segmented Density Plots of CNA Score") +
     theme(legend.position = c(0.9, 0.5)) +
     theme(legend.key.size = unit(0.9, "cm")) +
     theme(plot.title = element_text(hjust = 0.5, size = 18)) +
@@ -261,7 +323,7 @@ CNADist1Plot
 CNABoth <- ggplot(Whole_Data) +
   geom_density(aes(x = Whole_Data[, "CNA_Score"], color = "Color", fill = "Color"), na.rm = FALSE, alpha = 0.4) +
   geom_histogram(aes(x = Whole_Data[, "CNA_Score"], y = ..density.., color = "Color", fill = "Color"), alpha = 0.4, fill = "#2ac0db", position = "identity") +
-  xlab("CNA Scores") +
+  xlab("CNA Score") +
   ylab("Density") +
   ggtitle("Histogram and density plots of absolute CNA Scores") +
   theme(plot.title = element_text(hjust = 0.5, size = 18)) +
@@ -284,13 +346,13 @@ CNABoth
 #'
 #' Tab 5: Survival Plots - Clinical Variable KM Plots
 ##' KM Survival Plots
-surv_data <- data.frame(Time = Whole_Data[["OS_MONTHS"]], Strata = Whole_Data[["GRADE"]], Cen = Whole_Data[["DSS"]])
+surv_data <- data.frame(Time = Whole_Data[["OS_MONTHS"]], Strata = Whole_Data[["CLAUDIN_SUBTYPE"]], Cen = Whole_Data[["DSS"]])
 datafit <- survfit(Surv(as.numeric(Time), as.numeric(as.character(Cen))) ~ Strata, data = surv_data)
-KMC1 <- ggsurvplot(datafit, censor.shape = "", data = surv_data, size = 1, conf.int = FALSE, pval = TRUE, risk.table = TRUE, legend = c("right"), xlab = "Survival Time", ylab = "Survival Probability", legend.title = "Legend", legend.labs = rownames(summary(datafit$table)), pval.size = 6, risk.table.height = 0.25, ggtheme = theme_gray() + theme(plot.title = element_text(size = 18, hjust = 0.5)) + theme(legend.title = element_text(colour = "black", size = 15, face = "bold")), break.time.by = 50, risk.table.y.text.col = T, risk.table.y.text = FALSE, title = ("Breast cancer patients in METABRIC data"), font.main = c(18, "plain", "black"), font.x = c(15, "plain", "black"), font.y = c(15, "plain", "black"), font.legend = c(14, "plain", "black"), font.tickslab = c(12, "plain", "black"))
+KMC1 <- ggsurvplot(datafit, censor.shape = "", data = surv_data, size = 1, conf.int = FALSE, pval = TRUE, risk.table = TRUE, legend = c("top"), xlab = "Survival Time", ylab = "Survival Probability", legend.title = "Legend", legend.labs = rownames(summary(datafit$table)), pval.size = 6, risk.table.height = 0.25, ggtheme = theme_gray() + theme(plot.title = element_text(size = 18, hjust = 0.5)) + theme(legend.title = element_text(colour = "black", size = 15, face = "bold")), break.time.by = 50, risk.table.y.text.col = T, risk.table.y.text = FALSE, title = ("Breast cancer patients in METABRIC data"), font.main = c(18, "plain", "black"), font.x = c(15, "plain", "black"), font.y = c(15, "plain", "black"), font.legend = c(14, "plain", "black"), font.tickslab = c(12, "plain", "black"))
 KMC1
 #'
 ##' Logrank Tests
-Logrank1 <- survdiff(Surv(Whole_Data[, "OS_MONTHS"], as.numeric(Whole_Data[, "DSS"])) ~ Whole_Data[, "GRADE"])
+Logrank1 <- survdiff(Surv(Whole_Data[, "OS_MONTHS"], as.numeric(Whole_Data[, "DSS"])) ~ Whole_Data[, "CLAUDIN_SUBTYPE"])
 Logrank1
 #'
 #'
@@ -308,14 +370,28 @@ Logrank2
 #'
 #' Tab 5: Survival Plots - KM Plots for Treatment (Yes)
 ##' KM Survival Plots
+dataRYes <- Whole_Data[Whole_Data[, "RADIO_THERAPY"] == "YES", ]
+surv_data_R <- data.frame(Time = dataRYes[["OS_MONTHS"]], Strata = dataRYes[["Subset_Score_Quartile"]], Cen = dataRYes[["DSS"]])
+datafit_R <- survfit(Surv(as.numeric(Time), as.numeric(as.character(Cen))) ~ Strata, data = surv_data_R)
+KMR1Plot <- ggsurvplot(datafit_R, censor.shape = "", xlab = "Survival Time", ylab = "Survival Probability", data = surv_data_R, size = 1, conf.int = FALSE, pval = FALSE, risk.table = FALSE, legend.title = "Legend", legend = c("right"), legend.labs = rownames(summary(datafit_R$table)), pval.size = 6, risk.table.height = 0.25, ggtheme = theme_gray() + theme(plot.title = element_text(size = 18, hjust = 0.5)) + theme(legend.title = element_text(colour = "black", size = 15, face = "bold")), break.time.by = 50, risk.table.y.text.col = T, risk.table.y.text = FALSE, title = ("Breast cancer patients in METABRIC data"), font.main = c(18, "plain", "black"), font.x = c(15, "plain", "black"), font.y = c(15, "plain", "black"), font.legend = c(14, "plain", "black"), font.tickslab = c(12, "plain", "black"))
+KMR1Plot
 #'
 ##' Logrank Tests
+Logrank3 <- survdiff(Surv(dataRYes[, "OS_MONTHS"], as.numeric(dataRYes[, "DSS"])) ~ dataRYes[, "Subset_Score_Quartile"])
+Logrank3
 #'
 #'
 #' Tab 5: Survival Plots - KM Plots for Treatment (No)
 ##' KM Survival Plots
+dataRNo <- Whole_Data[Whole_Data[, "RADIO_THERAPY"] == "NO", ]
+surv_data_NR <- data.frame(Time = dataRNo[["OS_MONTHS"]], Strata = dataRNo[["Subset_Score_Quartile"]], Cen = dataRNo[["DSS"]])
+datafit_NR <- survfit(Surv(as.numeric(Time), as.numeric(as.character(Cen))) ~ Strata, data = surv_data_NR)
+KMR2Plot <- ggsurvplot(datafit_NR, censor.shape = "", xlab = "Survival Time", ylab = "Survival Probability", data = surv_data_NR, size = 1, conf.int = FALSE, pval = FALSE, risk.table = FALSE, legend.title = "Legend", legend = c("right"), legend.labs = rownames(summary(datafit_NR$table)), pval.size = 6, risk.table.height = 0.25, ggtheme = theme_gray() + theme(plot.title = element_text(size = 18, hjust = 0.5)) + theme(legend.title = element_text(colour = "black", size = 15, face = "bold")), break.time.by = 50, risk.table.y.text.col = T, risk.table.y.text = FALSE, title = ("Breast cancer patients in METABRIC data"), font.main = c(18, "plain", "black"), font.x = c(15, "plain", "black"), font.y = c(15, "plain", "black"), font.legend = c(14, "plain", "black"), font.tickslab = c(12, "plain", "black"))
+KMR2Plot
 #'
 ##' Logrank Tests
+Logrank4 <- survdiff(Surv(dataRNo[, "OS_MONTHS"], as.numeric(dataRNo[, "DSS"])) ~ dataRNo[, "Subset_Score_Quartile"])
+Logrank4
 #'
 #'
 #' Tab 6: Association Tests - Chi-Squared
@@ -471,19 +547,37 @@ DT::datatable(data_KWAdj, options = list(lengthMenu = c(10, 30, 50, 100), pageLe
 #'
 #' Tab 6: Association Tests - Pairwise Comparisons
 ##' Pairwise t-test
+PWT_Code <- {
+  PairwiseT_List <- list()
+  for (i in 1:length(c("AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "LYMPH_NODES_EXAMINED_POSITIVE", "NPI"))) {
+    name <- c("AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "LYMPH_NODES_EXAMINED_POSITIVE", "NPI")[i]
+    PairwiseT_List[[name]] <- pairwise.t.test(Whole_Data[, c("AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "LYMPH_NODES_EXAMINED_POSITIVE", "NPI")[i]], Whole_Data[, "Subset_Score_Quartile"], p.adjust.method = "BH")
+  }
+  PairwiseT_List
+}
+PWT_Code
 #'
 ##' Pairwise Dunn's Test
+PWD_Code <- {
+  PairwiseD_List <- list()
+  for (i in 1:length(c("AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "LYMPH_NODES_EXAMINED_POSITIVE", "NPI"))) {
+    name <- c("AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "LYMPH_NODES_EXAMINED_POSITIVE", "NPI")[i]
+    PairwiseD_List[[name]] <- DunnTest(Whole_Data[, c("AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "LYMPH_NODES_EXAMINED_POSITIVE", "NPI")[i]], Whole_Data[, "Subset_Score_Quartile"], method = "BH", out.list = F)
+  }
+  PairwiseD_List
+}
+PWD_Code
 #'
 #'
 #' Tab 7: Cox PH models - Univariate Cox Models
 ##' Individual univariate Cox models
-surv_data_Cox <- Whole_Data %>%
-  select(!!"OS_MONTHS", !!"DSS", c(!!c("LYMPH_NODES_EXAMINED_POSITIVE", "NPI", "CELLULARITY", "CHEMOTHERAPY", "ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE", "THREEGENE","LATERALITY", "RADIO_THERAPY", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY","CANCER_TYPE_DETAILED", "ER_STATUS", "HER2_STATUS", "GRADE", "PR_STATUS", "TUMOR_SIZE", "TUMOR_STAGE")))
+surv_data_Cox <- Whole_Data %>% select(!!"OS_MONTHS", !!"DSS", c(!!c("LYMPH_NODES_EXAMINED_POSITIVE", "NPI", "CELLULARITY", "CHEMOTHERAPY", "ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE", "THREEGENE","LATERALITY", "RADIO_THERAPY", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY","CANCER_TYPE_DETAILED", "ER_STATUS", "HER2_STATUS", "GRADE", "PR_STATUS", "TUMOR_SIZE", "TUMOR_STAGE")))
 CoxModelOut_1 <- for (i in 1:length(c("LYMPH_NODES_EXAMINED_POSITIVE", "NPI", "CELLULARITY", "CHEMOTHERAPY", "ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE", "THREEGENE","LATERALITY", "RADIO_THERAPY", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY","CANCER_TYPE_DETAILED", "ER_STATUS", "HER2_STATUS", "GRADE", "PR_STATUS", "TUMOR_SIZE", "TUMOR_STAGE"))) {
   cat(noquote(paste("DSS", "for", c("LYMPH_NODES_EXAMINED_POSITIVE", "NPI", "CELLULARITY", "CHEMOTHERAPY", "ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE", "THREEGENE","LATERALITY", "RADIO_THERAPY", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY","CANCER_TYPE_DETAILED", "ER_STATUS", "HER2_STATUS", "GRADE", "PR_STATUS", "TUMOR_SIZE", "TUMOR_STAGE")[i], "\n", "\n")))
   res.cox <- coxph(formula = as.formula(paste("Surv(as.numeric(", "OS_MONTHS", "), as.numeric(as.character(", "DSS", "))) ~", noquote(paste(c("LYMPH_NODES_EXAMINED_POSITIVE", "NPI", "CELLULARITY", "CHEMOTHERAPY", "ER_IHC", "HER2_SNP6", "HORMONE_THERAPY", "INFERRED_MENOPAUSAL_STATE", "INTCLUST", "AGE_AT_DIAGNOSIS", "CLAUDIN_SUBTYPE", "THREEGENE","LATERALITY", "RADIO_THERAPY", "HISTOLOGICAL_SUBTYPE", "BREAST_SURGERY","CANCER_TYPE_DETAILED", "ER_STATUS", "HER2_STATUS", "GRADE", "PR_STATUS", "TUMOR_SIZE", "TUMOR_STAGE")[i], collapse = "+")))), data = surv_data_Cox)
   print(summary(res.cox))
 }
+CoxModelOut_1
 #'
 ##' Adjusted univariate Cox models
 data_UniAdj <- {
@@ -506,8 +600,8 @@ DT::datatable(data_UniAdj, options = list(lengthMenu = c(10, 30, 50, 100), pageL
 #'
 #' Tab 7: Cox PH models - Multivariable Cox Models
 surv_data_CoxM <- Whole_Data %>%
-  select(!!"OS_MONTHS", !!"DSS", c(!!c("HER2_STATUS", "GRADE", "TUMOR_SIZE", "AGE_AT_DIAGNOSIS", "LYMPH_NODES_EXAMINED_POSITIVE")), c(!!c("CLAUDIN_SUBTYPE", "Subset_Score_Quartile")))
-CoxModel <- summary(coxph(formula = as.formula(paste("Surv(as.numeric(", "OS_MONTHS", "), as.numeric(as.character(", "DSS", "))) ~", noquote(paste(paste(c("HER2_STATUS", "GRADE", "TUMOR_SIZE", "AGE_AT_DIAGNOSIS", "LYMPH_NODES_EXAMINED_POSITIVE"), collapse = "+"), "+", paste("(", paste(c("CLAUDIN_SUBTYPE", "Subset_Score_Quartile"), collapse = "+"), ")^2", sep = ""), sep = "")))), data = surv_data_CoxM))
+  select(!!"OS_MONTHS", !!"DSS", c(!!c("LYMPH_NODES_EXAMINED_POSITIVE", "AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "GRADE", "HER2_STATUS")), c(!!c("CLAUDIN_SUBTYPE", "Subset_Score_Quartile")))
+CoxModel <- summary(coxph(formula = as.formula(paste("Surv(as.numeric(", "OS_MONTHS", "), as.numeric(as.character(", "DSS", "))) ~", noquote(paste(paste(c("LYMPH_NODES_EXAMINED_POSITIVE", "AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "GRADE", "HER2_STATUS"), collapse = "+"), "+", paste("(", paste(c("CLAUDIN_SUBTYPE", "Subset_Score_Quartile"), collapse = "+"), ")^2", sep = ""), sep = "")))), data = surv_data_CoxM))
 CoxModel
 CoxModel$waldtest
 CoxModel$logtest
@@ -515,7 +609,7 @@ CoxModel$sctest
 #'
 #'
 #' Tab 7: Cox PH models - Multivariable Cox Model Assumptions
-CoxAssump <- coxph(formula = as.formula(paste("Surv(as.numeric(", "OS_MONTHS", "), as.numeric(as.character(", "DSS", "))) ~", noquote(paste(paste(c("HER2_STATUS", "GRADE", "TUMOR_SIZE", "AGE_AT_DIAGNOSIS", "LYMPH_NODES_EXAMINED_POSITIVE"), collapse = "+"), "+", paste("(", paste(c("CLAUDIN_SUBTYPE", "Subset_Score_Quartile"), collapse = "+"), ")^2", sep = ""), sep = "")))), data = surv_data_CoxM)
+CoxAssump <- coxph(formula = as.formula(paste("Surv(as.numeric(", "OS_MONTHS", "), as.numeric(as.character(", "DSS", "))) ~", noquote(paste(paste(c("LYMPH_NODES_EXAMINED_POSITIVE", "AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "GRADE", "HER2_STATUS"), collapse = "+"), "+", paste("(", paste(c("CLAUDIN_SUBTYPE", "Subset_Score_Quartile"), collapse = "+"), ")^2", sep = ""), sep = "")))), data = surv_data_CoxM)
 Assump <- ggcoxzph(cox.zph(CoxAssump, terms = FALSE))
 Assump
 #'
@@ -533,8 +627,8 @@ NewData <- {
   Lev <- data.frame(Row = 1:length(Levels_Vector_2)) %>%
     mutate(`:=`(!!"CLAUDIN_SUBTYPE", Levels_Vector_2), `:=`(!!"Subset_Score_Quartile", Levels_Vector_1)) %>%
     select(!!"CLAUDIN_SUBTYPE", !!"Subset_Score_Quartile")
-  for (constant_var in 1:length(c("GRADE", "LYMPH_NODES_EXAMINED_POSITIVE", "AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "HER2_STATUS"))) {
-    varname <- c("GRADE", "LYMPH_NODES_EXAMINED_POSITIVE", "AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "HER2_STATUS")[constant_var]
+  for (constant_var in 1:length(c("HER2_STATUS", "LYMPH_NODES_EXAMINED_POSITIVE", "AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "GRADE"))) {
+    varname <- c("HER2_STATUS", "LYMPH_NODES_EXAMINED_POSITIVE", "AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "GRADE")[constant_var]
     if (is.factor(Whole_Data[, varname])) {
       Lev[, c(varname)] <- getmode(Whole_Data[, varname])
     } else {
@@ -547,10 +641,12 @@ DT::datatable(NewData, options = list(lengthMenu = c(10, 30, 50, 100), pageLengt
 #'
 #'
 #' Tab 8: Adjusted Survival Curves - All Adjusted Survival Curves
-dat <- NewData
-rownames(dat) <- do.call(paste,c(dat[c("CLAUDIN_SUBTYPE", "Subset_Score_Quartile")], sep="_"))
-fit <- survfit(CoxAssump, newdata = dat)
-fit_All <- survminer::ggsurvplot(fit, data = NewData, censor.shape = "", xlab = "Survival Time", ylab = "Survival Probability", size = 1, conf.int = FALSE, risk.table = FALSE, legend = c("right"), legend.labs = rownames(summary(fit$table)), risk.table.height = 0.25, pval.size = 6, ggtheme = theme_gray() + theme(plot.title = element_text(size = 18, hjust = 0.5)) + theme(legend.title = element_text(colour = "black", size = 15, face = "bold")), break.time.by = 50, risk.table.y.text.col = T, risk.table.y.text = FALSE, legend.title = "Legend", title = ("Breast cancer patients in METABRIC data"), font.main = c(18, "plain", "black"), font.x = c(15, "plain", "black"), font.y = c(15, "plain", "black"), font.legend = c(14, "plain", "black"), font.tickslab = c(12, "plain", "black"))
+fit_All <- {
+  dat <- NewData
+  rownames(dat) <- do.call(paste, c(dat[c("CLAUDIN_SUBTYPE", "Subset_Score_Quartile")], sep = "_"))
+  fit <- survfit(CoxAssump, newdata = dat)
+  survminer::ggsurvplot(fit, data = NewData, censor.shape = "", xlab = "Survival Time", ylab = "Survival Probability", size = 1, conf.int = FALSE, risk.table = FALSE, legend = c("right"), legend.labs = rownames(summary(fit$table)), risk.table.height = 0.25, pval.size = 6, ggtheme = theme_gray() + theme(plot.title = element_text(size = 18, hjust = 0.5)) + theme(legend.title = element_text(colour = "black", size = 15, face = "bold")), break.time.by = 50, risk.table.y.text.col = T, risk.table.y.text = FALSE, legend.title = "Legend", title = ("Breast cancer patients in METABRIC data"), font.main = c(18, "plain", "black"), font.x = c(15, "plain", "black"), font.y = c(15, "plain", "black"), font.legend = c(14, "plain", "black"), font.tickslab = c(12, "plain", "black"))
+}
 fit_All
 #'
 #'
@@ -570,7 +666,7 @@ fit_All
 #'
 #' Tab 9: Recursive Partitioning Survival Trees - Rpart
 ##' Rpart Tree Formula
-FormulaRpart <- noquote(paste(c("HER2_STATUS", "GRADE", "TUMOR_SIZE", "AGE_AT_DIAGNOSIS", "LYMPH_NODES_EXAMINED_POSITIVE", "CLAUDIN_SUBTYPE", "Subset_Score_Quartile"), collapse = "+"))
+FormulaRpart <- noquote(paste(c("LYMPH_NODES_EXAMINED_POSITIVE", "Subset_Score_Quartile", "CLAUDIN_SUBTYPE", "AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "HER2_STATUS"), collapse = "+"))
 FormulaRpart
 #'
 ##' Rpart Tree Plot
@@ -593,11 +689,11 @@ PercentSurvPlotRpart
 #'
 #' Tab 9: Recursive Partitioning Survival Trees - Ctree
 ##' Ctree Formula
-FormulaCtree <- noquote(paste(c("HER2_STATUS", "GRADE", "TUMOR_SIZE", "AGE_AT_DIAGNOSIS", "LYMPH_NODES_EXAMINED_POSITIVE", "CLAUDIN_SUBTYPE", "Subset_Score_Quartile"), collapse = "+"))
+FormulaCtree <- noquote(paste(c("AGE_AT_DIAGNOSIS", "TUMOR_SIZE", "HER2_STATUS", "GRADE", "Subset_Score_Quartile", "CLAUDIN_SUBTYPE", "LYMPH_NODES_EXAMINED_POSITIVE"), collapse = "+"))
 FormulaCtree
 #'
 ##' Ctree Plot
-set.seed(1004)
+set.seed(1004) # Have to set manually 
 Whole_Data_Ctree <- Whole_Data %>%
   completeFun(data = ., c("DSS"))
 pfitctree <- partykit::ctree(as.formula(paste("Surv(", "OS_MONTHS", ",", "DSS", ") ~ ", FormulaCtree, sep = "")), data = Whole_Data_Ctree, control = ctree_control(teststat = "quadratic", splitstat = "quadratic", testtype = "Bonferroni", alpha = 0.05, minsplit = 20L, minbucket = 20L, minprob = 0.01, stump = FALSE, maxvar = 20L, maxdepth = 20L))

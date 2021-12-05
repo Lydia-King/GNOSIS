@@ -23,8 +23,8 @@ library(rpart)
 library(rpart.plot)
 library(partykit)
 
-# Downloaded from cBioPortal Feb 2019
-setwd("/home/lydia/Desktop/METABRIC_Data_Paper")
+# cBioPortal Feb 2019
+setwd("/home/lydia/GNOSIS/GNOSIS_Data_Paper/")
 
 # METABRIC Clinical Files 
 ## Patient and Sample Data 
@@ -687,7 +687,7 @@ tfit <- as.party(pfit)
 plot(tfit)
 
 # Ctree Trees
-set.seed(1004)
+set.seed(1004) # Slightly different (forgot which seed set)
 CTREE <- ctree(Surv(OS_MONTHS, DSS) ~ LNEP + Age + Her2 + Tumour_Size + Tumour_Grade + Subtype + CNA_Quartile, data = Clin_CNA_Lum_All)
 
 plot(CTREE)
@@ -709,7 +709,7 @@ tfit <- as.party(pfit)
 plot(tfit)
 
 # Ctree Trees
-set.seed(1004)
+set.seed(1004) # Slightly different (forgot which seed set)
 CTREE <- ctree(Surv(OS_MONTHS, DSS) ~ LNEP + Age + Her2 + Tumour_Size + Tumour_Grade + Subtype + CNA_Score, data = Clin_CNA_Lum_All)
 
 plot(CTREE)
