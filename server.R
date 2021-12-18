@@ -1727,7 +1727,6 @@ shinyServer(function(input, output, session) {
        validate(need(!is.null(input$Tab9_Ctree_Select_Variables) & input$Tab9_Ctree_Select_Variables != "None Selected", "Please select variables to include in ctree survival tree"))
        if(input$Tab9_Ctree_Survival_Time == "None Selected" | input$Tab9_Ctree_Event_Status == "None Selected"){return(NULL)}
        else {
-           set.seed(1004)
            metaExpr({partykit::ctree(as.formula(paste("Surv(", ..(input$Tab9_Ctree_Survival_Time), ",", ..(input$Tab9_Ctree_Event_Status), ") ~ ",  ..(FormulaCtree()), sep = "")), data =  ..(Whole_Data_Ctree()), 
                                     control = ctree_control(teststat = ..(input$Tab9_Ctree_Teststat), splitstat = ..(input$Tab9_Ctree_Splitstat),
                                                             testtype = ..(input$Tab9_Ctree_Testtype), alpha = ..(input$Tab9_Ctree_Alpha), 
