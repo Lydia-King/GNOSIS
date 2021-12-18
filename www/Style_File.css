@@ -1,7 +1,13 @@
 /* Title */
 .main-header .logo {font-family: Tahoma, sans-serif;
 font-size: 20px;
-font-weight: bold;}
+font-weight: bold;
+width: 195px;
+}
+
+.main-header .navbar {
+    margin-left: 195px;
+}
 
 /* Peacock Banner */
 .skin-blue .main-header .navbar {background-image: url("navbackground.png"); background-size: 350px;}
