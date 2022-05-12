@@ -192,7 +192,7 @@ ui <- dashboardPage(
                                                                           numericInput(inputId = "Tab3_CNA_Start_Column", label = "Indicate CNA Start Column:", value = 3,  width = "95%", min = 1), tags$hr(width = "93%"),
                                                                           awesomeRadio(inputId = "Tab3_CNA_of_Interest", label = "CNA of Interest:", choices = c("None", "Single Gene", "CNA Score"), selected = "None", inline = F, status = "primary"), tags$hr(width = "93%"),
                                                                           conditionalPanel(condition = "input.Tab3_CNA_of_Interest == 'None'",  h5(strong("Options:"))),
-                                                                          conditionalPanel(condition = "input.Tab3_CNA_of_Interest== 'Single Gene'", h5(strong("Options:")), textInput("Tab3_Select_Genes", "Select Gene of Interest:", "TP53, PTEN, BRCA1", placeholder = T,  width = "95%")),
+                                                                          conditionalPanel(condition = "input.Tab3_CNA_of_Interest== 'Single Gene'", h5(strong("Options:")), textInput("Tab3_Select_Genes", "Select Gene of Interest:", "TP53, PTEN, BRCA1, A1BG", placeholder = T,  width = "95%")),
                                                                           conditionalPanel(condition = "input.Tab3_CNA_of_Interest == 'CNA Score'", h5(strong("Options:")), prettyToggle(inputId = "Tab3_CNA_Remove_NAs_Yes_or_No", label_on = "Remove NAs", label_off = "Remove NAs", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),
                                                                                            prettyToggle(inputId = "Tab3_Segment_CNA_Yes_or_No", label_on = "Segment Data", label_off = "Segment Data", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),
                                                                                            numericInput(inputId = "Tab3_Number_of_Segments", label = "Number of Segments:", value = 4, width = "95%"))),
@@ -204,7 +204,7 @@ ui <- dashboardPage(
                                                                           awesomeRadio(inputId = "Tab3_Download_File_Separator", label = "Separator:", c(Comma = ",", Semicolon = ";", Tab = "\t"), selected = "\t", inline = F, status = "primary"), tags$hr(width = "93%"), # Input: Select Separator:
                                                                           prettyToggle(inputId = "Tab3_Download_File_Quote", label_on = "Include Quotes", label_off = "Include Quotes", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),
                                                                           prettyToggle(inputId = "Tab3_Download_File_Row_Names", label_on = "Include Row Names", label_off = "Include Row Names", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),
-                                                                          tags$hr(width = "93%"), downloadButton('Tab3_Download_File', 'Download Data')),
+                                                                          tags$hr(width = "93%"), downloadButton('Tab3_Download_File', 'Download Data', style = "width:95%;")),
                              collapsible = T, solidHeader = TRUE, width = 12, status = "primary", title = ("Preview and Download Processed Data"), withSpinner(dataTableOutput("TableData"), proxy.height = "510px"))),
                  
                  # Tab 4: Exploratory Plots:  1) Boxplot
@@ -217,9 +217,11 @@ ui <- dashboardPage(
                                                                        textInput("Tab4_Boxplot_Title", "Plot Title:", "Clinical Variable Boxplot", placeholder = T),
                                                                        textInput("Tab4_Boxplot_X_Axis_Title", "X-axis Title:", "Clinical Variable X", placeholder = T), textInput("Tab4_Boxplot_Y_Axis_Title", "Y-axis Title:", "Clinical Variable Y", placeholder = T), 
                                                                        textInput("Tab4_Boxplot_Legend_Title", "Legend Title:", "Legend", placeholder = T), 
-                                                                       tags$hr(), numericInput("Tab4_Boxplot_Width", "Plot Width:", value=500, min=100, max=3000), 
-                                                                       numericInput("Tab4_Boxplot_Height", "Plot Height:", value=500, min=100, max=3000),
-                                                                       tags$hr(), downloadButton('Tab4_Download_Boxplot','Download Plot')))), # Options for boxplot aesthetics 
+                                                                       tags$hr(), numericInput("Tab4_Boxplot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                       numericInput("Tab4_Boxplot_Height", "Plot Height (inches):", value=5, min=1, max=50),
+                                                                       tags$hr(), downloadButton('Tab4_Download_Boxplot_PNG','Download Plot (PNG)', style = "width:100%;"), 
+                                                                       br(), br(), 
+                                                                       downloadButton('Tab4_Download_Boxplot_SVG','Download Plot (SVG)', style = "width:100%;")))), # Options for boxplot aesthetics 
                  
                  # 2) Scatterplots 
                  tabItem(tabName = "scatterplot", box(title = ("Scatterplot"), collapsible = T, solidHeader = T, width = 12, height= "630px", status = "primary", withSpinner(plotOutput("Scatterplot1", height = "570px")), 
@@ -230,9 +232,10 @@ ui <- dashboardPage(
                                                                            textInput("Tab4_Scatterplot_Title", "Plot Title:", "Scatterplot of Clinical Variables and Scores", placeholder = T),
                                                                            textInput("Tab4_Scatterplot_X_Axis_Title", "X-axis Title:", "Clinical Variable X", placeholder = T), textInput("Tab4_Scatterplot_Y_Axis_Title", "Y-axis Title:", "Clinical Variable Y", placeholder = T), 
                                                                            textInput("Tab4_Scatterplot_Legend_Title", "Legend Title:", "Legend", placeholder = T), 
-                                                                           tags$hr(), numericInput("Tab4_Scatterplot_Width", "Plot Width:", value=500, min=100, max=3000), 
-                                                                           numericInput("Tab4_Scatterplot_Height", "Plot Height:", value=500, min=100, max=3000),
-                                                                           tags$hr(), downloadButton('Tab4_Download_Scatterplot','Download Plot')))),  # Options for scatterplot aesthetics 
+                                                                           tags$hr(), numericInput("Tab4_Scatterplot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                           numericInput("Tab4_Scatterplot_Height", "Plot Height (inches):", value=5, min=1, max=50),
+                                                                           tags$hr(), downloadButton('Tab4_Download_Scatterplot_PNG','Download Plot (PNG)', style = "width:100%;"), 
+                                                                           br(), br(), downloadButton('Tab4_Download_Scatterplot_SVG','Download Plot (SVG)', style = "width:100%;")))),  # Options for scatterplot aesthetics 
                  
                  # 3) Barplots
                  tabItem(tabName = "Explor", box(title = ("Barplot"), solidHeader = T, width = 12, height= "630px", status = "primary", collapsible = T, withSpinner(plotOutput("Association3", height = "570px")), 
@@ -244,9 +247,10 @@ ui <- dashboardPage(
                                                                       textInput("Tab4_Barplot_Title", "Plot Title:", "Barplot of Clinical Variables and Scores", placeholder = T),
                                                                       textInput("Tab4_Barplot_X_Axis_Title", "X-axis Title:", "Clinical Variable X", placeholder = T), textInput("Tab4_Barplot_Y_Axis_Title", "Y-axis Title:", "Count", placeholder = T), 
                                                                       textInput("Tab4_Barplot_Legend_Title", "Legend Title:", "Legend", placeholder = T), 
-                                                                      tags$hr(), numericInput("Tab4_Barplot_Width", "Plot Width:", value=500, min=100, max=3000), 
-                                                                      numericInput("Tab4_Barplot_Height", "Plot Height:", value=500, min=100, max=3000),
-                                                                      tags$hr(), downloadButton('Tab4_Download_Barplot','Download Plot')))), # Options for Barplot aesthetics 
+                                                                      tags$hr(), numericInput("Tab4_Barplot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                      numericInput("Tab4_Barplot_Height", "Plot Height (inches):", value=5, min=1, max=50),
+                                                                      tags$hr(), downloadButton('Tab4_Download_Barplot_PNG','Download Plot (PNG)', style = "width:100%;"),
+                                                                      br(), br(), downloadButton('Tab4_Download_Barplot_SVG','Download Plot (SVG)', style = "width:100%;")))), # Options for Barplot aesthetics 
                  
                  
                  # 4) Density plot of CNA scores etc.
@@ -267,9 +271,10 @@ ui <- dashboardPage(
                                                                                     textInput("Tab4_Histogram_Title", "Plot Title:", "Histogram of Selected Continuous Variables", placeholder = T),
                                                                                     textInput("Tab4_Histogram_X_Axis_Title", "X-axis Title:", "Clinical Variable X", placeholder = T), textInput("Tab4_Histogram_Y_Axis_Title", "Y-axis Title:", "Frequency", placeholder = T), 
                                                                                     textInput("Tab4_Histogram_Legend_Title", "Legend Title:", "Legend", placeholder = T),
-                                                                                    tags$hr(), numericInput("Tab4_Histogram_Width", "Plot Width:", value=500, min=0, max=3000), 
-                                                                                    numericInput("Tab4_Histogram_Height", "Plot Height:", value=500, min=0, max=3000), tags$hr(),
-                                                                                    downloadButton('Tab4_Download_Histogram','Download Plot')),
+                                                                                    tags$hr(), numericInput("Tab4_Histogram_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                    numericInput("Tab4_Histogram_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                    downloadButton('Tab4_Download_Histogram_PNG','Download Plot (PNG)', style = "width:100%;"), 
+                                                                                    br(), br(), downloadButton('Tab4_Download_Histogram_SVG','Download Plot (SVG)', style = "width:100%;")),
                                                                    conditionalPanel(condition = "input.Tab4_Select_Histogram_Type == 'Facet Wrap'",
                                                                                     selectizeInput("Tab4_Histogram_Select_Facet_Variable", "Select Facet Variable:", choices = ""),
                                                                                     numericInput(inputId = "Tab4_Faceted_Histogram_Number_of_Bins", label = "Bin Width:", value = 10, max = 3000, min = 1), tags$hr(),
@@ -280,9 +285,10 @@ ui <- dashboardPage(
                                                                                     textInput("Tab4_Faceted_Histogram_Title", "Plot Title:", "Histogram by Variable", placeholder = T),
                                                                                     textInput("Tab4_Faceted_Histogram_X_Axis_Title", "X-axis Title:", "Clinical Variable X", placeholder = T), textInput("Tab4_Faceted_Histogram_Y_Axis_Title", "Y-axis Title:", "Frequency", placeholder = T), 
                                                                                     textInput("Tab4_Faceted_Histogram_Legend_Title", "Legend Title:", "Legend", placeholder = T), 
-                                                                                    tags$hr(), numericInput("Tab4_Faceted_Histogram_Width", "Plot Width:", value=500, min=0, max=3000), 
-                                                                                    numericInput("Tab4_Faceted_Histogram_Height", "Plot Height:", value=500, min=0, max=3000),
-                                                                                    tags$hr(), downloadButton('Tab4_Download_Faceted_Histogram','Download Plot'))),
+                                                                                    tags$hr(), numericInput("Tab4_Faceted_Histogram_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                    numericInput("Tab4_Faceted_Histogram_Height", "Plot Height (inches):", value=5, min=1, max=50),
+                                                                                    tags$hr(), downloadButton('Tab4_Download_Faceted_Histogram_PNG','Download Plot (PNG)', style = "width:100%;"), 
+                                                                                    br(), br(), downloadButton('Tab4_Download_Faceted_Histogram_SVG','Download Plot (SVG)', style = "width:100%;"))),
                                                   conditionalPanel(condition = "input.Tab4_Select_Plot_Type == 'Density Plot'", h5(strong("Options:")),
                                                                    selectInput("Tab4_Select_Density_Plot_Type", "Select Plot Type:", c("Plain","Segmented", "Facet Wrap")),
                                                                    conditionalPanel(condition = "input.Tab4_Select_Density_Plot_Type == 'Plain'", tags$hr(),
@@ -293,30 +299,33 @@ ui <- dashboardPage(
                                                                                     textInput("Tab4_Density_Plot_Title", "Plot Title:", "Density Plots of Selected Continuous Variables", placeholder = T),
                                                                                     textInput("Tab4_Density_Plot_X_Axis_Title", "X-axis Title:", "Clinical Variable X", placeholder = T), textInput("Tab4_Density_Plot_Y_Axis_Title", "Y-axis Title:", "Density", placeholder = T), 
                                                                                     textInput("Tab4_Density_Plot_Legend_Title", "Legend Title:", "Legend", placeholder = T),
-                                                                                    tags$hr(), numericInput("Tab4_Density_Plot_Width", "Plot Width:", value=500, min=0, max=3000), 
-                                                                                    numericInput("Tab4_Density_Plot_Height", "Plot Height:", value=500, min=0, max=3000), tags$hr(),
-                                                                                    downloadButton('Tab4_Download_Density_Plot','Download Plot')),
+                                                                                    tags$hr(), numericInput("Tab4_Density_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                    numericInput("Tab4_Density_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                    downloadButton('Tab4_Download_Density_Plot_PNG','Download Plot (PNG)', style = "width:100%;"), 
+                                                                                    br(), br(), downloadButton('Tab4_Download_Density_Plot_SVG','Download Plot (SVG)', style = "width:100%;")),
                                                                    conditionalPanel(condition = "input.Tab4_Select_Density_Plot_Type == 'Segmented'",
                                                                                     numericInput(inputId = "Tab4_Segmented_Density_Plot_Number_of_Segments", label = "Number of Segments:", value = 4), tags$hr(),
                                                                                     prettyToggle(inputId = "Tab4_Segmented_Density_Plot_Display_Legend", label_on = "Display Legend", label_off = "Display Legend", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")), tags$hr(), 
                                                                                     textInput("Tab4_Segmented_Density_Plot_Title", "Plot Title:", "Segmented Density Plots of Selected Continuous Variables", placeholder = T),
                                                                                     textInput("Tab4_Segmented_Density_Plot_X_Axis_Title", "X-axis Title:", "Clinical Variable X", placeholder = T), textInput("Tab4_Segmented_Density_Plot_Y_Axis_Title", "Y-axis Title:", "Density", placeholder = T), 
                                                                                     textInput("Tab4_Segmented_Density_Plot_Legend_Title", "Legend Title:", "Legend", placeholder = T), 
-                                                                                    tags$hr(), numericInput("Tab4_Segmented_Density_Plot_Width", "Plot Width:", value=500, min=0, max=3000), 
-                                                                                    numericInput("Tab4_Segmented_Density_Plot_Height", "Plot Height:", value=500, min=0, max=3000), tags$hr(),
-                                                                                    downloadButton('Tab4_Download_Segmented_Density_Plot','Download Plot')), 
+                                                                                    tags$hr(), numericInput("Tab4_Segmented_Density_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                    numericInput("Tab4_Segmented_Density_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                    downloadButton('Tab4_Download_Segmented_Density_Plot_PNG','Download Plot (PNG)', style = "width:100%;"), 
+                                                                                    br(), br(), downloadButton('Tab4_Download_Segmented_Density_Plot_SVG','Download Plot (SVG)', style = "width:100%;")), 
                                                                    conditionalPanel(condition = "input.Tab4_Select_Density_Plot_Type == 'Facet Wrap'",
                                                                                     selectizeInput("Tab4_Density_Plot_Select_Facet_Variable", "Select Facet Variable:", choices = ""),
                                                                                     sliderInput(inputId = "Tab4_Faceted_Density_Plot_Alpha", label = "alpha:", min=0, max=1, value=0.4), 
                                                                                     numericInput("Tab4_Faceted_Density_Plot_Number_of_Columns", label = "Number of Columns:", min=1, max=10, value=2), tags$hr(),
                                                                                     prettyToggle(inputId = "Tab4_Faceted_Density_Plot_Display_NAs", label_on = "Display NA Values", label_off = "Display NA Values", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),
                                                                                     selectInput("Tab4_Faceted_Density_Plot_Legend_Position", "Legend Position:", choices = c("top", "bottom", "left", "right", "none"), selected = "none"), tags$hr(),
-                                                                                    textInput("Tab4_Faceted_Density_Plot_Title", "Plot Title:", "Exploartion of Density Plots by Variable", placeholder = T),
+                                                                                    textInput("Tab4_Faceted_Density_Plot_Title", "Plot Title:", "Exploration of Density Plots by Variable", placeholder = T),
                                                                                     textInput("Tab4_Faceted_Density_Plot_X_Axis_Title", "X-axis Title:", "Clinical Variable X", placeholder = T), textInput("Tab4_Faceted_Density_Plot_Y_Axis_Title", "Y-axis Title:", "Density", placeholder = T), 
                                                                                     textInput("Tab4_Faceted_Density_Plot_Legend_Title", "Legend Title:", "Legend", placeholder = T), 
-                                                                                    tags$hr(), numericInput("Tab4_Faceted_Density_Plot_Width", "Plot Width:", value=500, min=0, max=3000), 
-                                                                                    numericInput("Tab4_Faceted_Density_Plot_Height", "Plot Height:", value=500, min=0, max=3000), tags$hr(),
-                                                                                    downloadButton('Tab4_Download_Faceted_Density_Plot','Download Plot'))), 
+                                                                                    tags$hr(), numericInput("Tab4_Faceted_Density_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                    numericInput("Tab4_Faceted_Density_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                    downloadButton('Tab4_Download_Faceted_Density_Plot_PNG','Download Plot (PNG)', style = "width:100%;"), 
+                                                                                    br(), br(),  downloadButton('Tab4_Download_Faceted_Density_Plot_SVG','Download Plot (SVG)', style = "width:100%;"))), 
                                                   conditionalPanel(condition = "input.Tab4_Select_Plot_Type == 'Both'", h5(strong("Options:")),
                                                                    selectInput("Tab4_Select_Both_Plot_Type", "Select Plot Type:", c("Plain", "Facet Wrap")),
                                                                    conditionalPanel(condition = "input.Tab4_Select_Both_Plot_Type == 'Plain'", tags$hr(),
@@ -328,9 +337,10 @@ ui <- dashboardPage(
                                                                                     textInput("Tab4_Both_Plot_Title", "Plot Title:", "Histogram and Density Plots of Selected Continuous Variables", placeholder = T),
                                                                                     textInput("Tab4_Both_Plot_X_Axis_Title", "X-axis Title:", "Clinical Variable X", placeholder = T), textInput("Tab4_Both_Plot_Y_Axis_Title", "Y-axis Title:", "Density", placeholder = T), 
                                                                                     textInput("Tab4_Both_Plot_Legend_Title", "Legend Title:", "Legend", placeholder = T),
-                                                                                    tags$hr(), numericInput("Tab4_Both_Plot_Width", "Plot Width:", value=500, min=0, max=3000), 
-                                                                                    numericInput("Tab4_Both_Plot_Height", "Plot Height:", value=500, min=0, max=3000), tags$hr(),
-                                                                                    downloadButton('Tab4_Download_Both_Plot','Download Plot')),
+                                                                                    tags$hr(), numericInput("Tab4_Both_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                    numericInput("Tab4_Both_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                    downloadButton('Tab4_Download_Both_Plot_PNG','Download Plot (PNG)', style = "width:100%;"),
+                                                                                    br(), br(), downloadButton('Tab4_Download_Both_Plot_SVG','Download Plot (SVG)', style = "width:100%;")),
                                                                    conditionalPanel(condition = "input.Tab4_Select_Both_Plot_Type == 'Facet Wrap'",
                                                                                     selectizeInput("Tab4_Both_Plot_Select_Facet_Variable", "Select Facet Variable:", choices = ""),
                                                                                     sliderInput(inputId = "Tab4_Faceted_Both_Density_Plot_Alpha", label = "alpha (density):", min=0, max=1, value=0.4), 
@@ -341,9 +351,10 @@ ui <- dashboardPage(
                                                                                     textInput("Tab4_Faceted_Both_Plot_Title", "Plot Title:", "Histogram and Density Plot by Variable", placeholder = T),
                                                                                     textInput("Tab4_Faceted_Both_Plot_X_Axis_Title", "X-axis Title:", "Clinical Variable X", placeholder = T), textInput("Tab4_Faceted_Both_Plot_Y_Axis_Title", "Y-axis Title:", "Density", placeholder = T), 
                                                                                     textInput("Tab4_Faceted_Both_Plot_Legend_Title", "Legend Title:", "Legend", placeholder = T),
-                                                                                    tags$hr(), numericInput("Tab4_Faceted_Both_Plot_Width", "Plot Width:", value=500, min=0, max=3000), 
-                                                                                    numericInput("Tab4_Faceted_Both_Plot_Height", "Plot Height:", value=500, min=0, max=3000), tags$hr(),
-                                                                                    downloadButton('Tab4_Download_Faceted_Both_Plot','Download Plot')))),
+                                                                                    tags$hr(), numericInput("Tab4_Faceted_Both_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                    numericInput("Tab4_Faceted_Both_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                    downloadButton('Tab4_Download_Faceted_Both_Plot_PNG','Download Plot (PNG)', style = "width:100%;"), 
+                                                                                    br(),br(), downloadButton('Tab4_Download_Faceted_Both_Plot_SVG','Download Plot (SVG)', style = "width:100%;")))),
                              conditionalPanel(condition = "input.Tab4_Select_Plot_Type == 'Histogram'", width = 12,
                                               conditionalPanel(condition = "input.Tab4_Select_Histogram_Type == 'Plain'", width = 12, withSpinner(plotOutput("CNAHist", height = "540px"))), # Plain Histogram Plot
                                               conditionalPanel(condition = "input.Tab4_Select_Histogram_Type == 'Facet Wrap'", width = 12, withSpinner(plotOutput("CNAHist1", height = "600px")))), # Faceted Histogram Plot
@@ -358,7 +369,13 @@ ui <- dashboardPage(
                  ## Tab 5 - Survival Analysis
                  # 1) Survival Analysis KM plots -> 1) KM Survival curves and log rank tests (Clinical Variables)
                  tabItem(tabName = "KMplot",
-                         box(title = ("Kaplan-Meier Plot for Clinical Variables"), collapsible = T, solidHeader=T, width = 12, style = "height:520px; overflow-y: hidden", height = "520px", status = "primary", withSpinner(plotOutput("KM1", height="500px")), 
+                         box(title = ("Kaplan-Meier Plot for Clinical Variables"), 
+                             dropdownMenu = boxDropdown(icon = fa_i(name ="info-circle"), boxDropdownItem(
+                               HTML(paste("Useful Resources for Survival Analysis:", "<br/>")), 
+                               tags$a(href="http://www.sthda.com/english/wiki/survival-analysis-basics", "Survival Analysis Basics in R"),
+                               tags$a(href="https://www.datacamp.com/tutorial/survival-analysis-R", "Survival Analysis in R Tutorial For Beginners"),
+                               tags$a(href="https://www.statology.org/log-rank-test-in-r/", "How to Perform a Log Rank Test in R"))), 
+                             collapsible = T, solidHeader=T, width = 12, style = "height:520px; overflow-y: hidden", height = "520px", status = "primary", withSpinner(plotOutput("KM1", height="500px")), 
                              sidebar = boxSidebar(width = 25, id = "Tab5_KM_Clinical_Sidebar",  background = "#599740",  icon = shiny::icon("list-alt"), selectizeInput("Tab5_KM_Clinical_Survival_Time", "Survival Time:", choices = ""), selectizeInput("Tab5_KM_Clinical_Event_Status", "Event Status:", choices = ""), 
                                                   selectizeInput("Tab5_KM_Clinical_Select_Variable", "Select Variable:", choices = ""), tags$hr(), # Select survival variables i.e. time to event, event status Aand variable of interest
                                                   prettyToggle(inputId = "Tab5_KM_Clinical_Display_CI", label_on = "Display CI", label_off = "Display CI", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),
@@ -367,14 +384,21 @@ ui <- dashboardPage(
                                                   selectInput("Tab5_KM_Clinical_Legend_Position", "Legend Position:", choices = c("top", "bottom", "left", "right", "none"), selected = "right"), tags$hr(), 
                                                   textInput("Tab5_KM_Clinical_Plot_Title", "Plot Title:", "Breast cancer patients in METABRIC data", placeholder = T),
                                                   textInput("Tab5_KM_Clinical_X_Axis_Title", "X-axis Title:", "Survival Time", placeholder = T), textInput("Tab5_KM_Clinical_Y_Axis_Title", "Y-axis Title:", "Survival Probability", placeholder = T), 
-                                                  textInput("Tab5_KM_Clinical_Legend_Title", "Legend Title:", "Legend", placeholder = T), tags$hr(), numericInput("Tab5_KM_Clinical_Width", "Plot Width:", value=500, min=0, max=3000), 
-                                                  numericInput("Tab5_KM_Clinical_Height", "Plot Height:", value=500, min=0, max=3000), tags$hr(), downloadButton('Tab5_Download_KM_Clinical','Download Plot'))), 
+                                                  textInput("Tab5_KM_Clinical_Legend_Title", "Legend Title:", "Legend", placeholder = T), tags$hr(), numericInput("Tab5_KM_Clinical_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                  numericInput("Tab5_KM_Clinical_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(), downloadButton('Tab5_Download_KM_Clinical_PNG','Download Plot (PNG)', style = "width:100%;"),  
+                                                  br(), br(), downloadButton('Tab5_Download_KM_Clinical_SVG','Download Plot (SVG)', style = "width:100%;"))), 
                          box(title = ("Logrank Test"), collapsible = T, style="overflow-y: hidden", solidHeader = T, width = 12, status = "primary", withSpinner(verbatimTextOutput("KMlogrank")))), # Logrank Test
                  
                  
                  # 2) Segmented (Quartiled) Survival Plots  
                  tabItem(tabName = "KMOver",
-                         box(title = ("Kaplan-Meier Plot for CNA Scores and Quartiles"), width = 12, status = "primary", solidHeader = T,  style = "height:520px; overflow-y: hidden", height = "520px", collapsible = T, withSpinner(plotOutput("PercentSurv", height = "500px")),  
+                         box(title = ("Kaplan-Meier Plot for CNA Scores and Quartiles"), 
+                             dropdownMenu = boxDropdown(icon = fa_i(name ="info-circle"), boxDropdownItem(
+                               HTML(paste("Useful Resources for Survival Analysis:", "<br/>")), 
+                               tags$a(href="http://www.sthda.com/english/wiki/survival-analysis-basics", "Survival Analysis Basics in R"),
+                               tags$a(href="https://www.datacamp.com/tutorial/survival-analysis-R", "Survival Analysis in R Tutorial For Beginners"),
+                               tags$a(href="https://www.statology.org/log-rank-test-in-r/", "How to Perform a Log Rank Test in R"))), 
+                             width = 12, status = "primary", solidHeader = T,  style = "height:520px; overflow-y: hidden", height = "520px", collapsible = T, withSpinner(plotOutput("PercentSurv", height = "500px")),  
                              sidebar = boxSidebar(width = 25, id = "Tab5_KM_CNA_Quartile_Sidebar",  background = "#599740",  icon = shiny::icon("list-alt"), selectizeInput("Tab5_KM_CNA_Survival_Time", "Survival Time Column:", choices = ""), selectizeInput("Tab5_KM_CNA_Event_Status", "Event Status Column:", choices = ""), selectizeInput("Tab5_KM_CNA_Select_Variable", "Select Variable:", choices = ""), tags$hr(), # Variables of Interest
                                                   prettyToggle(inputId = "Tab5_KM_CNA_Display_CI", label_on = "Display CI", label_off = "Display CI", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),
                                                   prettyToggle(inputId = "Tab5_KM_CNA_Display_Risk_Table", label_on = "Display Risk Table", label_off = "Display Risk Table", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")), 
@@ -383,18 +407,22 @@ ui <- dashboardPage(
                                                   textInput("Tab5_KM_CNA_Plot_Title", "Plot Title:", "Breast cancer patients in METABRIC data", placeholder = T),
                                                   textInput("Tab5_KM_CNA_X_Axis_Title", "X-axis Title:", "Survival Time", placeholder = T), textInput("Tab5_KM_CNA_Y_Axis_Title", "Y-axis Title:", "Survival Probability", placeholder = T), 
                                                   textInput("Tab5_KM_CNA_Legend_Title", "Legend Title:", "Legend", placeholder = T), 
-                                                  tags$hr(), numericInput("Tab5_KM_CNA_Width", "Plot Width:", value=500, min=0, max=3000), 
-                                                  numericInput("Tab5_KM_CNA_Height", "Plot Height:", value=500, min=0, max=3000), tags$hr(),
-                                                  downloadButton('Tab5_Download_KM_CNA','Download Plot'))), 
+                                                  tags$hr(), numericInput("Tab5_KM_CNA_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                  numericInput("Tab5_KM_CNA_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                  downloadButton('Tab5_Download_KM_CNA_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), downloadButton('Tab5_Download_KM_CNA_SVG','Download Plot (SVG)', style = "width:100%;"))), 
                          box(title = ("Logrank Test"), collapsible = T, style = "overflow-y: hidden", width = 12, status = "primary", solidHeader = T, withSpinner(verbatimTextOutput("KMlogrank1")))), # Logrank Test
                  
                  # 3) Survival Analysis- Split on Specific Variable (Allows comparison between groups (only binary outcomes))
                  tabItem(tabName = "KMplotRadio", 
-                         box(title = ("Kaplan-Meier Plot for Treatment - Yes"), style = "height:500px", height = "500px", solidHeader=T, width = 12, collapsible = T, status = "primary", withSpinner(plotOutput("KMR1", height = "465px")),
+                         box(title = ("Kaplan-Meier Plot for Treatment - Yes"), 
+                             
+                             style = "height:500px", height = "500px", solidHeader=T, width = 12, collapsible = T, status = "primary", withSpinner(plotOutput("KMR1", height = "465px")),
                              dropdownMenu = boxDropdown(icon = fa_i(name ="info-circle"), boxDropdownItem(
-                                 HTML(paste(
-                                     "Note: Chosen treatment variable must be coded as YES/NO i.e. either got treatment or did not.",
-                                     sep="<br/>")), id = "dropdownItem1")), 
+                               HTML(paste("Note: Chosen treatment variable must be coded as YES/NO i.e. either got treatment or did not.",
+                                 "Useful Resources for Survival Analysis:", sep="<br/> <br/>")),
+                               tags$a(href="http://www.sthda.com/english/wiki/survival-analysis-basics", "Survival Analysis Basics in R"),
+                                 tags$a(href="https://www.datacamp.com/tutorial/survival-analysis-R", "Survival Analysis in R Tutorial For Beginners"),
+                                 tags$a(href="https://www.statology.org/log-rank-test-in-r/", "How to Perform a Log Rank Test in R"),id = "dropdownItem1")), 
                              sidebar = boxSidebar(width = 25, id = "Tab5_KM_Treatment_Sidebar_Yes",  background = "#599740",  icon = shiny::icon("list-alt"), selectizeInput("Tab5_KM_Treatment_Survival_Time", "Survival Time:", choices = ""), selectizeInput("Tab5_KM_Treatment_Event_Status", "Event Status:", choices = ""),
                                                   selectizeInput("Tab5_KM_Treatment_Select_Variable", "Select Variable:", choices = ""), selectizeInput("Tab5_KM_Treatment_Variable", "Treatment Variable:", choices = ""), tags$hr(),
                                                   prettyToggle(inputId = "Tab5_KM_Treatment_Yes_Display_CI", label_on = "Display CI", label_off = "Display CI", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),  
@@ -404,9 +432,10 @@ ui <- dashboardPage(
                                                   tags$hr(), textInput("Tab5_KM_Treatment_Yes_Title", "Plot Title:", "Breast cancer patients in METABRIC data", placeholder = T),
                                                   textInput("Tab5_KM_Treatment_Yes_X_Axis_Title", "X-axis Title:", "Survival Time", placeholder = T), textInput("Tab5_KM_Treatment_Yes_Y_Axis_Title", "Y-axis Title:", "Survival Probability", placeholder = T), 
                                                   textInput("Tab5_KM_Treatment_Yes_Legend_Title", "Legend Title:", "Legend", placeholder = T), 
-                                                  tags$hr(), numericInput("Tab5_KM_Treatment_Yes_Width", "Plot Width:", value=500, min=0, max=3000), 
-                                                  numericInput("Tab5_KM_Treatment_Yes_Height", "Plot Height:", value=500, min=0, max=3000), tags$hr(),
-                                                  downloadButton('Tab5_Download_KM_Treatment_Yes','Download Plot'))),
+                                                  tags$hr(), numericInput("Tab5_KM_Treatment_Yes_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                  numericInput("Tab5_KM_Treatment_Yes_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                  downloadButton('Tab5_Download_KM_Treatment_Yes_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), downloadButton('Tab5_Download_KM_Treatment_Yes_SVG','Download Plot (SVG)', style = "width:100%;"))), 
+                                                 
                          box(title = ("Kaplan-Meier Plot for Treatment - No"), style = "height:500px", height = "500px", solidHeader=T, width = 12, collapsible = T, status = "primary", withSpinner(plotOutput("KMR2", height = "465px")), 
                              sidebar = boxSidebar(width = 25, id = "Tab5_KM_Treatment_Sidebar_No",  background = "#599740",  icon = shiny::icon("list-alt"), 
                                                   prettyToggle(inputId = "Tab5_KM_Treatment_No_Display_CI", label_on = "Display CI", label_off = "Display CI", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),  
@@ -416,26 +445,53 @@ ui <- dashboardPage(
                                                   tags$hr(), textInput("Tab5_KM_Treatment_No_Title", "Plot Title:", "Breast cancer patients in METABRIC data", placeholder = T),
                                                   textInput("Tab5_KM_Treatment_No_X_Axis_Title", "X-axis Title:", "Survival Time", placeholder = T), textInput("Tab5_KM_Treatment_No_Y_Axis_Title", "Y-axis Title:", "Survival Probability", placeholder = T), 
                                                   textInput("Tab5_KM_Treatment_No_Legend_Title", "Legend Title:", "Legend", placeholder = T),
-                                                  tags$hr(), numericInput("Tab5_KM_Treatment_No_Width", "Plot Width:", value=500, min=0, max=3000), 
-                                                  numericInput("Tab5_KM_Treatment_No_Height", "Plot Height:", value=500, min=0, max=3000), tags$hr(),
-                                                  downloadButton('Tab5_Download_KM_Treatment_No','Download Plot'))), # KM Plot Group 2
+                                                  tags$hr(), numericInput("Tab5_KM_Treatment_No_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                  numericInput("Tab5_KM_Treatment_No_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                  downloadButton('Tab5_Download_KM_Treatment_No_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), downloadButton('Tab5_Download_KM_Treatment_No_SVG','Download Plot (SVG)', style = "width:100%;"))), 
+                                                  
                          box(title = ("Logrank Test for Treatment - Yes"), solidHeader=T, width = 6, style = "overflow-y: hidden", status = "primary", collapsible = T, withSpinner(verbatimTextOutput("KMlogrankYes"))), # LRT Group 1
                          box(title = ("Logrank Test for Treatment - No"), solidHeader=T, width = 6,  style = "overflow-y: hidden",  status = "primary", collapsible = T, withSpinner(verbatimTextOutput("KMlogrankNo")))),  #LRT Group 2 # KM Plot options  
                  
                  tabItem(tabName = "ASTest", 
                          box(collapsible = T, title = "Association Tests", solidHeader = T, status = "primary", width = 12,
                              dropdownMenu = boxDropdown(icon = fa_i(name ="info-circle"), boxDropdownItem(
-                                 HTML(paste("Please make sure you run the appropriate statistical tests for the question of interest,",
-                                            "that all relevant assumptions are met and that you are aware of how to correctly interpret the output.",
-                                            sep="<br/>")), id = "dropdownItemAssTests")), 
+                                 HTML(paste("Please make sure you run the appropriate statistical tests for the question of interest, that all",
+                                            "relevant assumptions are met and that you are aware of how to correctly interpret the output.",
+                                            sep="<br/>"), "<br/> <br/>", "You can do this by using the resources for each statistical test below:", "<br/>"), 
+                                 tags$a(href="https://www.statology.org/chi-square-test-of-independence/", "Chi-Square Test of Independence Basics") , 
+                                 tags$a(href="https://www.statology.org/chi-square-test-assumptions/", "Chi-Square Test of Independence Assumptions"),
+                                 tags$a(href="https://www.statology.org/chi-square-test-of-independence-in-r/", "Chi-Square Test of Independence in R"),
+                                 tags$a(href="https://www.statology.org/fishers-exact-test/", "Fisher’s Exact Test Basics") , 
+                                 tags$a(href="https://www.statology.org/how-to-report-fishers-exact-test/", "How to Report Fisher’s Exact Test"),
+                                 tags$a(href="https://www.statology.org/fishers-exact-test-in-r", "Fisher’s Exact Test in R"),  
+                                 tags$a(href="https://www.statology.org/one-way-anova/", "One-Way ANOVA Basics"),
+                                 tags$a(href="https://www.statology.org/anova-assumptions/", "One-Way ANOVA Assumptions"),
+                                 tags$a(href="https://www.statology.org/one-way-anova-r/", "One-Way ANOVA in R"), 
+                                 tags$a(href="https://www.statology.org/kruskal-wallis-test/", "Kruskal-Wallis Test Basics"),
+                                 tags$a(href="https://www.statology.org/kruskal-wallis-test-in-r/", "Kruskal-Wallis Test in R"),
+                                 tags$a(href="https://www.statology.org/two-sample-t-test/", "Two Sample t-Test Basics"),
+                                 tags$a(href="https://www.statology.org/welchs-t-test/", "Welch’s t-Test Basics"),
+                                 tags$a(href="https://www.statology.org/interpret-t-test-results-in-r/", "How to Interpret t-Test Results in R"), 
+                                 tags$a(href="https://www.rdocumentation.org/packages/stats/versions/3.6.2/topics/pairwise.t.test", "Documentation for pairwise.t.test Function"), 
+                                 tags$a(href="https://www.statology.org/dunns-test/", "Dunn's Test Basics"),
+                                 tags$a(href="https://www.statology.org/dunns-test-in-r/", "Dunn's Test in R"), 
+                                 tags$a(href="https://cran.r-project.org/web/packages/compareGroups/vignettes/compareGroups_vignette.html", "compareGroups Vignette"))),
+                            
                              sidebar = boxSidebar(id="Tab6_Association_Test_Sidebar", width = 25, background = "#599740",  icon = shiny::icon("list-alt"),
-                                                  selectInput("Tab6_Select_Association_Test", "Association Test:", c("Chi-squared test", "Fishers exact test", "Simulated Fishers exact test", "ANOVA test", "Kruskal-Wallis test", "Pairwise t-test", "Dunns test"), width = "95%"), tags$hr(width = "93%"),
+                                                  selectInput("Tab6_Select_Association_Test", "Association Test:", c("Chi-squared test", "Fishers exact test", "Simulated Fishers exact test", "ANOVA test", "Kruskal-Wallis test", "Pairwise t-test", "Dunns test", "Compare groups"), width = "95%"), tags$hr(width = "93%"),
                                                   conditionalPanel(condition = "input.Tab6_Select_Association_Test == 'Chi-squared test' | input.Tab6_Select_Association_Test == 'Fishers exact test' | input.Tab6_Select_Association_Test == 'Simulated Fishers exact test'",
                                                                    selectizeInput("Tab6_Select_Categorical_Variable_1", "Select Categorical Variable 1:", choices = "", width = "95%"), 
                                                                    selectizeInput("Tab6_Select_Categorical_Variable_2", "Select Categorical Variables 2:", choices = "", multiple = T, width = "95%")),
                                                   conditionalPanel(condition = "input.Tab6_Select_Association_Test == 'ANOVA test' | input.Tab6_Select_Association_Test == 'Kruskal-Wallis test' | input.Tab6_Select_Association_Test == 'Pairwise t-test' | input.Tab6_Select_Association_Test == 'Dunns test'",
                                                                    selectizeInput("Tab6_Select_Categorical_Variable_3", "Select Categorical Variable:", choices = "", width = "95%"), 
-                                                                   selectizeInput("Tab6_Select_Continuous_Variable_1", "Select Continuous Variables:", choices = "", width = "95%", multiple = T))),
+                                                                   selectizeInput("Tab6_Select_Continuous_Variable_1", "Select Continuous Variables:", choices = "", width = "95%", multiple = T)),
+                                                  conditionalPanel(condition = "input.Tab6_Select_Association_Test == 'Compare groups'",
+                                                                   selectizeInput("Tab6_Select_Response_Variable", "Select Response (Group) Variable:", choices = "", width = "95%", multiple = F), 
+                                                                   selectizeInput("Tab6_Select_Explanatory_Variable", "Select Explanatory Variables:", choices = "", width = "95%", multiple = T), 
+                                                                  # tags$hr(), selectizeInput("Tab6_Select_Subset_Variable", "Select Subset Variable:", choices = "", width = "95%", multiple = F), 
+                                                                  # selectizeInput("Tab6_Select_Subset_Type", "Select Subset Symbol:", choices = c("==", ">=", ">", "<", "<=", "!=", "%in%", "%!in%"), width = "95%"), 
+                                                                  # textInput("Tab6_Select_Subset_TextInput", "Type in Filter Level/Threshold:", value = "", placeholder = T)
+                                                                   )),
                              
                              conditionalPanel(condition = "input.Tab6_Select_Association_Test == 'Chi-squared test'", h4(strong("Chi-Squared Test:")), # The null hypothesis of the Chi-Square test is that no relationship exists on the categorical variables in the population; they are independent.
                                               verbatimTextOutput("Cat1"), br(), h4(strong("Adjusted P-values:")), withSpinner(dataTableOutput("Cat1Ad"))),
@@ -447,22 +503,31 @@ ui <- dashboardPage(
                                               h4(strong("ANOVA Test:")), verbatimTextOutput("ANOVA"), br(), h4(strong("Adjusted P-values:")), withSpinner(dataTableOutput("ANOVAAd"))), 
                              conditionalPanel(condition = "input.Tab6_Select_Association_Test == 'Kruskal-Wallis test'",                      
                                               h4(strong("Kruskal-Wallis Test:")), verbatimTextOutput("KW"), br(), h4(strong("Adjusted P-values:")), withSpinner(dataTableOutput("KWAd"))),
-                             conditionalPanel(condition = "input.Tab6_Select_Association_Test == 'Pairwise t-test'", h4(strong("Pairwise Comparisons: t-test")), div(style="height:480px;", verbatimTextOutput("PC"))),
-                             conditionalPanel(condition = "input.Tab6_Select_Association_Test == 'Dunns test'", h4(strong("Pairwise Comparisons: Dunn's Test")), div(style="height:480px;", verbatimTextOutput("Dunn"))))), 
+                             conditionalPanel(condition = "input.Tab6_Select_Association_Test == 'Pairwise t-test'", h4(strong("Pairwise Comparisons: t-test")), div(style="height:500px;", verbatimTextOutput("PC"))),
+                             conditionalPanel(condition = "input.Tab6_Select_Association_Test == 'Dunns test'", h4(strong("Pairwise Comparisons: Dunn's Test")), div(style="height:500px;", verbatimTextOutput("Dunn"))),
+                             conditionalPanel(condition = "input.Tab6_Select_Association_Test == 'Compare groups'", h4(strong("Compare Groups:")), verbatimTextOutput("CG"),br(), h4(strong("Compare Groups Table:")), verbatimTextOutput("CG_Table")))), 
                  
                  
                  ## Tab 7 - Cox PH models 
                  # Univariate and Multivariate Cox Tab with Assumptions:
                  # 1) Univariate Cox 
                  tabItem(tabName = "UniVar", fluidRow(
-                     box(title = ("Univariate Cox Proportional Hazards Model"), collapsible = T, solidHeader = T,  width = 12, status = "primary", withSpinner(verbatimTextOutput("CoxModelOut", placeholder = T)), # Cox models OS
-                         br(), h4(strong("Adjusted P-values:")), withSpinner(dataTableOutput("UniAdjusted")),
-                         sidebar = boxSidebar(id="Tab7_Univariate_Cox_Sidebar", width = 25, background = "#599740",  icon = shiny::icon("list-alt"), selectizeInput("Tab7_Univariate_Cox_Survival_Time", "Survival Time:", choices = "", width = "95%"), selectizeInput("Tab7_Univariate_Cox_Event_Status", "Event Status:", choices = "", width = "95%"),
-                                              selectizeInput("Tab7_Univariate_Cox_Select_Variables", "Select Variable:", choices = "", multiple = T, width = "95%"))))), 
+                           box(title = ("Univariate Cox Proportional Hazards Model"), dropdownMenu = boxDropdown(icon = fa_i(name ="info-circle"), boxDropdownItem(
+                             HTML(paste("Useful Resources for Cox Models:", "<br/>")), 
+                             tags$a(href="http://www.sthda.com/english/wiki/cox-proportional-hazards-model", "Cox Proportional-Hazards Model Basics in R") , 
+                             tags$a(href="http://www.sthda.com/english/wiki/cox-model-assumptions", "Cox Proportional-Hazards Model Assumptions in R"))), collapsible = T, solidHeader = T,  width = 12, status = "primary", withSpinner(verbatimTextOutput("CoxModelOut", placeholder = T)), # Cox models OS
+                               br(), h4(strong("Adjusted P-values:")), withSpinner(dataTableOutput("UniAdjusted")),
+                               sidebar = boxSidebar(id="Tab7_Univariate_Cox_Sidebar", width = 25, background = "#599740",  icon = shiny::icon("list-alt"), selectizeInput("Tab7_Univariate_Cox_Survival_Time", "Survival Time:", choices = "", width = "95%"), selectizeInput("Tab7_Univariate_Cox_Event_Status", "Event Status:", choices = "", width = "95%"),
+                                                    selectizeInput("Tab7_Univariate_Cox_Select_Variables", "Select Variable:", choices = "", multiple = T, width = "95%"))))), 
                  
                  # 2) Multivariable Cox Models 
                  tabItem(tabName = "MultiVar", fluidRow(
-                     box(title = ("Multivariable Cox Proportional Hazards Model"), height = "500px", collapsible = T, solidHeader = T,  width = 12, status = "primary", withSpinner(verbatimTextOutput("CoxModelMultiOut", placeholder = T)), # Cox models OS
+                     box(title = ("Multivariable Cox Proportional Hazards Model"), height = "500px", collapsible = T, solidHeader = T,  width = 12, status = "primary",
+                         dropdownMenu = boxDropdown(icon = fa_i(name ="info-circle"), boxDropdownItem(
+                           HTML(paste("Useful Resources for Cox Models:", "<br/>")), 
+                           tags$a(href="http://www.sthda.com/english/wiki/cox-proportional-hazards-model", "Cox Proportional-Hazards Model Basics in R") , 
+                           tags$a(href="http://www.sthda.com/english/wiki/cox-model-assumptions", "Cox Proportional-Hazards Model Assumptions in R"))),
+                         withSpinner(verbatimTextOutput("CoxModelMultiOut", placeholder = T)), # Cox models OS
                          h5(strong("Likelihood Ratio Test:")), verbatimTextOutput("LRTid", placeholder = T),
                          h5(strong("Wald Test:")), verbatimTextOutput("Waldtestid", placeholder = T),
                          h5(strong("Logrank Test:")), verbatimTextOutput("Logrid", placeholder = T),
@@ -472,12 +537,18 @@ ui <- dashboardPage(
                  
                  # 3) Model  Assumptions
                  tabItem(tabName = "AssumptionsOS", 
-                         fluidRow(box(title = ("Multivariable Cox PH Model Assumptions"), collapsible = T, solidHeader = T, width = 12, status = "primary",  
+                         fluidRow(box(title = ("Multivariable Cox PH Model Assumptions"), collapsible = T, solidHeader = T, width = 12, status = "primary",
+                                      dropdownMenu = boxDropdown(icon = fa_i(name ="info-circle"), boxDropdownItem(
+                                        HTML(paste("Useful Resources for Cox Models:", "<br/>")), 
+                                        tags$a(href="http://www.sthda.com/english/wiki/cox-proportional-hazards-model", "Cox Proportional-Hazards Model Basics in R") , 
+                                        tags$a(href="http://www.sthda.com/english/wiki/cox-model-assumptions", "Cox Proportional-Hazards Model Assumptions in R"))),
                                       sidebar = boxSidebar(id="Tab7_Cox_Assumptions_Sidebar", width = 25, background = "#599740",  icon = shiny::icon("list-alt"), 
                                                            h5(strong("Options:")), prettyToggle(inputId = "Tab7_Cox_Assumptions_Display_by_Variable", label_on = "Display by Variable", label_off = "Display by Variable", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),
-                                                           tags$hr(width = "96%"), numericInput("Tab7_Cox_Assumptions_Plot_Width", "Plot Width:", value=500, min=0, max=3000, width = "95%"), 
-                                                           numericInput("Tab7_Cox_Assumptions_Plot_Height", "Plot Height:", value=500, min=0, max=3000,  width = "95%"), 
-                                                           tags$hr(width = "96%"), downloadButton('Tab7_Download_Cox_Assumptions_Plot','Download Plot')),
+                                                           tags$hr(width = "96%"), numericInput("Tab7_Cox_Assumptions_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50, width = "95%"), 
+                                                           numericInput("Tab7_Cox_Assumptions_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50,  width = "95%"), 
+                                                           tags$hr(width = "96%"), 
+                                                           downloadButton('Tab7_Download_Cox_Assumptions_Plot_PNG','Download Plot (PNG)', style = "width:96%;"),  br(), br(), downloadButton('Tab7_Download_Cox_Assumptions_Plot_SVG','Download Plot (SVG)', style = "width:96%;")),
+                                                          
                                       withSpinner(plotOutput("AssumptionsCox", height = "600px"))))), 
                  
                  
@@ -507,9 +578,10 @@ ui <- dashboardPage(
                                                       tags$hr(), textInput("Tab8_Download_Adjusted_Curves_Plot_Title", "Plot Title:", "Breast cancer patients in METABRIC data", placeholder = T, width = "95%"),
                                                       textInput("Tab8_Download_Adjusted_Curves_X_Axis_Title", "X-axis Title:", "Survival Time", placeholder = T, width = "95%"), textInput("Tab8_Download_Adjusted_Curves_Y_Axis_Title", "Y-axis Title:", "Survival Probability", placeholder = T, width = "95%"), 
                                                       textInput("Tab8_Download_Adjusted_Curves_Legend_Title", "Legend Title:", "Legend", placeholder = T, width = "95%"), 
-                                                      tags$hr(), numericInput("Tab8_Download_Adjusted_Curves_Plot_Width", "Plot Width:", value=500, min=0, max=3000, width = "95%"), 
-                                                      numericInput("Tab8_Download_Adjusted_Curves_Plot_Height", "Plot Height:", value=500, min=0, max=3000,  width = "95%"), tags$hr(),
-                                                      downloadButton('Tab8_Download_Adjusted_Curves_Plot','Download Plot'))))), 
+                                                      tags$hr(), numericInput("Tab8_Download_Adjusted_Curves_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50, width = "95%"), 
+                                                      numericInput("Tab8_Download_Adjusted_Curves_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50,  width = "95%"), tags$hr(),
+                                                      downloadButton('Tab8_Download_Adjusted_Curves_Plot_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), downloadButton('Tab8_Download_Adjusted_Curves_Plot_SVG','Download Plot (SVG)', style = "width:100%;"))))),
+                                                       
                  
                  
                  ## Tab 9: Survival Trees - Rpart and Ctree algorithms 
@@ -523,19 +595,22 @@ ui <- dashboardPage(
                                               "cp: complexity parameter. Any split that does not decrease the overall lack of fit by a factor of cp is not attempted.",
                                               "xval: number of cross-validations.",
                                               "maxdepth: Set the maximum depth of any node of the final tree, with the root node counted as depth 0.",
-                                              sep="<br/>")), id = "dropdownItem1")), 
+                                              "<br/>", "Note: Rpart algortihm is run on complete case data only", "<br/>", "Useful Resources:",
+                                              sep="<br/>")),
+                                          tags$a(href="https://cran.r-project.org/web/packages/rpart/vignettes/longintro.pdf", "An Introduction to Recursive Partitioning Using the Rpart Routines"),
+                                          tags$a(href="https://cran.r-project.org/web/packages/rpart/rpart.pdf", "Rpart Documentation"))),
                                       sidebar = boxSidebar(id = "Tab9_Rpart_Tree_Sidebar", width = 25, background = "#599740",  icon = shiny::icon("list-alt"),
                                                            selectizeInput("Tab9_Rpart_Survival_Time", "Survival Time:", choices =  ""), selectizeInput("Tab9_Rpart_Event_Status", "Event Status:", choices = ""), 
                                                            selectizeInput(inputId = "Tab9_Rpart_Select_Variables", label = "Select Variables:", choices = "", multiple = TRUE), tags$hr(),
-                                                           prettyToggle(inputId = "Tab9_Rpart_Use_Complete_Cases_Only", label_on = "Complete Cases Only", label_off = "Complete Cases Only", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),
                                                            sliderInput(inputId = "Tab9_Rpart_Minsplit", label = "minsplit:", value = 20, max = 200, min = 0),
                                                            sliderInput(inputId = "Tab9_Rpart_Minbucket", label = "minbucket:", value = 20, min = 0, max = 200),
                                                            sliderInput(inputId = "Tab9_Rpart_Cp", label = "cp:", value = .01, min = 0.0001, max = 0.05),
                                                            sliderInput(inputId = "Tab9_Rpart_Xval", label = "xval:", value = 10, min = 0, max = 20),
                                                            sliderInput(inputId = "Tab9_Rpart_Maxdepth", label = "maxdepth:", value = 25, min = 0, max = 50),
-                                                           tags$hr(), numericInput("Tab9_Rpart_Plot_Width", "Plot Width:", value=500, min=100, max=3000), 
-                                                           numericInput("Tab9_Rpart_Plot_Height", "Plot Height:", value=500, min=100, max=3000), tags$hr(),
-                                                           downloadButton("Tab9_Download_Rpart_Plot", 'Download Plot'))),
+                                                           tags$hr(), numericInput("Tab9_Rpart_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                           numericInput("Tab9_Rpart_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                           downloadButton('Tab9_Download_Rpart_Plot_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), downloadButton('Tab9_Download_Rpart_Plot_SVG','Download Plot (SVG)', style = "width:100%;"))),
+                                                           
                                   box(collapsible = T, height = "550px", width = 12, status = "primary", title = "Corresponding Survival Curves", solidHeader = TRUE, withSpinner(plotOutput("Surv_Curve1", height = "510px")),
                                       sidebar = boxSidebar(id="Tab9_Rpart_Surv_Sidebar", width =25, background = "#599740",  icon = shiny::icon("list-alt"), 
                                                            h5(strong("Options:")),
@@ -546,9 +621,10 @@ ui <- dashboardPage(
                                                            textInput("Tab9_Surv_Rpart_Plot_Title", "Plot Title:", "Breast cancer patients in METABRIC data", placeholder = T),
                                                            textInput("Tab9_Surv_Rpart_X_Axis_Title", "X-axis Title:", "Survival Time", placeholder = T), textInput("Tab9_Surv_Rpart_Y_Axis_Title", "Y-axis Title:", "Survival Probability", placeholder = T), 
                                                            textInput("Tab9_Surv_Rpart_Legend_Title", "Legend Title:", "Legend", placeholder = T),  
-                                                           tags$hr(), numericInput("Tab9_Surv_Rpart_Plot_Width", "Plot Width:", value=500, min=100, max=3000), 
-                                                           numericInput("Tab9_Surv_Rpart_Plot_Height", "Plot Height:", value=500, min=100, max=3000), tags$hr(),
-                                                           downloadButton('Tab9_Download_Surv_Rpart_Plot','Download Plot'))))),
+                                                           tags$hr(), numericInput("Tab9_Surv_Rpart_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                           numericInput("Tab9_Surv_Rpart_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                           downloadButton('Tab9_Download_Surv_Rpart_Plot_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), downloadButton('Tab9_Download_Surv_Rpart_Plot_SVG','Download Plot (SVG)', style = "width:100%;"))))),
+                                                           
                  
                  # Ctree Tree
                  tabItem(tabName = "STreeCtree",
@@ -565,8 +641,10 @@ ui <- dashboardPage(
                                               "minprob: proportion of observations needed to establish a terminal node.",
                                               "stump: a logical determining whether a stump (a tree with a maximum of three nodes only) is to be computed.",
                                               "maxvar: maximum number of variables the tree is allowed to split in.",
-                                              "maxdepth: maximum depth of the tree. Default maxdepth = Inf means that no restrictions are applied.",
-                                              sep="<br/>")), id = "dropdownItem1")), 
+                                              "maxdepth: maximum depth of the tree. Default maxdepth = Inf means that no restrictions are applied.", "<br/>", "Useful Resources:",
+                                          sep="<br/>")),
+                                      tags$a(href="https://cran.r-project.org/web/packages/partykit/vignettes/ctree.pdf", "ctree: Conditional Inference Trees"),
+                                      tags$a(href="https://www.rdocumentation.org/packages/partykit/versions/1.2-15/topics/ctree", "Ctree Documentation"))),
                                       sidebar = boxSidebar(id = "Tab9_Ctree_Tree_Sidebar", width = 25, background = "#599740",  icon = shiny::icon("list-alt"), selectizeInput("Tab9_Ctree_Survival_Time", "Survival Time:", choices =  ""), selectizeInput("Tab9_Ctree_Event_Status", "Event Status:", choices = ""), 
                                                            selectizeInput(inputId = "Tab9_Ctree_Select_Variables", label = "Select Variables:", choices = "", multiple = TRUE), tags$hr(),
                                                            prettyToggle(inputId = "Tab9_Ctree_Use_Complete_Cases_Only", label_on = "Complete Cases Only", label_off = "Complete Cases Only", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),
@@ -580,9 +658,10 @@ ui <- dashboardPage(
                                                            sliderInput(inputId = "Tab9_Ctree_Maxvar", label = "maxvar:", value = 20, min = 0, max = 100),
                                                            sliderInput(inputId = "Tab9_Ctree_Maxdepth", label = "maxdepth:", value = 20, min = 0, max = 100),
                                                            prettyToggle(inputId = "Tab9_Ctree_Stump", label_on = "Stump", label_off = "Stump", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")), 
-                                                           tags$hr(), numericInput("Tab9_Ctree_Plot_Width", "Plot Width:", value=500, min=100, max=3000), 
-                                                           numericInput("Tab9_Ctree_Plot_Height", "Plot Height:", value=500, min=100, max=3000), tags$hr(),
-                                                           downloadButton("Tab9_Download_Ctree_Plot", 'Download Plot'))),
+                                                           tags$hr(), numericInput("Tab9_Ctree_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                           numericInput("Tab9_Ctree_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                           downloadButton('Tab9_Download_Ctree_Plot_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), downloadButton('Tab9_Download_Ctree_Plot_SVG','Download Plot (SVG)', style = "width:100%;"))),
+                                                           
                                   box(collapsible = T, width = 12, height = "550px", status = "primary", title = "Corresponding Survival Curves", solidHeader = TRUE, withSpinner(plotOutput("Surv_CurveCtree", height = "510px")), 
                                       sidebar = boxSidebar(id="Tab9_Ctree_Curv_Sidebar", width =25, background = "#599740",  icon = shiny::icon("list-alt"), h5(strong("Options:")),
                                                            prettyToggle(inputId = "Tab9_Surv_Ctree_Display_CI", label_on = "Display CI", label_off = "Display CI", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),
@@ -592,9 +671,11 @@ ui <- dashboardPage(
                                                            textInput("Tab9_Surv_Ctree_Plot_Title", "Plot Title:", "Breast cancer patients in METABRIC data", placeholder = T),
                                                            textInput("Tab9_Surv_Ctree_X_Axis_Title", "X-axis Title:", "Survival Time", placeholder = T), textInput("Tab9_Surv_Ctree_Y_Axis_Title", "Y-axis Title:", "Survival Probability", placeholder = T), 
                                                            textInput("Tab9_Surv_Ctree_Legend_Title", "Legend Title:", "Legend", placeholder = T), 
-                                                           tags$hr(), numericInput("Tab9_Surv_Ctree_Plot_Width", "Plot Width:", value=500, min=100, max=3000), 
-                                                           numericInput("Tab9_Surv_Ctree_Plot_Height", "Plot Height:", value=500, min=100, max=3000), tags$hr(),
-                                                           downloadButton('Tab9_Download_Surv_Ctree_Plot','Download Plot'))))), 
+                                                           tags$hr(), numericInput("Tab9_Surv_Ctree_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                           numericInput("Tab9_Surv_Ctree_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                           downloadButton('Tab9_Download_Surv_Ctree_Plot_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), 
+                                                           downloadButton('Tab9_Download_Surv_Ctree_Plot_SVG','Download Plot (SVG)', style = "width:100%;"))))),
+                                                           
                  
                  
                  # MAF Tabs: For exploration of mutation annotation format files 
@@ -605,41 +686,60 @@ ui <- dashboardPage(
                  
                  tabItem(tabName = "MAFVis", fluidRow(tabBox(width = 12, height = "1900px", # MAF summaries (Visual Plots)
                                                              tabPanel("MafSummary", box(collapsible = T, title=("MafSummary Plots"), height = "800px", width = 12, solidHeader = T, status = "primary", 
+                                                                                        dropdownMenu = boxDropdown(icon = fa_i(name ="info-circle"), boxDropdownItem(
+                                                                                          HTML(paste("Useful Resources for maftools:", "<br/>")), 
+                                                                                          tags$a(href="https://www.bioconductor.org/packages/devel/bioc/vignettes/maftools/inst/doc/maftools.html", "maftools Vignette"))), 
                                                                                         sidebar = boxSidebar(id="Tab10_MAF_Summary_Sidebar", width = 25,  background = "#599740",  icon = shiny::icon("list-alt"), h5(strong("Options:")), 
                                                                                                              prettyToggle(inputId = "Tab10_Summary_Remove_Outlier", label_on = "Remove Outliers", label_off = "Remove Outliers", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")), 
                                                                                                              prettyToggle(inputId = "Tab10_Summary_Dashboard_Style", label_on = "Dashboard Style", label_off = "Dashboard Style", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times"), value=T),
                                                                                                              prettyToggle(inputId = "Tab10_Summary_Plot_Fraction", label_on = "Plot Fraction", label_off = "Plot Fraction", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")), 
                                                                                                              selectInput(inputId = "Tab10_Summary_Add_Stat", label = "Add Stat:", choices = c("mean", "median"), selected = ""), 
                                                                                                              sliderInput(inputId = "Tab10_Summary_Display_Top_Genes", label = "Display Top Genes:", value = 10, min=0, max=20),
-                                                                                                             tags$hr(), numericInput("Tab10_Summary_Plot_Width", "Plot Width:", value=500, min=100, max=3000), 
-                                                                                                             numericInput("Tab10_Summary_Plot_Height", "Plot Height:", value=500, min=100, max=3000), tags$hr(),
-                                                                                                             downloadButton('Tab10_Download_Summary_Plot','Download Plot')),
+                                                                                                             tags$hr(), numericInput("Tab10_Summary_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                                             numericInput("Tab10_Summary_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                                             downloadButton('Tab10_Download_Summary_Plot_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), 
+                                                                                                             downloadButton('Tab10_Download_Summary_Plot_SVG','Download Plot (SVG)', style = "width:100%;")),
                                                                                         withSpinner(plotOutput("summaryMAF", height = "720px")))),
                                                              tabPanel("OncoPlot/OncoStrip", box(collapsible = T, title = "OncoPlot", width = 12, solidHeader = T, status = "primary", style = "height:530px", height = "530px",
+                                                                                                dropdownMenu = boxDropdown(icon = fa_i(name ="info-circle"), boxDropdownItem(
+                                                                                                  HTML(paste("Useful Resources for maftools:", "<br/>")), 
+                                                                                                  tags$a(href="https://www.bioconductor.org/packages/devel/bioc/vignettes/maftools/inst/doc/maftools.html", "maftools Vignette"))), 
                                                                                                 sidebar = boxSidebar(id="Tab10_OncoPlot_Sidebar", width = 25,  background = "#599740",  icon = shiny::icon("list-alt"), h5(strong("Options:")),
                                                                                                                      sliderInput(inputId = "Tab10_Oncoplot_Display_Top_Genes", label = "Display Top Genes:", value = 20, min=0, max=100), 
-                                                                                                                     tags$hr(), numericInput("Tab10_Oncoplot_Plot_Width", "Plot Width:", value=500, min=100, max=3000), 
-                                                                                                                     numericInput("Tab10_Oncoplot_Plot_Height", "Plot Height:", value=500, min=100, max=3000), tags$hr(),
-                                                                                                                     downloadButton('Tab10_Download_Oncoplot_Plot','Download Plot')),
+                                                                                                                     tags$hr(), numericInput("Tab10_Oncoplot_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                                                     numericInput("Tab10_Oncoplot_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                                                     downloadButton('Tab10_Download_Oncoplot_Plot_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), 
+                                                                                                                     downloadButton('Tab10_Download_Oncoplot_Plot_SVG','Download Plot (SVG)', style = "width:100%;")),
                                                                                                 withSpinner(plotOutput("oncoplotMAF", height = "530px"))),
                                                                       box(collapsible = T, title = "Oncostrip Of Selected Genes", width  = 12, solidHeader = T, status = "primary", style = "height:530px", height = "530px",
+                                                                          dropdownMenu = boxDropdown(icon = fa_i(name ="info-circle"), boxDropdownItem(
+                                                                            HTML(paste("Useful Resources for maftools:", "<br/>")), 
+                                                                            tags$a(href="https://www.bioconductor.org/packages/devel/bioc/vignettes/maftools/inst/doc/maftools.html", "maftools Vignette"))), 
                                                                           sidebar = boxSidebar(id="Tab10_Oncostrip_Sidebar", width = 25,  background = "#599740",  icon = shiny::icon("list-alt"), h5(strong("Options:")),
                                                                                                selectInput("Tab10_Oncostrip_Select_Gene_1", "Gene of Interest 1:", choices = ""), 
                                                                                                selectInput("Tab10_Oncostrip_Select_Gene_2", "Gene of Interest 2:", choices = ""),
                                                                                                selectInput("Tab10_Oncostrip_Select_Gene_3", "Gene of Interest 3:", choices = ""),
-                                                                                               tags$hr(), numericInput("Tab10_Oncostrip_Plot_Width", "Plot Width:", value=500, min=100, max=3000), 
-                                                                                               numericInput("Tab10_Oncostrip_Plot_Height", "Plot Height:", value=500, min=100, max=3000), tags$hr(),
-                                                                                               downloadButton('Tab10_Download_Oncostrip_Plot','Download Plot')),
+                                                                                               tags$hr(), numericInput("Tab10_Oncostrip_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                               numericInput("Tab10_Oncostrip_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                               downloadButton('Tab10_Download_Oncostrip_Plot_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), 
+                                                                                               downloadButton('Tab10_Download_Oncostrip_Plot_SVG','Download Plot (SVG)', style = "width:100%;")),
                                                                           withSpinner(plotOutput("oncostripMAF", height = "530px"))),
                                                                       box(collapsible = T, title = "Transition and Transversions", width = 12, solidHeader = T, status = "primary", style = "height:530px", height = "530px",
+                                                                          dropdownMenu = boxDropdown(icon = fa_i(name ="info-circle"), boxDropdownItem(
+                                                                            HTML(paste("Useful Resources for maftools:", "<br/>")), 
+                                                                            tags$a(href="https://www.bioconductor.org/packages/devel/bioc/vignettes/maftools/inst/doc/maftools.html", "maftools Vignette"))), 
                                                                           sidebar = boxSidebar(id="Tab10_TT_Sidebar", width = 25,  background = "#599740",  icon = shiny::icon("list-alt"), h5(strong("Options:")),
                                                                                                prettyToggle(inputId = "Tab10_TT_Plot_Fraction", label_on = "Plot Fraction", label_off = "Plot Fraction", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")), 
                                                                                                prettyToggle(inputId = "Tab10_TT_Include_Synonymous_Variants", label_on = "Include Synonymous Variants", label_off = "Include Synonymous Variants", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")), 
-                                                                                               tags$hr(), numericInput("Tab10_TT_Plot_Width", "Plot Width:", value=500, min=100, max=3000), 
-                                                                                               numericInput("Tab10_TT_Plot_Height", "Plot Height:", value=500, min=100, max=3000), tags$hr(),
-                                                                                               downloadButton('Tab10_Download_TT_Plot','Download Plot')),
+                                                                                               tags$hr(), numericInput("Tab10_TT_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                               numericInput("Tab10_TT_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                               downloadButton('Tab10_Download_TT_Plot_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), 
+                                                                                               downloadButton('Tab10_Download_TT_Plot_SVG','Download Plot (SVG)', style = "width:100%;")),
                                                                           withSpinner(plotOutput("TandT", height = "530px")))),
                                                              tabPanel("Lollipop Plots", fluidRow(box(collapsible = T, title = ("Choose Genes to Analyse"), width = 12, status = "primary",  solidHeader = TRUE,
+                                                                                                     dropdownMenu = boxDropdown(icon = fa_i(name ="info-circle"), boxDropdownItem(
+                                                                                                       HTML(paste("Useful Resources for maftools:", "<br/>")), 
+                                                                                                       tags$a(href="https://www.bioconductor.org/packages/devel/bioc/vignettes/maftools/inst/doc/maftools.html", "maftools Vignette"))), 
                                                                                                      column(3, numericInput(inputId = "Tab10_Lollipop_Gene_Name_Column", label = "Gene Name Column:", value = 1, min=1)), column(3, selectInput("Tab10_Lollipop_Select_Gene_1", "Gene of Interest 1:", choices = "")),
                                                                                                      column(3, selectInput("Tab10_Lollipop_Select_Gene_2", "Gene of Interest 2:", choices = "")), column(3,selectInput("Tab10_Lollipop_Select_Gene_3", "Gene of Interest 3:", choices = ""))),
                                                                                                  box(collapsible = T, title = "Lollipop Plot 1", width = 12, solidHeader = T, status = "primary", height = "480px", withSpinner(plotOutput("lol1", height = "480px")), 
@@ -654,9 +754,10 @@ ui <- dashboardPage(
                                                                                                                           prettyToggle(inputId = "Tab10_Lollipop_Repel_Yes_or_No_1", label_on = "Repel", label_off = "Repel", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times"), value = F),
                                                                                                                           prettyToggle(inputId = "Tab10_Lollipop_Show_Legend_1", label_on = "Show Legend", label_off = "Show Legend", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times"), value = T),
                                                                                                                           sliderInput("Tab10_Lollipop_Size_Legend_1", "Legend Text Size:", value = 0.8, min=0, max=2, step=0.1),
-                                                                                                                          tags$hr(), numericInput("Tab10_Lollipop_Plot_Width_1", "Plot Width:", value=500, min=100, max=3000), 
-                                                                                                                          numericInput("Tab10_Lollipop_Plot_Height_1", "Plot Height:", value=500, min=100, max=3000), tags$hr(),
-                                                                                                                          downloadButton('Tab10_Download_Lollipop_Plot_1','Download Plot'))),
+                                                                                                                          tags$hr(), numericInput("Tab10_Lollipop_Plot_Width_1", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                                                          numericInput("Tab10_Lollipop_Plot_Height_1", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                                                          downloadButton('Tab10_Download_Lollipop_Plot_1_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), 
+                                                                                                                          downloadButton('Tab10_Download_Lollipop_Plot_1_SVG','Download Plot (SVG)', style = "width:100%;"))),
                                                                                                  
                                                                                                  box(collapsible = T, title = "Lollipop Plot 2", width  = 12, solidHeader = T, status = "primary", height = "480px", withSpinner(plotOutput("lol2", height = "480px")), 
                                                                                                      sidebar = boxSidebar(id="Tab10_Lollipop_Plot2_Sidebar", width = 25, background = "#599740", icon = shiny::icon("list-alt"), 
@@ -670,9 +771,10 @@ ui <- dashboardPage(
                                                                                                                           prettyToggle(inputId = "Tab10_Lollipop_Repel_Yes_or_No_2", label_on = "Repel", label_off = "Repel", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times"), value = F),
                                                                                                                           prettyToggle(inputId = "Tab10_Lollipop_Show_Legend_2", label_on = "Show Legend", label_off = "Show Legend", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times"), value = T),
                                                                                                                           sliderInput("Tab10_Lollipop_Size_Legend_2", "Legend Text Size:", value = 0.8, min=0, max=2, step=0.1),
-                                                                                                                          tags$hr(), numericInput("Tab10_Lollipop_Plot_Width_2", "Plot Width:", value=500, min=100, max=3000), 
-                                                                                                                          numericInput("Tab10_Lollipop_Plot_Height_2", "Plot Height:", value=500, min=100, max=3000), tags$hr(),
-                                                                                                                          downloadButton('Tab10_Download_Lollipop_Plot_2','Download Plot'))),
+                                                                                                                          tags$hr(), numericInput("Tab10_Lollipop_Plot_Width_2", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                                                          numericInput("Tab10_Lollipop_Plot_Height_2", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                                                          downloadButton('Tab10_Download_Lollipop_Plot_2_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), 
+                                                                                                                          downloadButton('Tab10_Download_Lollipop_Plot_2_SVG','Download Plot (SVG)', style = "width:100%;"))),
                                                                                                  
                                                                                                  box(collapsible = T, title = "Lollipop Plot 3", width = 12, solidHeader = T, status = "primary", withSpinner(plotOutput("lol3", height = "480px")), height="480px", 
                                                                                                      sidebar = boxSidebar(id="Tab10_Lollipop_Plot3_Sidebar", width = 25, background = "#599740", icon = shiny::icon("list-alt"), 
@@ -686,23 +788,28 @@ ui <- dashboardPage(
                                                                                                                           prettyToggle(inputId = "Tab10_Lollipop_Repel_Yes_or_No_3", label_on = "Repel", label_off = "Repel", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times"), value = F),
                                                                                                                           prettyToggle(inputId = "Tab10_Lollipop_Show_Legend_3", label_on = "Show Legend", label_off = "Show Legend", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times"), value = T),
                                                                                                                           sliderInput("Tab10_Lollipop_Size_Legend_3", "Legend Text Size:", value = 0.8, min=0, max=2, step=0.1),
-                                                                                                                          tags$hr(), numericInput("Tab10_Lollipop_Plot_Width_3", "Plot Width:", value=500, min=100, max=3000), 
-                                                                                                                          numericInput("Tab10_Lollipop_Plot_Height_3", "Plot Height:", value=500, min=100, max=3000), tags$hr(),
-                                                                                                                          downloadButton('Tab10_Download_Lollipop_Plot_3','Download Plot'))))),
+                                                                                                                          tags$hr(), numericInput("Tab10_Lollipop_Plot_Width_3", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                                                          numericInput("Tab10_Lollipop_Plot_Height_3", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                                                          downloadButton('Tab10_Download_Lollipop_Plot_3_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), 
+                                                                                                                          downloadButton('Tab10_Download_Lollipop_Plot_3_SVG','Download Plot (SVG)', style = "width:100%;"))))),
                                                              # Other Plots  
-                                                             tabPanel("Other Plots", id = "tabsetMAFother", box(collapsible = T, title = "Mutation Load Plot", width = 12, solidHeader = T, status = "primary", withSpinner(plotOutput("Mutload", height = "500px")), height = "580px",
+                                                             tabPanel("Other Plots", id = "tabsetMAFother", box( dropdownMenu = boxDropdown(icon = fa_i(name ="info-circle"), boxDropdownItem(
+                                                               HTML(paste("Useful Resources for maftools:", "<br/>")), 
+                                                               tags$a(href="https://www.bioconductor.org/packages/devel/bioc/vignettes/maftools/inst/doc/maftools.html", "maftools Vignette"))), collapsible = T, title = "Mutation Load Plot", width = 12, solidHeader = T, status = "primary", withSpinner(plotOutput("Mutload", height = "500px")), height = "580px",
                                                                                                                 sidebar = boxSidebar(id="Tab10_Mutation_Load_Sidebar", width = 25, background = "#599740", icon = shiny::icon("list-alt"), h5(strong("Options:")), 
-                                                                                                                                     numericInput("Tab10_Mutation_Load_Plot_Width", "Plot Width:", value=500, min=100, max=3000), 
-                                                                                                                                     numericInput("Tab10_Mutation_Load_Plot_Height", "Plot Height:", value=500, min=100, max=3000), tags$hr(),
-                                                                                                                                     downloadButton('Tab10_Download_Mutation_Load_Plot','Download Plot'))),
+                                                                                                                                     numericInput("Tab10_Mutation_Load_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                                                                     numericInput("Tab10_Mutation_Load_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                                                                     downloadButton('Tab10_Download_Mutation_Load_Plot_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), 
+                                                                                                                                     downloadButton('Tab10_Download_Mutation_Load_Plot_SVG','Download Plot (SVG)', style = "width:100%;"))),
                                                                       box(collapsible = T, title = "Somatic Interaction Plot", width  = 12, solidHeader = T, status = "primary", withSpinner(plotOutput("VAF1", height = "500px")), height="540px",
                                                                           sidebar = boxSidebar(id="Tab10_Somatic_Interaction_Sidebar", width = 25, background = "#599740", icon = shiny::icon("list-alt"), h5(strong("Options:")), 
                                                                                                sliderInput("Tab10_SIP_Display_Top_Genes", "Top Genes:", value = 25, min=0, max=100, step=5),
                                                                                                sliderInput("Tab10_SIP_Pval_Lower_Threshold", "P-value Lower Threshold:", value = 0.01, min=0, max=0.5),
                                                                                                sliderInput("Tab10_SIP_Pval_Upper_Threshold", "P-value Upper Threshold:", value = 0.05, min=0, max=0.5), tags$hr(),
-                                                                                               numericInput("Tab10_SIP_Plot_Width", "Plot Width:", value=500, min=100, max=3000), 
-                                                                                               numericInput("Tab10_SIP_Plot_Height", "Plot Height:", value=500, min=100, max=3000), tags$hr(),
-                                                                                               downloadButton('Tab10_Download_SIP_Plot','Download Plot'))))))), 
+                                                                                               numericInput("Tab10_SIP_Plot_Width", "Plot Width (inches):", value=8, min=1, max=50), 
+                                                                                               numericInput("Tab10_SIP_Plot_Height", "Plot Height (inches):", value=5, min=1, max=50), tags$hr(),
+                                                                                               downloadButton('Tab10_Download_SIP_Plot_PNG','Download Plot (PNG)', style = "width:100%;"),  br(), br(), 
+                                                                                               downloadButton('Tab10_Download_SIP_Plot_SVG','Download Plot (SVG)', style = "width:100%;"))))))), 
                  
                  # Tab 11 Download Log
                  tabItem(tabName = "downlog",
@@ -718,8 +825,8 @@ ui <- dashboardPage(
                                                            awesomeRadio(inputId = "Tab11_Download_Log_Separator", label = "Separator:", c(Comma = ",", Semicolon = ";", Tab = "\t"), selected = "\t", inline = F, status = "primary"), # Input: Select Separator:
                                                            prettyToggle(inputId = "Tab11_Download_Log_Quote", label_on = "Include Quotes", label_off = "Include Quotes", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")),
                                                            prettyToggle(inputId = "Tab11_Download_Log_Row_Names", label_on = "Include Row Names", label_off = "Include Row Names", icon_on = fa_i(name = "check"), icon_off = fa_i(name = "times")), tags$hr(),
-                                                           downloadButton('download_button_rscript', 'Download R Script'), br(), br(),
-                                                           downloadButton('Tab11_Download_Log','Download Input Log')))))
+                                                           downloadButton('download_button_rscript', 'Download R Script', style = "width:100%;"), br(), br(),
+                                                           downloadButton('Tab11_Download_Log','Download Input Log', style = "width:100%;")))))
                  
         )
     )

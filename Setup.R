@@ -22,7 +22,7 @@
 ## Install and load up libraries 
 # Shiny Dashboard setup
 
-if (!requireNamespace("BiocManager", quietly = TRUE))
+if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 library(BiocManager)
 
@@ -90,10 +90,13 @@ if (!requireNamespace("rstatix", quietly = TRUE))
   BiocManager::install("rstatix")
 if (!requireNamespace("DescTools", quietly = TRUE))
   BiocManager::install("DescTools")
+if (!requireNamespace("compareGroups", quietly = TRUE))
+  BiocManager::install("compareGroups")
 
 library(stats)
 library(rstatix)
 library(DescTools) # Dunns Test
+library(compareGroups)
 library(car) # leveneTest
 
 if (!requireNamespace("R.utils", quietly = TRUE))
