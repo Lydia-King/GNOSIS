@@ -22,6 +22,8 @@
 ## Install and load up libraries 
 # Shiny Dashboard setup
 
+options(warn = 2)
+
 if (!require("BiocManager", quietly = TRUE))
   install.packages("BiocManager")
 library(BiocManager)
