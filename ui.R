@@ -29,7 +29,7 @@ ui <- dashboardPage(
     
     # Create side-bar menu with all tab options:
     sidebar = dashboardSidebar(tags$style(".left-side, .main-sidebar {padding-top: 60px}"), width = 195,
-                               sidebarMenu(menuItem("Input Files", tabName = "input_files", icon = fa_i(name ="file-alt")),
+                               sidebarMenu(menuItem("Input Files", tabName = "input_files", icon = fa_i(name ="file-alt", verify_fa = FALSE)),
                                            menuItem("Exploratory Tables", tabName = "tables", icon = fa_i(name ="table")),
                                            menuItem("Recode/Subset Data", tabName = "Recode1", icon = fa_i(name ="sort-alpha-down"),
                                                     menuSubItem("Variable Types/Levels", tabName = "FactorLevels"),
