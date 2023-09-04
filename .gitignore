@@ -1,0 +1,9 @@
+# Don't track content of these folders
+.Rproj.user/
+rsconnect/
+
+# Don't track these file types
+.Rhistory
+.Rproj
+.Rdata
+GNOSIS.Rproj

@@ -1,0 +1,61 @@
+---
+title: "GNOSIS: Genomics explorer using statistical and survival analysis in R"
+author:
+- name: Lydia King
+  affiliation: [
+    "University of Galway, Ireland"
+  ]
+package: GNOSIS
+output:
+  BiocStyle::html_document:
+    toc: false
+vignette: >
+  %\VignetteIndexEntry{GNOSIS Overview}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+# GNOSIS
+
+`GNOSIS` is a `shiny` app that enables the exploration, visualisation and 
+analysis of clinical and CNA summary data uploaded manually or obtained 
+from cBioPortal, through `cBioPortalData`. GNOSIS provides an intuitive 
+GUI with multiple tab panels supporting a range of functionalities including 
+data upload and initial exploration, data recoding and subsetting, multiple 
+visualisations, survival analysis, statistical analysis and mutation analysis.
+
+# Installation
+
+```{r, eval=FALSE}
+if (!requireNamespace("BiocManager", quietly = TRUE)) {
+    install.packages("BiocManager")
+}
+
+BiocManager::install("GNOSIS")
+```
+
+# Loading the package
+
+```{r,include=TRUE, results="hide", message=FALSE, warning=FALSE}
+library(GNOSIS)
+```
+
+# Launching GNOSIS
+
+```{r, eval=FALSE}
+GNOSIS()
+```
+
+# Operation
+
+For details on the implementation, layout and application of GNOSIS see the corresponding [publication](https://hrbopenresearch.org/articles/5-8#). 
+Demonstration videos providing a walkthrough of GNOSIS are also provided on [Zenodo](https://zenodo.org/record/5788659). 
+
+# Session Info
+
+```{r}
+sessionInfo()
+```
+
+```{r}
+```

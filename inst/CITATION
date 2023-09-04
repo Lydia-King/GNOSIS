@@ -1,0 +1,21 @@
+citHeader("To cite GNOSIS in publications, use:")
+
+bibentry(
+    bibtype = "Article",
+    title = "GNOSIS: an R Shiny app supporting cancer genomics survival analysis with cBioPortal",
+    author = personList(
+        as.person("Lydia King"),
+        as.person("Andrew Flaus"),
+        as.person("Simone Coughlan"),
+        as.person("Emma Holian"),
+        as.person("Aaron Golden")
+    ),
+    journal = "HRB Open Res",
+    volume = "5",
+    pages = "8",
+    year = "2022",
+    doi = "10.12688/hrbopenres.13476.2",
+    note = "PMID: 35677713",
+    URL = "https://doi.org/10.12688/hrbopenres.13476.2",
+    eprint = "https://doi.org/10.12688/hrbopenres.13476.2"
+)
