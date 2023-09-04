@@ -8,7 +8,7 @@ statistical analysis and mutation analysis, in addition to facilitating reproduc
 
 Available at: https://lydiaking.shinyapps.io/GNOSIS/
 
-Can be run using: ```shiny::runGitHub(repo = 'GNOSIS', username = 'Lydia-King', ref="main")```
+Can be run using: ```shiny::runGitHub(repo = 'GNOSIS', username = 'Lydia-King', ref="GNOSIS_Software_Tool_Article")```
 
 Can also be run by cloning repo, navigating into repo and running server.R file. 
 
