@@ -1,0 +1,18 @@
+Title: Genomics explorer using statistical and survival analysis in R
+Version: 1.0.0
+Description: GNOSIS incorporates a range of R packages enabling users to 
+    efficiently explore and visualise clinical and genomic data obtained
+    from cBioPortal. GNOSIS uses an intuitive GUI and multiple tab panels 
+    supporting a range of functionalities. These include data upload and initial 
+    exploration, data recoding and subsetting, multiple visualisations, 
+    survival analysis, statistical analysis and mutation analysis, in addition 
+    to facilitating reproducible research.
+Authors@R: c( 
+    person("Lydia", "King", ,"l.king18@universityofgalway.ie",
+      c("aut", "cre"), c(ORCID = "0000-0002-0696-9811")
+    )
+  )
+License: MIT + file LICENSE
+BugReports: https://github.com/Lydia-King/GNOSIS/issues
+URL: https://github.com/Lydia-King/GNOSIS/
+Video: https://doi.org/10.5281/zenodo.5788544
