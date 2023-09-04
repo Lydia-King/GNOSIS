@@ -1,2 +1,5 @@
-Changes in version 0.99.0 (2023-09-01)
+Changes in version 1.99.0 (2023-09-04)
++ Made the following significant changes
+  o added functionality to select and upload cBioPortal study 
+  o deprecated ability to save R script with executed code
 + Submitted to Bioconductor

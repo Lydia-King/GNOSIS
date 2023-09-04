@@ -30,8 +30,6 @@
 #'     GNOSIS()
 #' }
 #' @export
-
-
 GNOSIS <- function(...) {
     # Global options
     options(warn = 0)
