@@ -217,7 +217,7 @@ Tab8_Adjusted_Survival_Curves_Server <-
                             if (is.factor(..(datalist1[[data]]())[, varname]) |
                                 is.character(..(datalist1[[data]]())[, varname])) {
                                 Lev[, c(varname)] <-
-                                    GNOSIS:::getmode(..(datalist1[[data]]())[, varname])
+                                    getmode(..(datalist1[[data]]())[, varname])
                             } else {
                                 Lev <- mutate(
                                     Lev,

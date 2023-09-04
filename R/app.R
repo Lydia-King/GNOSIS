@@ -17,7 +17,8 @@
 #' @return Mainly called for the side effect of displaying the shiny app in a
 #'   browser
 #'
-#' @import DT fontawesome shinycssloaders cBioPortalData shinyjs reshape2 RColorBrewer survival survminer stats compareGroups rpart partykit
+#' @import DT fontawesome shinycssloaders cBioPortalData shinyjs reshape2 
+#' RColorBrewer survival survminer stats compareGroups rpart partykit 
 #' @importFrom DescTools DunnTest
 #' @importFrom car leveneTest
 #' @importFrom rstatix shapiro_test

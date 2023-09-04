@@ -41,7 +41,7 @@ Tab9_RPST_Rpart_Server <-
             Whole_Data_Rpart <- metaReactive2({
                 metaExpr({
                     ..(datalist1[[data]]())[..(datalist1[[data]]())[, ..(input$Tab9_Rpart_Survival_Time)] > 0, ] %>%
-                        GNOSIS:::completeFun(data = ., c(
+                        completeFun(data = ., c(
                             ..(input$Tab9_Rpart_Survival_Time),
                             ..(input$Tab9_Rpart_Event_Status),
                             ..(input$Tab9_Rpart_Select_Variables)
@@ -259,7 +259,7 @@ Tab9_RPST_Ctree_Server <-
             Whole_Data_Ctree <- metaReactive2({
                 if (input$Tab9_Ctree_Use_Complete_Cases_Only == TRUE) {
                     metaExpr({
-                        ..(datalist1[[data]]()) %>% GNOSIS:::completeFun(data = ., c(
+                        ..(datalist1[[data]]()) %>% completeFun(data = ., c(
                             ..(input$Tab9_Ctree_Survival_Time),
                             ..(input$Tab9_Ctree_Event_Status),
                             ..(input$Tab9_Ctree_Select_Variables)
@@ -267,7 +267,7 @@ Tab9_RPST_Ctree_Server <-
                     })
                 } else {
                     metaExpr({
-                        ..(datalist1[[data]]()) %>% GNOSIS:::completeFun(data = ., c(..(
+                        ..(datalist1[[data]]()) %>% completeFun(data = ., c(..(
                             input$Tab9_Ctree_Event_Status
                         )))
                     })
