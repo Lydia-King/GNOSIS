@@ -22,14 +22,15 @@ Can also be run by cloning repo on GNOSIS_Software_Tool_Article branch, navigati
 
 The current version of GNOSIS can be installed and initialised using 
 
-1) runGitHub
+**1) runGitHub**
 
-```
-shiny::runGitHub(repo = 'GNOSIS', username = 'Lydia-King', ref="GNOSIS_Software_Tool_Article")
+```{r,eval=FALSE}
+shiny::runGitHub(repo = 'GNOSIS', username = 'Lydia-King', ref="main")
 ```
 
-2) Bioconductor package (TBC)
-```
+**2) Bioconductor package (TBC)**
+
+```{r,eval=FALSE}
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
