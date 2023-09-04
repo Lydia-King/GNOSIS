@@ -22,7 +22,7 @@ Can also be run by cloning repo on GNOSIS_Software_Tool_Article branch, navigati
 
 ### **GNOSIS Current Version** 
 
-The current version of GNOSIS can be installed and initialised using 
+The current version of GNOSIS can be installed and initialised using:
 
 **1. runGitHub**
 
