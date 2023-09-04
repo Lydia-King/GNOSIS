@@ -33,7 +33,7 @@ The current version of GNOSIS can be installed and initialised using:
 shiny::runGitHub(repo = 'GNOSIS', username = 'Lydia-King', ref="main")
 ```
 
-**2. Bioconductor package (TBC)**
+**2. Via Bioconductor**
 
 ``` r
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
