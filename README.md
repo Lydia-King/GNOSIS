@@ -12,7 +12,9 @@ statistical analysis and mutation analysis, in addition to facilitating reproduc
 
 The version of GNOSIS published in [HRB Open Research](https://hrbopenresearch.org/articles/5-8) can be found on the GNOSIS_Software_Tool_Article branch and initialised using:  
 
-```shiny::runGitHub(repo = 'GNOSIS', username = 'Lydia-King', ref="GNOSIS_Software_Tool_Article")```
+``` r
+shiny::runGitHub(repo = 'GNOSIS', username = 'Lydia-King', ref="GNOSIS_Software_Tool_Article")
+```
 
 Also available at: https://lydiaking.shinyapps.io/GNOSIS/
 
@@ -24,13 +26,13 @@ The current version of GNOSIS can be installed and initialised using
 
 **1) runGitHub**
 
-```{r,eval=FALSE}
+``` r
 shiny::runGitHub(repo = 'GNOSIS', username = 'Lydia-King', ref="main")
 ```
 
 **2) Bioconductor package (TBC)**
 
-```{r,eval=FALSE}
+``` r
 if (!requireNamespace("BiocManager", quietly = TRUE)) {
     install.packages("BiocManager")
 }
