@@ -46,6 +46,18 @@ library(GNOSIS)
 GNOSIS()
 ```
 
+# GNOSIS Layout 
+
+The GNOSIS GUI has 4 main elements:
+(1) A sidebar where each analysis tab can be selected, the Exploratory Tables tab is selected and displayed. 
+(2) Tab panels within each tab, allowing multiple operations to be carried out and viewed in the one tab. 
+(3) A box sidebar allowing users to select inputs, alter arguments and customise and export visualisations. 
+(4) Main viewing panel displaying output.
+
+```{r,echo=FALSE}
+knitr::include_graphics("figures/GNOSIS_Pic.png")
+```
+
 # Operation
 
 For details on the implementation, layout and application of GNOSIS see the corresponding [publication](https://hrbopenresearch.org/articles/5-8#). 
@@ -55,7 +67,4 @@ Demonstration videos providing a walkthrough of GNOSIS are also provided on [Zen
 
 ```{r}
 sessionInfo()
-```
-
-```{r}
 ```
