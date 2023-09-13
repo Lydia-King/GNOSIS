@@ -245,8 +245,10 @@ knitr::include_graphics("figures/GNOSIS_Input_Log.png")
 
 # Additional Resources
 
-For details on the implementation, layout and application of GNOSIS see the corresponding [publication](https://hrbopenresearch.org/articles/5-8#). 
-Demonstration videos providing a walkthrough of GNOSIS are also provided on [Zenodo](https://zenodo.org/record/5788659). 
+For details on the implementation, layout and application of GNOSIS see the 
+corresponding [publication](https://hrbopenresearch.org/articles/5-8#). 
+Demonstration videos providing a walkthrough of GNOSIS are also provided on 
+[Zenodo](https://zenodo.org/record/5788659). 
 
 # Session Info
 
