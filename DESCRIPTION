@@ -17,12 +17,12 @@ Authors@R: c(
   )
 License: MIT + file LICENSE
 Imports:
-    DT, 
-    fontawesome, 
-    shinycssloaders, 
-    cBioPortalData, 
-    shinyjs, 
-    reshape2, 
+    DT,
+    fontawesome,
+    shinycssloaders,
+    cBioPortalData,
+    shinyjs,
+    reshape2,
     RColorBrewer,
     survival,
     survminer,
@@ -34,7 +34,8 @@ Imports:
     car,
     rstatix,
     fabricatr,
-    shinylogs
+    shinylogs,
+    magrittr
 Depends: 
     R (>= 4.3.0), 
     shiny, 
