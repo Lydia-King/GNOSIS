@@ -1,7 +1,7 @@
 Package: GNOSIS
 Type: Package
 Title: Genomics explorer using statistical and survival analysis in R
-Version: 0.99.1
+Version: 0.99.2
 Description: GNOSIS incorporates a range of R packages enabling users to 
     efficiently explore and visualise clinical and genomic data obtained
     from cBioPortal. GNOSIS uses an intuitive GUI and multiple tab panels 
