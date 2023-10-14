@@ -12,7 +12,7 @@ Tab10_MAF_Text_Summary_UI <- function(id) {
             h5(strong(
                 "Basic summary of inputted Mutation/MAF file:"
             )),
-            shinycssloaders::withSpinner(verbatimTextOutput(ns("MAF1")))
+            withSpinner(verbatimTextOutput(ns("MAF1")))
         ),
         tabPanel(
             "Sample Summary",
@@ -22,7 +22,7 @@ Tab10_MAF_Text_Summary_UI <- function(id) {
             h5(
                 strong("Basic sample summary of inputted Mutation/MAF file:")
             ),
-            shinycssloaders::withSpinner(verbatimTextOutput(ns("MAF2")))
+            withSpinner(verbatimTextOutput(ns("MAF2")))
         ),
         tabPanel(
             "Gene Summary",
@@ -32,7 +32,7 @@ Tab10_MAF_Text_Summary_UI <- function(id) {
             h5(strong(
                 "Basic gene summary of inputted Mutation/MAF file:"
             )),
-            shinycssloaders::withSpinner(verbatimTextOutput(ns("MAF3")))
+            withSpinner(verbatimTextOutput(ns("MAF3")))
         ),
         tabPanel(
             "All Fields Summary",
@@ -40,7 +40,7 @@ Tab10_MAF_Text_Summary_UI <- function(id) {
             status = "primary",
             solidHeader = TRUE,
             h5(strong("All fields in Mutation/MAF file:")),
-            shinycssloaders::withSpinner(verbatimTextOutput(ns("MAF4")))
+            withSpinner(verbatimTextOutput(ns("MAF4")))
         ),
         tabPanel(
             "Clinical Data",
@@ -50,7 +50,7 @@ Tab10_MAF_Text_Summary_UI <- function(id) {
             h5(strong(
                 "Clinical data associated with samples:"
             )),
-            shinycssloaders::withSpinner(verbatimTextOutput(ns("MAFClin")))
+            withSpinner(verbatimTextOutput(ns("MAFClin")))
         )
     )
 }
@@ -84,7 +84,7 @@ Tab10_MAF_Visual_Summary_UI <- function(id) {
                     id = "Tab10_MAF_Summary_Sidebar",
                     width = 25,
                     background = "#599740",
-                    icon = shiny::icon("rectangle-list"),
+                    icon = icon("rectangle-list"),
                     h5(strong("Options:")),
                     prettyToggle(
                         inputId = ns("Tab10_Summary_Remove_Outlier"),
@@ -150,7 +150,7 @@ Tab10_MAF_Visual_Summary_UI <- function(id) {
                         style = "width:100%;"
                     )
                 ),
-                shinycssloaders::withSpinner(plotOutput(ns("summaryMAF"), height = "720px"))
+                withSpinner(plotOutput(ns("summaryMAF"), height = "720px"))
             )
         ),
         tabPanel(
@@ -179,7 +179,7 @@ Tab10_MAF_Visual_Summary_UI <- function(id) {
                     id = "Tab10_OncoPlot_Sidebar",
                     width = 25,
                     background = "#599740",
-                    icon = shiny::icon("rectangle-list"),
+                    icon = icon("rectangle-list"),
                     h5(strong("Options:")),
                     sliderInput(
                         inputId = ns("Tab10_Oncoplot_Display_Top_Genes"),
@@ -217,7 +217,7 @@ Tab10_MAF_Visual_Summary_UI <- function(id) {
                         style = "width:100%;"
                     )
                 ),
-                shinycssloaders::withSpinner(plotOutput(ns("oncoplotMAF"), height = "530px"))
+                withSpinner(plotOutput(ns("oncoplotMAF"), height = "530px"))
             ),
             box(
                 collapsible = TRUE,
@@ -243,7 +243,7 @@ Tab10_MAF_Visual_Summary_UI <- function(id) {
                     id = "Tab10_Oncostrip_Sidebar",
                     width = 25,
                     background = "#599740",
-                    icon = shiny::icon("rectangle-list"),
+                    icon = icon("rectangle-list"),
                     h5(strong("Options:")),
                     selectInput(
                         ns("Tab10_Oncostrip_Select_Gene_1"),
@@ -289,7 +289,7 @@ Tab10_MAF_Visual_Summary_UI <- function(id) {
                         style = "width:100%;"
                     )
                 ),
-                shinycssloaders::withSpinner(plotOutput(ns("oncostripMAF"), height = "530px"))
+                withSpinner(plotOutput(ns("oncostripMAF"), height = "530px"))
             ),
             box(
                 collapsible = TRUE,
@@ -315,7 +315,7 @@ Tab10_MAF_Visual_Summary_UI <- function(id) {
                     id = "Tab10_TT_Sidebar",
                     width = 25,
                     background = "#599740",
-                    icon = shiny::icon("rectangle-list"),
+                    icon = icon("rectangle-list"),
                     h5(strong("Options:")),
                     prettyToggle(
                         inputId = ns("Tab10_TT_Plot_Fraction"),
@@ -360,7 +360,7 @@ Tab10_MAF_Visual_Summary_UI <- function(id) {
                         style = "width:100%;"
                     )
                 ),
-                shinycssloaders::withSpinner(plotOutput(ns("TandT"), height = "530px"))
+                withSpinner(plotOutput(ns("TandT"), height = "530px"))
             )
         ),
         tabPanel(
@@ -416,12 +416,12 @@ Tab10_MAF_Visual_Summary_UI <- function(id) {
                     solidHeader = TRUE,
                     status = "primary",
                     height = "480px",
-                    shinycssloaders::withSpinner(plotOutput(ns("lol1"), height = "480px")),
+                    withSpinner(plotOutput(ns("lol1"), height = "480px")),
                     sidebar = boxSidebar(
                         id = "Tab10_Lollipop_Plot1_Sidebar",
                         width = 25,
                         background = "#599740",
-                        icon = shiny::icon("rectangle-list"),
+                        icon = icon("rectangle-list"),
                         h5(strong("Options:")),
                         selectInput(
                             ns("Tab10_Lollipop_Position_Label_1"),
@@ -531,12 +531,12 @@ Tab10_MAF_Visual_Summary_UI <- function(id) {
                     solidHeader = TRUE,
                     status = "primary",
                     height = "480px",
-                    shinycssloaders::withSpinner(plotOutput(ns("lol2"), height = "480px")),
+                    withSpinner(plotOutput(ns("lol2"), height = "480px")),
                     sidebar = boxSidebar(
                         id = "Tab10_Lollipop_Plot2_Sidebar",
                         width = 25,
                         background = "#599740",
-                        icon = shiny::icon("rectangle-list"),
+                        icon = icon("rectangle-list"),
                         h5(strong("Options:")),
                         selectInput(
                             ns("Tab10_Lollipop_Position_Label_2"),
@@ -645,13 +645,13 @@ Tab10_MAF_Visual_Summary_UI <- function(id) {
                     width = 12,
                     solidHeader = TRUE,
                     status = "primary",
-                    shinycssloaders::withSpinner(plotOutput(ns("lol3"), height = "480px")),
+                    withSpinner(plotOutput(ns("lol3"), height = "480px")),
                     height = "480px",
                     sidebar = boxSidebar(
                         id = "Tab10_Lollipop_Plot3_Sidebar",
                         width = 25,
                         background = "#599740",
-                        icon = shiny::icon("rectangle-list"),
+                        icon = icon("rectangle-list"),
                         h5(strong("Options:")),
                         selectInput(
                             ns("Tab10_Lollipop_Position_Label_3"),
@@ -777,13 +777,13 @@ Tab10_MAF_Visual_Summary_UI <- function(id) {
                 width = 12,
                 solidHeader = TRUE,
                 status = "primary",
-                shinycssloaders::withSpinner(plotOutput(ns("Mutload"), height = "500px")),
+                withSpinner(plotOutput(ns("Mutload"), height = "500px")),
                 height = "580px",
                 sidebar = boxSidebar(
                     id = "Tab10_Mutation_Load_Sidebar",
                     width = 25,
                     background = "#599740",
-                    icon = shiny::icon("rectangle-list"),
+                    icon = icon("rectangle-list"),
                     h5(strong("Options:")),
                     numericInput(
                         ns("Tab10_Mutation_Load_Plot_Width"),
@@ -820,13 +820,13 @@ Tab10_MAF_Visual_Summary_UI <- function(id) {
                 width = 12,
                 solidHeader = TRUE,
                 status = "primary",
-                shinycssloaders::withSpinner(plotOutput(ns("VAF1"), height = "500px")),
+                withSpinner(plotOutput(ns("VAF1"), height = "500px")),
                 height = "540px",
                 sidebar = boxSidebar(
                     id = "Tab10_Somatic_Interaction_Sidebar",
                     width = 25,
                     background = "#599740",
-                    icon = shiny::icon("rectangle-list"),
+                    icon = icon("rectangle-list"),
                     h5(strong("Options:")),
                     sliderInput(
                         ns("Tab10_SIP_Display_Top_Genes"),

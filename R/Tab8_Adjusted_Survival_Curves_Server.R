@@ -94,9 +94,9 @@ Tab8_Adjusted_Survival_Curves_Server <-
                     metaExpr({
                         Levels_Vector_1 <- Levels_Rep <- c()
 
-                        for (n_levels_1 in 1:length(levels(as.factor(..(
+                        for (n_levels_1 in seq.int(from = 1, to = length(levels(as.factor(..(
                             datalist1[[data]]()
-                        )[, ..(input$Tab8_Adjusted_Curves_Select_Variable_2)])))) {
+                        )[, ..(input$Tab8_Adjusted_Curves_Select_Variable_2)]))))) {
                             Levels_Vector_1 <- c(
                                 Levels_Vector_1,
                                 c(rep(
@@ -112,9 +112,9 @@ Tab8_Adjusted_Survival_Curves_Server <-
                             )
                         }
 
-                        for (n_levels_2 in 1:length(levels(as.factor(..(
+                        for (n_levels_2 in seq.int(from = 1, to = length(levels(as.factor(..(
                             datalist1[[data]]()
-                        )[, ..(input$Tab8_Adjusted_Curves_Select_Variable_1)])))) {
+                        )[, ..(input$Tab8_Adjusted_Curves_Select_Variable_1)]))))) {
                             Levels_Rep <- c(
                                 Levels_Rep,
                                 levels(as.factor(
@@ -131,7 +131,7 @@ Tab8_Adjusted_Survival_Curves_Server <-
                             ))))
 
                         Lev <-
-                            data.frame("Row" = 1:length(Levels_Vector_2)) %>%
+                            data.frame("Row" = seq.int(from = 1, to = length(Levels_Vector_2))) %>%
                             mutate(
                                 !!..(
                                     input$Tab8_Adjusted_Curves_Select_Variable_1
@@ -154,9 +154,9 @@ Tab8_Adjusted_Survival_Curves_Server <-
                     metaExpr({
                         Levels_Vector_1 <- Levels_Rep <- c()
 
-                        for (n_levels_1 in 1:length(levels(as.factor(..(
+                        for (n_levels_1 in seq.int(from = 1, to = length(levels(as.factor(..(
                             datalist1[[data]]()
-                        )[, ..(input$Tab8_Adjusted_Curves_Select_Variable_2)])))) {
+                        )[, ..(input$Tab8_Adjusted_Curves_Select_Variable_2)]))))) {
                             Levels_Vector_1 <- c(
                                 Levels_Vector_1,
                                 c(rep(
@@ -172,9 +172,9 @@ Tab8_Adjusted_Survival_Curves_Server <-
                             )
                         }
 
-                        for (n_levels_2 in 1:length(levels(as.factor(..(
+                        for (n_levels_2 in seq.int(from = 1, to = length(levels(as.factor(..(
                             datalist1[[data]]()
-                        )[, ..(input$Tab8_Adjusted_Curves_Select_Variable_1)])))) {
+                        )[, ..(input$Tab8_Adjusted_Curves_Select_Variable_1)]))))) {
                             Levels_Rep <- c(
                                 Levels_Rep,
                                 levels(as.factor(
@@ -191,7 +191,7 @@ Tab8_Adjusted_Survival_Curves_Server <-
                             ))))
 
                         Lev <-
-                            data.frame("Row" = 1:length(Levels_Vector_2)) %>%
+                            data.frame("Row" = seq.int(from = 1, to = length(Levels_Vector_2))) %>%
                             mutate(
                                 !!..(
                                     input$Tab8_Adjusted_Curves_Select_Variable_1
@@ -209,9 +209,9 @@ Tab8_Adjusted_Survival_Curves_Server <-
                                 )
                             )
 
-                        for (constant_var in 1:length(..(
+                        for (constant_var in seq.int(from = 1, to = length(..(
                             input$Tab8_Adjusted_Curves_Select_Constant_Variable
-                        ))) {
+                        )))) {
                             varname <-
                                 ..(input$Tab8_Adjusted_Curves_Select_Constant_Variable)[constant_var]
                             if (is.factor(..(datalist1[[data]]())[, varname]) |
@@ -233,7 +233,7 @@ Tab8_Adjusted_Survival_Curves_Server <-
             })
 
             output$preddata <- metaRender(renderDataTable, {
-                DT::datatable(
+                datatable(
                     ..(NewData()),
                     options = list(
                         lengthMenu = c(10, 30, 50, 100),
@@ -365,8 +365,8 @@ Tab8_Adjusted_Survival_Curves_Server <-
                             )
                         )], sep = "_"))
                         fit <-
-                            survival::survfit(..(previous_model()), newdata = Data)
-                        survminer::ggsurvplot(
+                            survfit(..(previous_model()), newdata = Data)
+                       ggsurvplot(
                             fit,
                             data = Data,
                             censor.shape = "",
@@ -435,12 +435,12 @@ Tab8_Adjusted_Survival_Curves_Server <-
                             )
                         )], sep = "_"))
                         fit <-
-                            survival::survfit(..(previous_model()),
+                            survfit(..(previous_model()),
                                 newdata = Data[Data[, c(..(
                                     input$Tab8_Adjusted_Curves_Select_Variable_1
                                 ))] %in% ..(input$Tab8_Download_Adjusted_Curves_Select), ]
                             )
-                        survminer::ggsurvplot(
+                       ggsurvplot(
                             fit,
                             data = Data,
                             censor.shape = "",

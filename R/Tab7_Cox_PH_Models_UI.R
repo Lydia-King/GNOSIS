@@ -6,7 +6,7 @@ Tab7_Univariate_CoxPH <- function(id) {
         box(
             title = "Univariate Cox Proportional Hazards Model",
             dropdownMenu = boxDropdown(
-                icon = fontawesome::fa_i(name = "info-circle", verify_fa = FALSE),
+                icon = fa_i(name = "info-circle", verify_fa = FALSE),
                 boxDropdownItem(
                     HTML(paste(
                         "Useful Resources for Cox Models:", "<br/>"
@@ -25,15 +25,15 @@ Tab7_Univariate_CoxPH <- function(id) {
             solidHeader = TRUE,
             width = 12,
             status = "primary",
-            shinycssloaders::withSpinner(verbatimTextOutput(ns("CoxModelOut"), placeholder = TRUE)),
+            withSpinner(verbatimTextOutput(ns("CoxModelOut"), placeholder = TRUE)),
             br(),
             h4(strong("Adjusted P-values:")),
-            shinycssloaders::withSpinner(dataTableOutput(ns("UniAdjusted"))),
+            withSpinner(dataTableOutput(ns("UniAdjusted"))),
             sidebar = boxSidebar(
                 id = "Tab7_Univariate_Cox_Sidebar",
                 width = 25,
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 selectizeInput(
                     ns("Tab7_Univariate_Cox_Survival_Time"),
                     "Survival Time:",
@@ -71,7 +71,7 @@ Tab7_Multivariate_CoxPH <- function(id) {
             width = 12,
             status = "primary",
             dropdownMenu = boxDropdown(
-                icon = fontawesome::fa_i(name = "info-circle", verify_fa = FALSE),
+                icon = fa_i(name = "info-circle", verify_fa = FALSE),
                 boxDropdownItem(
                     HTML(paste(
                         "Useful Resources for Cox Models:", "<br/>"
@@ -86,7 +86,7 @@ Tab7_Multivariate_CoxPH <- function(id) {
                     )
                 )
             ),
-            shinycssloaders::withSpinner(verbatimTextOutput(
+            withSpinner(verbatimTextOutput(
                 ns("CoxModelMultiOut"),
                 placeholder = TRUE
             )),
@@ -100,7 +100,7 @@ Tab7_Multivariate_CoxPH <- function(id) {
                 id = "Tab7_Multivariable_Cox_Sidebar",
                 width = 25,
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 selectizeInput(
                     ns("Tab7_Multivariable_Cox_Survival_Time"),
                     "Survival Time:",
@@ -164,7 +164,7 @@ Tab7_Assumption_CoxPH <- function(id) {
             width = 12,
             status = "primary",
             dropdownMenu = boxDropdown(
-                icon = fontawesome::fa_i(name = "info-circle", verify_fa = FALSE),
+                icon = fa_i(name = "info-circle", verify_fa = FALSE),
                 boxDropdownItem(
                     HTML(paste(
                         "Useful Resources for Cox Models:", "<br/>"
@@ -183,14 +183,14 @@ Tab7_Assumption_CoxPH <- function(id) {
                 id = "Tab7_Cox_Assumptions_Sidebar",
                 width = 25,
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 h5(strong("Options:")),
                 prettyToggle(
                     inputId = ns("Tab7_Cox_Assumptions_Display_by_Variable"),
                     label_on = "Display by Variable",
                     label_off = "Display by Variable",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 tags$hr(width = "96%"),
                 numericInput(
@@ -221,7 +221,7 @@ Tab7_Assumption_CoxPH <- function(id) {
                     style = "width:96%;"
                 )
             ),
-            shinycssloaders::withSpinner(plotOutput(ns(
+            withSpinner(plotOutput(ns(
                 "AssumptionsCox"
             ), height = "600px"))
         )

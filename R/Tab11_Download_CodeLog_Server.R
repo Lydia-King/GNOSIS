@@ -1,7 +1,7 @@
 # Server function to download log
 Tab11_Log_Server <- function(id, data_inputs) {
     moduleServer(id, function(input, output, session) {
-        shinylogs::track_usage(
+        track_usage(
             storage_mode = store_null(console = TRUE),
             what = "input",
             exclude_input_regex = "tab11",
@@ -126,7 +126,7 @@ Tab11_Log_Server <- function(id, data_inputs) {
             }
         })
 
-        output$InputLog <- DT::renderDataTable(
+        output$InputLog <- renderDataTable(
             {
                 Log_DataFrame()
             },

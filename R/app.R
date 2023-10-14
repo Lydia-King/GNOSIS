@@ -16,9 +16,29 @@
 #'
 #' @return Mainly called for the side effect of displaying the shiny app in a
 #'   browser
-#'
-#' @import DT fontawesome shinycssloaders cBioPortalData shinyjs reshape2 
-#' RColorBrewer survival survminer stats compareGroups rpart partykit 
+#'     
+#' @import stats 
+#' @import shinydashboard
+#' @import shinydashboardPlus
+#' @import dashboardthemes
+#' @import shinyWidgets
+#' @import shinymeta
+#' @import tidyverse
+#' @import operator.tools
+#' @import maftools
+#' @import shiny
+#' @importFrom shinycssloaders withSpinner 
+#' @importFrom shinyjs hide show html useShinyjs
+#' @importFrom rpart rpart rpart.control
+#' @importFrom survival survfit survdiff coxph cox.zph Surv 
+#' @importFrom survminer ggsurvplot ggcoxzph
+#' @importFrom compareGroups compareGroups createTable
+#' @importFrom fontawesome fa_i
+#' @importFrom partykit as.party ctree ctree_control
+#' @importFrom reshape2 melt
+#' @importFrom cBioPortalData cBioPortal getStudies downloadStudy untarStudy
+#' @importFrom RColorBrewer brewer.pal
+#' @importFrom DT dataTableOutput datatable renderDataTable
 #' @importFrom DescTools DunnTest
 #' @importFrom car leveneTest
 #' @importFrom rstatix shapiro_test

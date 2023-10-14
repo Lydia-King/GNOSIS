@@ -36,6 +36,7 @@ Imports:
     fabricatr,
     shinylogs
 Depends: 
+    R (>= 4.3.0), 
     shiny, 
     shinydashboard, 
     shinydashboardPlus, 

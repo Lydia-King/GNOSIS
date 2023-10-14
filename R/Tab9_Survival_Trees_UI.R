@@ -9,11 +9,11 @@ Tab9_Rpart_UI <- function(id) {
             height = "600px",
             title = "Rpart Survival Tree",
             solidHeader = TRUE,
-            shinycssloaders::withSpinner(plotOutput(ns(
+            withSpinner(plotOutput(ns(
                 "RpartTreePlot"
             ), height = "540px")),
             dropdownMenu = boxDropdown(
-                icon = fontawesome::fa_i(name = "info-circle", verify_fa = FALSE),
+                icon = fa_i(name = "info-circle", verify_fa = FALSE),
                 boxDropdownItem(
                     HTML(
                         paste(
@@ -32,7 +32,7 @@ Tab9_Rpart_UI <- function(id) {
                 id = "Tab9_Rpart_Tree_Sidebar",
                 width = 25,
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 selectizeInput(
                     ns("Tab9_Rpart_Survival_Time"),
                     "Survival Time:",
@@ -114,33 +114,33 @@ Tab9_Rpart_UI <- function(id) {
             status = "primary",
             title = "Corresponding Survival Curves",
             solidHeader = TRUE,
-            shinycssloaders::withSpinner(plotOutput(ns("Surv_Curve1"), height = "510px")),
+            withSpinner(plotOutput(ns("Surv_Curve1"), height = "510px")),
             sidebar = boxSidebar(
                 id = "Tab9_Rpart_Surv_Sidebar",
                 width = 25,
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 h5(strong("Options:")),
                 prettyToggle(
                     inputId = ns("Tab9_Surv_Rpart_Display_CI"),
                     label_on = "Display CI",
                     label_off = "Display CI",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab9_Surv_Rpart_Display_Risk_Table"),
                     label_on = "Display Risk Table",
                     label_off = "Display Risk Table",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab9_Surv_Rpart_Display_Pval"),
                     label_on = "Display P-value",
                     label_off = "Display P-value",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 tags$hr(),
                 selectInput(
@@ -215,9 +215,9 @@ Tab9_Ctree_UI <- function(id) {
             height = "600px",
             title = "Ctree Survival Tree",
             solidHeader = TRUE,
-            shinycssloaders::withSpinner(plotOutput(ns("CTreePlot"), height = "540px")),
+            withSpinner(plotOutput(ns("CTreePlot"), height = "540px")),
             dropdownMenu = boxDropdown(
-                icon = fontawesome::fa_i(name = "info-circle", verify_fa = FALSE),
+                icon = fa_i(name = "info-circle", verify_fa = FALSE),
                 boxDropdownItem(
                     HTML(
                         paste(
@@ -251,7 +251,7 @@ Tab9_Ctree_UI <- function(id) {
                 id = "Tab9_Ctree_Tree_Sidebar",
                 width = 25,
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 selectizeInput(
                     ns("Tab9_Ctree_Survival_Time"),
                     "Survival Time:",
@@ -269,8 +269,8 @@ Tab9_Ctree_UI <- function(id) {
                     inputId = ns("Tab9_Ctree_Use_Complete_Cases_Only"),
                     label_on = "Complete Cases Only",
                     label_off = "Complete Cases Only",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 selectInput(
                     inputId = ns("Tab9_Ctree_Teststat"),
@@ -336,8 +336,8 @@ Tab9_Ctree_UI <- function(id) {
                     inputId = ns("Tab9_Ctree_Stump"),
                     label_on = "Stump",
                     label_off = "Stump",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 tags$hr(),
                 numericInput(
@@ -372,35 +372,35 @@ Tab9_Ctree_UI <- function(id) {
             status = "primary",
             title = "Corresponding Survival Curves",
             solidHeader = TRUE,
-            shinycssloaders::withSpinner(plotOutput(ns(
+            withSpinner(plotOutput(ns(
                 "Surv_CurveCtree"
             ), height = "510px")),
             sidebar = boxSidebar(
                 id = "Tab9_Ctree_Curv_Sidebar",
                 width = 25,
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 h5(strong("Options:")),
                 prettyToggle(
                     inputId = ns("Tab9_Surv_Ctree_Display_CI"),
                     label_on = "Display CI",
                     label_off = "Display CI",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab9_Surv_Ctree_Display_Risk_Table"),
                     label_on = "Display Risk Table",
                     label_off = "Display Risk Table",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab9_Surv_Ctree_Display_Pval"),
                     label_on = "Display P-value",
                     label_off = "Display P-value",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 tags$hr(),
                 selectInput(

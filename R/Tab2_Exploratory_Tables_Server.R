@@ -2,7 +2,7 @@
 Tab2_Exploratory_Tables_Server <-
     function(id, datalist, data, length_px, select_dt) {
         moduleServer(id, function(input, output, session) {
-            shinylogs::track_usage(shinylogs::store_null(console = FALSE),
+            track_usage(store_null(console = FALSE),
                 what = c("input")
             )
 
@@ -122,7 +122,7 @@ Tab2_Exploratory_Tables_Server <-
             })
 
             output$Table <- metaRender(renderDataTable, {
-                DT::datatable(
+                datatable(
                     ..(Create_Table()),
                     selection = select_dt,
                     options = list(

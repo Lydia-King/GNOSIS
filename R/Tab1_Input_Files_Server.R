@@ -5,12 +5,12 @@ Tab1_API_Files_Server <- function(API) {
             metaExpr({
                 tryCatch(
                     {
-                        cbio <- cBioPortalData::cBioPortal(
+                        cbio <- cBioPortal(
                             hostname = "www.cbioportal.org",
                             protocol = "https",
                             api. = "/api/api-docs"
                         )
-                        as.data.frame(cBioPortalData::getStudies(cbio))
+                        as.data.frame(getStudies(cbio))
                     },
                     error = function(e) {
                         message(e)
@@ -133,16 +133,16 @@ Tab1_Input_Files_Manual_Server <- function(id, rowselect) {
                 tryCatch(
                     {
                         metaExpr({
-                            cbio <- cBioPortalData::cBioPortal(
+                            cbio <- cBioPortal(
                                 hostname = "www.cbioportal.org",
                                 protocol = "https",
                                 api. = "/api/api-docs"
                             )
                             API <-
-                                as.data.frame(cBioPortalData::getStudies(cbio))
+                                as.data.frame(getStudies(cbio))
                             samp <- API[..(rowselect()), "studyId"]
                             download <-
-                                cBioPortalData::downloadStudy(samp)
+                                downloadStudy(samp, ask = FALSE)
                             return(list(
                                 download = download,
                                 samp = samp
@@ -174,21 +174,19 @@ Tab1_Input_Files_Manual_Server <- function(id, rowselect) {
                             study <- ..(API_Out())[["download"]]
                             samp <- ..(API_Out())[["samp"]]
                             file_dir <-
-                                cBioPortalData::untarStudy(study, tempdir())
+                                untarStudy(study, tempdir())
 
                             patient_clin_file <-
-                                if (file.exists(paste0(
+                                if (file.exists(file.path(
                                     file_dir,
-                                    "/",
                                     samp,
-                                    "/data_clinical_patient.txt"
+                                    "data_clinical_patient.txt"
                                 ))) {
                                     read.delim(
-                                        paste0(
+                                        file.path(
                                             file_dir,
-                                            "/",
                                             samp,
-                                            "/data_clinical_patient.txt"
+                                            "data_clinical_patient.txt"
                                         ),
                                         header = ..(
                                             input$Tab1_Clin_Header_Yes_or_No
@@ -203,18 +201,16 @@ Tab1_Input_Files_Manual_Server <- function(id, rowselect) {
                                 }
 
                             sample_clin_file <-
-                                if (file.exists(paste0(
+                                if (file.exists(file.path(
                                     file_dir,
-                                    "/",
                                     samp,
-                                    "/data_clinical_sample.txt"
+                                    "data_clinical_sample.txt"
                                 ))) {
                                     read.delim(
-                                        paste0(
+                                        file.path(
                                             file_dir,
-                                            "/",
                                             samp,
-                                            "/data_clinical_sample.txt"
+                                            "data_clinical_sample.txt"
                                         ),
                                         header = ..(
                                             input$Tab1_Sample_Header_Yes_or_No
@@ -229,13 +225,12 @@ Tab1_Input_Files_Manual_Server <- function(id, rowselect) {
                                 }
 
                             CNA_file <-
-                                if (file.exists(paste0(file_dir, "/", samp, "/data_cna.txt"))) {
+                                if (file.exists(file.path(file_dir, samp, "data_cna.txt"))) {
                                     read.delim(
-                                        paste0(
+                                        file.path(
                                             file_dir,
-                                            "/",
                                             samp,
-                                            "/data_cna.txt"
+                                            "data_cna.txt"
                                         ),
                                         header = ..(
                                             input$Tab1_CNA_Header_Yes_or_No
@@ -251,18 +246,16 @@ Tab1_Input_Files_Manual_Server <- function(id, rowselect) {
                                 }
 
                             MAF_file <-
-                                if (file.exists(paste0(
+                                if (file.exists(file.path(
                                     file_dir,
-                                    "/",
                                     samp,
-                                    "/data_mutations.txt"
+                                    "data_mutations.txt"
                                 ))) {
                                     read.delim(
-                                        paste0(
+                                        file.path(
                                             file_dir,
-                                            "/",
                                             samp,
-                                            "/data_mutations.txt"
+                                            "data_mutations.txt"
                                         ),
                                         header = ..(
                                             input$Tab1_MAF_Header_Yes_or_No
@@ -640,15 +633,15 @@ Tab1_Input_Files_Preview_Server <-
             observe({
                 withCallingHandlers(
                     {
-                        shinyjs::html("text", "")
+                        html("text", "")
                         loading_API()
                     },
                     message = function(m) {
-                        print(m$message)
+                        m$message
                         if (m$message != "Displaying Data\n") {
                             hide("Preview")
                             show("text")
-                            shinyjs::html(
+                            html(
                                 id = "text",
                                 html = paste(m$message, "<br>", sep = " "),
                                 add = TRUE

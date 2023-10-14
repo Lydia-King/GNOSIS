@@ -531,7 +531,7 @@ Tab3_CNACalc_Server <-
                         Scores$Del_Score <- abs(Scores$Del_Score)
 
                         if (..(input$Tab3_Segment_CNA_Yes_or_No) == "TRUE") {
-                            Scores$Score_Quartile <- fabricatr::split_quantile(
+                            Scores$Score_Quartile <- split_quantile(
                                 x = Scores$CNA_Score,
                                 type = ..(input$Tab3_Number_of_Segments)
                             )
@@ -553,7 +553,7 @@ Tab3_CNACalc_Server <-
                         }
 
                         if (..(input$Tab3_Segment_CNA_Yes_or_No) == "TRUE") {
-                            CNA_Metrics_All$Subset_Score_Quartile <- fabricatr::split_quantile(
+                            CNA_Metrics_All$Subset_Score_Quartile <- split_quantile(
                                 x = CNA_Metrics_All$CNA_Score,
                                 type = ..(input$Tab3_Number_of_Segments)
                             )

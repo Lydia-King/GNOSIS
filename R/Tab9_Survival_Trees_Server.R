@@ -87,9 +87,9 @@ Tab9_RPST_Rpart_Server <-
                     return(NULL)
                 } else {
                     metaExpr({
-                        rpart::rpart(
+                        rpart(
                             paste(
-                                "survival::Surv(",
+                                "Surv(",
                                 "as.numeric(",
                                 ..(input$Tab9_Rpart_Survival_Time),
                                 ")",
@@ -102,7 +102,7 @@ Tab9_RPST_Rpart_Server <-
                             data = ..(Whole_Data_Rpart()),
                             method = "exp",
                             model = TRUE,
-                            control = rpart::rpart.control(
+                            control = rpart.control(
                                 minsplit = ..(input$Tab9_Rpart_Minsplit),
                                 minbucket = ..(input$Tab9_Rpart_Minbucket),
                                 cp = ..(input$Tab9_Rpart_Cp),
@@ -120,7 +120,7 @@ Tab9_RPST_Rpart_Server <-
                         theme_void()
                 } else {
                     metaExpr({
-                        partykit::as.party(..(pfit()))
+                        as.party(..(pfit()))
                     })
                 }
             })
@@ -144,8 +144,8 @@ Tab9_RPST_Rpart_Server <-
 
             Surv_Curve <- metaReactive2({
                 metaExpr({
-                    survival::survfit(
-                        survival::Surv(as.numeric(Time), as.numeric(as.character(
+                    survfit(
+                        Surv(as.numeric(Time), as.numeric(as.character(
                             Cen
                         ))) ~ Node,
                         data = ..(data_node_info())
@@ -314,10 +314,10 @@ Tab9_RPST_Ctree_Server <-
                     return(NULL)
                 } else {
                     metaExpr({
-                        partykit::ctree(
+                        ctree(
                             as.formula(
                                 paste(
-                                    "survival::Surv(",
+                                    "Surv(",
                                     ..(input$Tab9_Ctree_Survival_Time),
                                     ",",
                                     ..(input$Tab9_Ctree_Event_Status),
@@ -327,7 +327,7 @@ Tab9_RPST_Ctree_Server <-
                                 )
                             ),
                             data = ..(Whole_Data_Ctree()),
-                            control = partykit::ctree_control(
+                            control = ctree_control(
                                 teststat = ..(input$Tab9_Ctree_Teststat),
                                 splitstat = ..(input$Tab9_Ctree_Splitstat),
                                 testtype = ..(input$Tab9_Ctree_Testtype),
@@ -362,7 +362,7 @@ Tab9_RPST_Ctree_Server <-
             data_node_info_ctree <- metaReactive2({
                 metaExpr({
                     ..(Whole_Data_Ctree()) %>%
-                        mutate(Node_Ctree = as.factor(stats::predict(..(
+                        mutate(Node_Ctree = as.factor(predict(..(
                             pfitctree()
                         ), type = "node"))) %>%
                         data.frame(
@@ -376,8 +376,8 @@ Tab9_RPST_Ctree_Server <-
 
             Surv_Curvectree <- metaReactive2({
                 metaExpr({
-                    survival::survfit(
-                        survival::Surv(as.numeric(Time), as.numeric(as.character(
+                    survfit(
+                        Surv(as.numeric(Time), as.numeric(as.character(
                             Cen
                         ))) ~ Node,
                         data = ..(data_node_info_ctree())
@@ -395,7 +395,7 @@ Tab9_RPST_Ctree_Server <-
                         theme_void()
                 } else {
                     metaExpr({
-                        survminer::ggsurvplot(
+                        ggsurvplot(
                             ..(Surv_Curvectree()),
                             censor.shape = "",
                             xlab = ..(input$Tab9_Surv_Ctree_X_Axis_Title),

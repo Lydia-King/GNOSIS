@@ -8,12 +8,12 @@ Tab4_Boxplot_UI <- function(id) {
         height = "650px",
         status = "primary",
         collapsible = TRUE,
-        shinycssloaders::withSpinner(plotOutput(ns("Plot"), height = "590px")),
+        withSpinner(plotOutput(ns("Plot"), height = "590px")),
         sidebar = boxSidebar(
             width = 25,
             id = "Tab4_Boxplot_Sidebar",
             background = "#599740",
-            icon = shiny::icon("rectangle-list"),
+            icon = icon("rectangle-list"),
             selectizeInput(
                 ns("Tab4_Boxplot_Select_X_Variable"),
                 "Select Variable (x):",
@@ -29,15 +29,15 @@ Tab4_Boxplot_UI <- function(id) {
                 inputId = ns("Tab4_Boxplot_by_Sample_Size"),
                 label_on = "Boxplot by Sample Size",
                 label_off = "Boxplot by Sample Size",
-                icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                icon_on = fa_i(name = "check", verify_fa = FALSE),
+                icon_off = fa_i(name = "times", verify_fa = FALSE)
             ),
             prettyToggle(
                 inputId = ns("Tab4_Boxplot_Display_NAs"),
                 label_on = "Display NA Values",
                 label_off = "Display NA Values",
-                icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                icon_on = fa_i(name = "check", verify_fa = FALSE),
+                icon_off = fa_i(name = "times", verify_fa = FALSE)
             ),
             selectInput(
                 ns("Tab4_Boxplot_Legend_Position"),
@@ -108,12 +108,12 @@ Tab4_Scatterplot_UI <- function(id) {
         width = 12,
         height = "650px",
         status = "primary",
-        shinycssloaders::withSpinner(plotOutput(ns("Plot"), height = "590px")),
+        withSpinner(plotOutput(ns("Plot"), height = "590px")),
         sidebar = boxSidebar(
             width = 25,
             id = "Tab4_Scatterplot_Sidebar",
             background = "#599740",
-            icon = shiny::icon("rectangle-list"),
+            icon = icon("rectangle-list"),
             selectizeInput(
                 ns("Tab4_Scatterplot_Select_X_Variable"),
                 "Select Variable (x):",
@@ -134,8 +134,8 @@ Tab4_Scatterplot_UI <- function(id) {
                 inputId = ns("Tab4_Scatterplot_Display_NAs"),
                 label_on = "Display NA Values",
                 label_off = "Display NA Values",
-                icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                icon_on = fa_i(name = "check", verify_fa = FALSE),
+                icon_off = fa_i(name = "times", verify_fa = FALSE)
             ),
             selectInput(
                 ns("Tab4_Scatterplot_Legend_Position"),
@@ -206,12 +206,12 @@ Tab4_Barplot_UI <- function(id) {
         height = "650px",
         status = "primary",
         collapsible = TRUE,
-        shinycssloaders::withSpinner(plotOutput(ns("Plot"), height = "590px")),
+        withSpinner(plotOutput(ns("Plot"), height = "590px")),
         sidebar = boxSidebar(
             width = 25,
             id = "Tab4_Barplot_Sidebar",
             background = "#599740",
-            icon = shiny::icon("rectangle-list"),
+            icon = icon("rectangle-list"),
             selectizeInput(
                 ns("Tab4_Barplot_Select_X_Variable"),
                 "Select Variable (x):",
@@ -227,8 +227,8 @@ Tab4_Barplot_UI <- function(id) {
                 inputId = ns("Tab4_Barplot_Display_NAs"),
                 label_on = "Display NA Values (x)",
                 label_off = "Display NA Values (x)",
-                icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                icon_on = fa_i(name = "check", verify_fa = FALSE),
+                icon_off = fa_i(name = "times", verify_fa = FALSE)
             ),
             selectInput(
                 ns("Tab4_Barplot_Legend_Position"),
@@ -303,7 +303,7 @@ Tab4_Density_UI <- function(id) {
             width = 25,
             id = "Tab4_Density_Histogram_Sidebar",
             background = "#599740",
-            icon = shiny::icon("rectangle-list"),
+            icon = icon("rectangle-list"),
             selectInput(
                 ns("Tab4_Select_Plot_Variable"),
                 "Select Continuous Variable:",
@@ -354,8 +354,8 @@ Tab4_Density_UI <- function(id) {
                         inputId = ns("Tab4_Histogram_Display_NAs"),
                         label_on = "Display NA Values",
                         label_off = "Display NA Values",
-                        icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                        icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                        icon_on = fa_i(name = "check", verify_fa = FALSE),
+                        icon_off = fa_i(name = "times", verify_fa = FALSE)
                     ),
                     selectInput(
                         ns("Tab4_Histogram_Legend_Position"),
@@ -452,8 +452,8 @@ Tab4_Density_UI <- function(id) {
                         inputId = ns("Tab4_Faceted_Histogram_Display_NAs"),
                         label_on = "Display NA Values",
                         label_off = "Display NA Values",
-                        icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                        icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                        icon_on = fa_i(name = "check", verify_fa = FALSE),
+                        icon_off = fa_i(name = "times", verify_fa = FALSE)
                     ),
                     selectInput(
                         ns("Tab4_Faceted_Histogram_Legend_Position"),
@@ -546,8 +546,8 @@ Tab4_Density_UI <- function(id) {
                         inputId = ns("Tab4_Density_Plot_Display_NAs"),
                         label_on = "Display NA Values",
                         label_off = "Display NA Values",
-                        icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                        icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                        icon_on = fa_i(name = "check", verify_fa = FALSE),
+                        icon_off = fa_i(name = "times", verify_fa = FALSE)
                     ),
                     selectInput(
                         ns("Tab4_Density_Plot_Legend_Position"),
@@ -622,8 +622,8 @@ Tab4_Density_UI <- function(id) {
                         inputId = ns("Tab4_Segmented_Density_Plot_Display_Legend"),
                         label_on = "Display Legend",
                         label_off = "Display Legend",
-                        icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                        icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                        icon_on = fa_i(name = "check", verify_fa = FALSE),
+                        icon_off = fa_i(name = "times", verify_fa = FALSE)
                     ),
                     tags$hr(),
                     textInput(
@@ -706,8 +706,8 @@ Tab4_Density_UI <- function(id) {
                         inputId = ns("Tab4_Faceted_Density_Plot_Display_NAs"),
                         label_on = "Display NA Values",
                         label_off = "Display NA Values",
-                        icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                        icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                        icon_on = fa_i(name = "check", verify_fa = FALSE),
+                        icon_off = fa_i(name = "times", verify_fa = FALSE)
                     ),
                     selectInput(
                         ns("Tab4_Faceted_Density_Plot_Legend_Position"),
@@ -807,8 +807,8 @@ Tab4_Density_UI <- function(id) {
                         inputId = ns("Tab4_Both_Plot_Display_NAs"),
                         label_on = "Display NA Values",
                         label_off = "Display NA Values",
-                        icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                        icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                        icon_on = fa_i(name = "check", verify_fa = FALSE),
+                        icon_off = fa_i(name = "times", verify_fa = FALSE)
                     ),
                     selectInput(
                         ns("Tab4_Both_Plot_Legend_Position"),
@@ -904,8 +904,8 @@ Tab4_Density_UI <- function(id) {
                         inputId = ns("Tab4_Faceted_Both_Plot_Display_NAs"),
                         label_on = "Display NA Values",
                         label_off = "Display NA Values",
-                        icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                        icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                        icon_on = fa_i(name = "check", verify_fa = FALSE),
+                        icon_off = fa_i(name = "times", verify_fa = FALSE)
                     ),
                     selectInput(
                         ns("Tab4_Faceted_Both_Plot_Legend_Position"),
@@ -977,13 +977,13 @@ Tab4_Density_UI <- function(id) {
                 condition = "input.Tab4_Select_Histogram_Type == 'Plain'",
                 ns = ns,
                 width = 12,
-                shinycssloaders::withSpinner(plotOutput(ns("CNAHist"), height = "590px"))
+                withSpinner(plotOutput(ns("CNAHist"), height = "590px"))
             ),
             conditionalPanel(
                 condition = "input.Tab4_Select_Histogram_Type == 'Facet Wrap'",
                 ns = ns,
                 width = 12,
-                shinycssloaders::withSpinner(plotOutput(ns("CNAHist1"), height = "590px"))
+                withSpinner(plotOutput(ns("CNAHist1"), height = "590px"))
             )
         ),
         conditionalPanel(
@@ -994,19 +994,19 @@ Tab4_Density_UI <- function(id) {
                 condition = "input.Tab4_Select_Density_Plot_Type == 'Plain'",
                 ns = ns,
                 width = 12,
-                shinycssloaders::withSpinner(plotOutput(ns("CNADist"), height = "590px"))
+                withSpinner(plotOutput(ns("CNADist"), height = "590px"))
             ),
             conditionalPanel(
                 condition = "input.Tab4_Select_Density_Plot_Type == 'Segmented'",
                 ns = ns,
                 width = 12,
-                shinycssloaders::withSpinner(plotOutput(ns("CNADist1"), height = "590px"))
+                withSpinner(plotOutput(ns("CNADist1"), height = "590px"))
             ),
             conditionalPanel(
                 condition = "input.Tab4_Select_Density_Plot_Type == 'Facet Wrap'",
                 ns = ns,
                 width = 12,
-                shinycssloaders::withSpinner(plotOutput(ns("CNADist2"), height = "590px"))
+                withSpinner(plotOutput(ns("CNADist2"), height = "590px"))
             )
         ),
         conditionalPanel(
@@ -1017,13 +1017,13 @@ Tab4_Density_UI <- function(id) {
                 condition = "input.Tab4_Select_Both_Plot_Type == 'Plain'",
                 ns = ns,
                 width = 12,
-                shinycssloaders::withSpinner(plotOutput(ns("CNABoth"), height = "590px"))
+                withSpinner(plotOutput(ns("CNABoth"), height = "590px"))
             ),
             conditionalPanel(
                 condition = "input.Tab4_Select_Both_Plot_Type == 'Facet Wrap'",
                 ns = ns,
                 width = 12,
-                shinycssloaders::withSpinner(plotOutput(ns("CNABoth1"), height = "590px"))
+                withSpinner(plotOutput(ns("CNABoth1"), height = "590px"))
             )
         )
     )

@@ -15,14 +15,43 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-# GNOSIS
+# Introduction
 
-`GNOSIS` is a `shiny` app that enables the exploration, visualisation and 
-analysis of clinical and CNA summary data uploaded manually or obtained 
-from cBioPortal, through `cBioPortalData`. GNOSIS provides an intuitive 
-GUI with multiple tab panels supporting a range of functionalities including 
-data upload and initial exploration, data recoding and subsetting, multiple 
-visualisations, survival analysis, statistical analysis and mutation analysis.
+Exploratory, statistical and survival analysis of cancer genomic data is 
+extremely important and can lead to new discoveries, such as the identification 
+of novel genomic prognostic markers, that have the potential to advance our 
+understanding of cancer and ultimately benefit patients. These analyses are 
+often performed on data available from a number of consortia websites, such as 
+cBio Cancer Genomics Portal (cBioPortal), which is one of the best known and
+commonly used consolidated curations that hosts data from large consortium 
+efforts. While cBioPortal provides both graphical user interface (GUI)-based and 
+representational state transfer mediated means for researchers to explore and 
+analyse clinical and genomics data, its capabilities have their limitations and 
+oftentimes, to explore specific hypotheses, users need to perform a more 
+sophisticated ‘off site’ analysis that typically requires users to have some 
+prior programming experience.  
+
+To overcome these limitations and provide a GUI that facilitates the 
+visualisation and interrogation of cancer genomics data, particularly 
+cBioPortal-hosted data, using standard biostatistical methodologies, we 
+developed an R Shiny app called GeNomics explOrer using StatistIcal and Survival 
+analysis in R (GNOSIS). GNOSIS was initially developed as part of our study, 
+using the METABRIC data, to investigate whether survival outcomes are associated 
+with genomic instability in luminal breast cancers and was further developed to 
+enable the exploration, analysis and incorporation of a diverse range of genomic 
+features with clinical data in a research or clinical setting. 
+
+GNOSIS leverages a number of R packages and provides an intuitive GUI with 
+multiple tab panels supporting a range of functionalities, including data upload 
+and initial exploration, data recoding and subsetting, data visualisations, 
+statistical analysis, mutation analysis and, in particular, survival analysis 
+to identify prognostic markers. In addition, GNOSIS also helps researchers carry 
+out reproducible research by providing downloadable input logs (Shiny_Log.txt)
+from each session. 
+
+GNOSIS has been submitted to Bioconductor to aid researchers in carrying out a 
+reproducable, comprehensive statistical and survival analysis using data 
+obtained from cBioPortal, or otherwise.
 
 # Installation
 

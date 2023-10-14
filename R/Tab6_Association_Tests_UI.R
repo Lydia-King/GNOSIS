@@ -9,7 +9,7 @@ Tab6_Association_Tests_UI <- function(id) {
         status = "primary",
         width = 12,
         dropdownMenu = boxDropdown(
-            icon = fontawesome::fa_i(name = "info-circle", verify_fa = FALSE),
+            icon = fa_i(name = "info-circle", verify_fa = FALSE),
             boxDropdownItem(
                 HTML(
                     paste(
@@ -102,7 +102,7 @@ Tab6_Association_Tests_UI <- function(id) {
             id = "Tab6_Association_Test_Sidebar",
             width = 25,
             background = "#599740",
-            icon = shiny::icon("rectangle-list"),
+            icon = icon("rectangle-list"),
             style = "height:580px; padding:10px",
             selectInput(
                 ns("Tab6_Select_Association_Test"),
@@ -121,41 +121,10 @@ Tab6_Association_Tests_UI <- function(id) {
                 width = "95%"
             ),
             conditionalPanel(
-                condition = "input.Tab6_Select_Association_Test == 'Chi-squared test'",
-                ns = ns,
-                selectizeInput(
-                    ns("Tab6_Select_Categorical_Variable_1"),
-                    "Select Categorical Variable 1:",
-                    choices = "",
-                    width = "95%"
-                ),
-                selectizeInput(
-                    ns("Tab6_Select_Categorical_Variable_2"),
-                    "Select Categorical Variables 2:",
-                    choices = "",
-                    multiple = TRUE,
-                    width = "95%"
-                )
-            ),
-            conditionalPanel(
-                condition = "input.Tab6_Select_Association_Test == 'Fishers exact test'",
-                ns = ns,
-                selectizeInput(
-                    ns("Tab6_Select_Categorical_Variable_1"),
-                    "Select Categorical Variable 1:",
-                    choices = "",
-                    width = "95%"
-                ),
-                selectizeInput(
-                    ns("Tab6_Select_Categorical_Variable_2"),
-                    "Select Categorical Variables 2:",
-                    choices = "",
-                    multiple = TRUE,
-                    width = "95%"
-                )
-            ),
-            conditionalPanel(
-                condition = "input.Tab6_Select_Association_Test ==  'Simulated Fishers exact test'",
+                condition = "input.Tab6_Select_Association_Test == 'Chi-squared test' |
+                             input.Tab6_Select_Association_Test == 'Fishers exact test' |
+                             input.Tab6_Select_Association_Test ==  'Simulated Fishers exact test'",
+                
                 ns = ns,
                 selectizeInput(
                     ns("Tab6_Select_Categorical_Variable_1"),
@@ -217,7 +186,7 @@ Tab6_Association_Tests_UI <- function(id) {
             verbatimTextOutput(ns("Cat1")),
             br(),
             h4(strong("Adjusted P-values:")),
-            shinycssloaders::withSpinner(dataTableOutput(ns("Cat1Ad")))
+            withSpinner(dataTableOutput(ns("Cat1Ad")))
         ),
         conditionalPanel(
             condition = "input.Tab6_Select_Association_Test == 'Fishers exact test'",
@@ -226,7 +195,7 @@ Tab6_Association_Tests_UI <- function(id) {
             verbatimTextOutput(ns("Cat3")),
             br(),
             h4(strong("Adjusted P-values:")),
-            shinycssloaders::withSpinner(dataTableOutput(ns("Cat3Ad")))
+            withSpinner(dataTableOutput(ns("Cat3Ad")))
         ),
         conditionalPanel(
             condition = "input.Tab6_Select_Association_Test == 'Simulated Fishers exact test'",
@@ -235,7 +204,7 @@ Tab6_Association_Tests_UI <- function(id) {
             verbatimTextOutput(ns("Cat2")),
             br(),
             h4(strong("Adjusted P-values:")),
-            shinycssloaders::withSpinner(dataTableOutput(ns("Cat2Ad")))
+            withSpinner(dataTableOutput(ns("Cat2Ad")))
         ),
         conditionalPanel(
             condition = "input.Tab6_Select_Association_Test == 'ANOVA test'",
@@ -253,7 +222,7 @@ Tab6_Association_Tests_UI <- function(id) {
             verbatimTextOutput(ns("ANOVA")),
             br(),
             h4(strong("Adjusted P-values:")),
-            shinycssloaders::withSpinner(dataTableOutput(ns("ANOVAAd")))
+            withSpinner(dataTableOutput(ns("ANOVAAd")))
         ),
         conditionalPanel(
             condition = "input.Tab6_Select_Association_Test == 'Kruskal-Wallis test'",
@@ -262,7 +231,7 @@ Tab6_Association_Tests_UI <- function(id) {
             verbatimTextOutput(ns("KW")),
             br(),
             h4(strong("Adjusted P-values:")),
-            shinycssloaders::withSpinner(dataTableOutput(ns("KWAd")))
+            withSpinner(dataTableOutput(ns("KWAd")))
         ),
         conditionalPanel(
             condition = "input.Tab6_Select_Association_Test == 'Pairwise t-test'",

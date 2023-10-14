@@ -10,7 +10,7 @@ Tab2_Exploaratory_Tables_Clin_UI <- function(id) {
                 width = 12,
                 status = "primary",
                 solidHeader = TRUE,
-                shinycssloaders::withSpinner(DT::dataTableOutput(ns("Table")),
+                withSpinner(dataTableOutput(ns("Table")),
                     proxy.height = "560px"
                 ),
                 style = "height:580px; padding:10px",
@@ -19,7 +19,7 @@ Tab2_Exploaratory_Tables_Clin_UI <- function(id) {
                     width = 25,
                     h4(strong("Select Columns to Display")),
                     background = "#599740",
-                    icon = shiny::icon("rectangle-list"),
+                    icon = icon("rectangle-list"),
                     selectizeInput(
                         ns("Tab2_Column1_Variable"),
                         "Select Column 1:",
@@ -73,7 +73,7 @@ Tab2_Exploaratory_Tables_CNA_UI <- function(id) {
                 width = 12,
                 status = "primary",
                 solidHeader = TRUE,
-                shinycssloaders::withSpinner(DT::dataTableOutput(ns("Table")),
+                withSpinner(dataTableOutput(ns("Table")),
                     proxy.height = "560px"
                 ),
                 style = "height:580px; padding:10px",
@@ -82,7 +82,7 @@ Tab2_Exploaratory_Tables_CNA_UI <- function(id) {
                     width = 25,
                     h4(strong("Select Columns to Display")),
                     background = "#599740",
-                    icon = shiny::icon("rectangle-list"),
+                    icon = icon("rectangle-list"),
                     selectizeInput(
                         ns("Tab2_Column1_Variable"),
                         "Select Column 1:",
@@ -136,7 +136,7 @@ Tab2_Exploaratory_Tables_MAF_UI <- function(id) {
                 collapsible = TRUE,
                 status = "primary",
                 solidHeader = TRUE,
-                shinycssloaders::withSpinner(DT::dataTableOutput(ns("Table")),
+                withSpinner(dataTableOutput(ns("Table")),
                     proxy.height = "560px"
                 ),
                 style = "height:580px; padding:10px",
@@ -145,7 +145,7 @@ Tab2_Exploaratory_Tables_MAF_UI <- function(id) {
                     width = 25,
                     h4(strong("Select Columns to Display")),
                     background = "#599740",
-                    icon = shiny::icon("rectangle-list"),
+                    icon = icon("rectangle-list"),
                     selectizeInput(
                         ns("Tab2_Column1_Variable"),
                         "Select Column 1:",

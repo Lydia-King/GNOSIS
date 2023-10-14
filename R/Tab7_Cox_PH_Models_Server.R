@@ -128,18 +128,16 @@ Tab7_Uni_Cox_Server <-
                         for (i in 1:length(..(
                             input$Tab7_Univariate_Cox_Select_Variables
                         ))) {
-                            cat(noquote(paste(
+                            show_object(noquote(paste(
                                 ..(
                                     input$Tab7_Univariate_Cox_Event_Status
                                 ),
                                 "for",
                                 ..(
                                     input$Tab7_Univariate_Cox_Select_Variables
-                                )[i],
-                                "\n",
-                                "\n"
+                                )[i]
                             )))
-                            res.cox <- survival::coxph(
+                            res.cox <- coxph(
                                 formula = as.formula(
                                     paste(
                                         "Surv(as.numeric(",
@@ -161,7 +159,7 @@ Tab7_Uni_Cox_Server <-
                                 ),
                                 data = ..(surv_data_Cox())
                             )
-                            print(summary(res.cox))
+                            show_object(summary(res.cox))
                         }
                     })
                 }
@@ -226,9 +224,9 @@ Tab7_Uni_Cox_Server <-
                     metaExpr({
                         Variables <- LRT <- Wald <- Logrank <- c()
 
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab7_Univariate_Cox_Select_Variables
-                        ))) {
+                        )))) {
                             Variables <- c(
                                 Variables,
                                 paste(
@@ -242,7 +240,7 @@ Tab7_Uni_Cox_Server <-
                                     sep = " "
                                 )
                             )
-                            res.cox <- survival::coxph(
+                            res.cox <- coxph(
                                 formula = as.formula(
                                     paste(
                                         "Surv(as.numeric(",
@@ -336,7 +334,7 @@ Tab7_Uni_Cox_Server <-
             })
 
             output$UniAdjusted <- metaRender(renderDataTable, {
-                DT::datatable(
+                datatable(
                     ..(data_UniAdj()),
                     options = list(
                         lengthMenu = c(10, 30, 50, 100),
@@ -948,7 +946,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -978,7 +976,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1018,7 +1016,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1054,7 +1052,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1094,7 +1092,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1143,7 +1141,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1183,7 +1181,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1219,7 +1217,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1252,7 +1250,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1292,7 +1290,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1332,7 +1330,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1372,7 +1370,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1421,7 +1419,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1470,7 +1468,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1519,7 +1517,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        summary(survival::coxph(
+                        summary(coxph(
                             formula = as.formula(
                                 paste(
                                     "Surv(as.numeric(",
@@ -1647,7 +1645,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -1678,7 +1676,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -1719,7 +1717,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -1756,7 +1754,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -1797,7 +1795,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -1847,7 +1845,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -1888,7 +1886,7 @@ Tab7_Multi_Cox_Server <-
                         input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3 == "None Selected"
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -1925,7 +1923,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -1959,7 +1957,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -2000,7 +1998,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -2041,7 +2039,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -2082,7 +2080,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -2132,7 +2130,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -2182,7 +2180,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -2232,7 +2230,7 @@ Tab7_Multi_Cox_Server <-
                         "None Selected" %!in% input$Tab7_Multivariable_Cox_Select_Interaction_Variables_3
                 )) {
                     metaExpr({
-                        survival::coxph(
+                        coxph(
                             formula =
                                 as.formula(
                                     paste(
@@ -2298,7 +2296,7 @@ Tab7_Multi_Cox_Server <-
                         theme_void()
                 } else {
                     metaExpr({
-                        survminer::ggcoxzph(survival::cox.zph(
+                        ggcoxzph(cox.zph(
                             ..(CoxAssump()),
                             terms = ..(
                                 input$Tab7_Cox_Assumptions_Display_by_Variable

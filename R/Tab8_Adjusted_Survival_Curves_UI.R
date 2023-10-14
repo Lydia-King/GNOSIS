@@ -9,7 +9,7 @@ Tab8_Adjusted_Survival_Curves_UI <- function(id) {
             width = 12,
             solidHeader = TRUE,
             status = "primary",
-            shinycssloaders::withSpinner(verbatimTextOutput(ns("Interaction")))
+            withSpinner(verbatimTextOutput(ns("Interaction")))
         ),
         box(
             title = ("New Data for Adjusted Survival Curves"),
@@ -17,9 +17,9 @@ Tab8_Adjusted_Survival_Curves_UI <- function(id) {
             solidHeader = TRUE,
             collapsible = TRUE,
             status = "primary",
-            shinycssloaders::withSpinner(dataTableOutput(ns("preddata"))),
+            withSpinner(dataTableOutput(ns("preddata"))),
             dropdownMenu = boxDropdown(
-                icon = fontawesome::fa_i(name = "info-circle", verify_fa = FALSE),
+                icon = fa_i(name = "info-circle", verify_fa = FALSE),
                 boxDropdownItem(HTML(
                     paste(
                         "Please make sure you have included all variables present",
@@ -31,7 +31,7 @@ Tab8_Adjusted_Survival_Curves_UI <- function(id) {
                 id = "Tab8_New_Data_Sidebar",
                 width = 25,
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 selectizeInput(
                     ns("Tab8_Adjusted_Curves_Select_Variable_1"),
                     "Select Model Variable 1:",
@@ -59,14 +59,14 @@ Tab8_Adjusted_Survival_Curves_UI <- function(id) {
             width = 12,
             solidHeader = TRUE,
             status = "primary",
-            shinycssloaders::withSpinner(plotOutput(ns("Pred3"))),
+            withSpinner(plotOutput(ns("Pred3"))),
             height = "430px",
             style = "height:430px",
             sidebar = boxSidebar(
                 id = "Tab8_Download_Adjusted_Survival_Sidebar",
                 width = 25,
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 selectInput(
                     ns("Tab8_Download_Adjusted_Curves_Select"),
                     "Select Plot:",
@@ -78,15 +78,15 @@ Tab8_Adjusted_Survival_Curves_UI <- function(id) {
                     inputId = ns("Tab8_Download_Adjusted_Curves_Display_CI"),
                     label_on = "Display CI",
                     label_off = "Display CI",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab8_Download_Adjusted_Curves_Display_Risk_Table"),
                     label_on = "Display Risk Table",
                     label_off = "Display Risk Table",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 selectInput(
                     ns("Tab8_Download_Adjusted_Curves_Legend_Position"),

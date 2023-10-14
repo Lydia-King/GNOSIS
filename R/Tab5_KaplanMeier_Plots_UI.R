@@ -5,7 +5,7 @@ Tab5_KM_Clin_UI <- function(id) {
         box(
             title = "Kaplan-Meier Plot for Clinical Variables",
             dropdownMenu = boxDropdown(
-                icon = fontawesome::fa_i(name = "info-circle", verify_fa = FALSE),
+                icon = fa_i(name = "info-circle", verify_fa = FALSE),
                 boxDropdownItem(
                     HTML(paste(
                         "Useful Resources for Survival Analysis:", "<br/>"
@@ -21,12 +21,12 @@ Tab5_KM_Clin_UI <- function(id) {
             style = "height:520px; overflow-y: hidden",
             height = "520px",
             status = "primary",
-            shinycssloaders::withSpinner(plotOutput(ns("Plot"), height = "500px")),
+            withSpinner(plotOutput(ns("Plot"), height = "500px")),
             sidebar = boxSidebar(
                 width = 25,
                 id = "Tab5_KM_Clinical_Sidebar",
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 selectizeInput(
                     ns("Tab5_KM_Clinical_Survival_Time"),
                     "Survival Time:",
@@ -47,22 +47,22 @@ Tab5_KM_Clin_UI <- function(id) {
                     inputId = ns("Tab5_KM_Clinical_Display_CI"),
                     label_on = "Display CI",
                     label_off = "Display CI",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab5_KM_Clinical_Display_Risk_Table"),
                     label_on = "Display Risk Table",
                     label_off = "Display Risk Table",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab5_KM_Clinical_Display_Pval"),
                     label_on = "Display P-value",
                     label_off = "Display P-value",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 selectInput(
                     ns("Tab5_KM_Clinical_Legend_Position"),
@@ -128,7 +128,7 @@ Tab5_KM_Clin_UI <- function(id) {
             solidHeader = TRUE,
             width = 12,
             status = "primary",
-            shinycssloaders::withSpinner(verbatimTextOutput(ns("KMlogrank")))
+            withSpinner(verbatimTextOutput(ns("KMlogrank")))
         )
     )
 }
@@ -140,7 +140,7 @@ Tab5_KM_Quart_UI <- function(id) {
         box(
             title = "Kaplan-Meier Plot for CNA Scores and Quartiles",
             dropdownMenu = boxDropdown(
-                icon = fontawesome::fa_i(name = "info-circle", verify_fa = FALSE),
+                icon = fa_i(name = "info-circle", verify_fa = FALSE),
                 boxDropdownItem(
                     HTML(paste(
                         "Useful Resources for Survival Analysis:", "<br/>"
@@ -165,12 +165,12 @@ Tab5_KM_Quart_UI <- function(id) {
             style = "height:520px; overflow-y: hidden",
             height = "520px",
             collapsible = TRUE,
-            shinycssloaders::withSpinner(plotOutput(ns("Plot"), height = "500px")),
+            withSpinner(plotOutput(ns("Plot"), height = "500px")),
             sidebar = boxSidebar(
                 width = 25,
                 id = "Tab5_KM_CNA_Quartile_Sidebar",
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 selectizeInput(
                     ns("Tab5_KM_CNA_Survival_Time"),
                     "Survival Time Column:",
@@ -191,22 +191,22 @@ Tab5_KM_Quart_UI <- function(id) {
                     inputId = ns("Tab5_KM_CNA_Display_CI"),
                     label_on = "Display CI",
                     label_off = "Display CI",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab5_KM_CNA_Display_Risk_Table"),
                     label_on = "Display Risk Table",
                     label_off = "Display Risk Table",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab5_KM_CNA_Display_Pval"),
                     label_on = "Display P-value",
                     label_off = "Display P-value",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 selectInput(
                     ns("Tab5_KM_CNA_Legend_Position"),
@@ -274,7 +274,7 @@ Tab5_KM_Quart_UI <- function(id) {
             width = 12,
             status = "primary",
             solidHeader = TRUE,
-            shinycssloaders::withSpinner(verbatimTextOutput(ns("KMlogrank1")))
+            withSpinner(verbatimTextOutput(ns("KMlogrank1")))
         )
     )
 }
@@ -291,9 +291,9 @@ Tab5_KM_Treatment_UI <- function(id) {
             width = 12,
             collapsible = TRUE,
             status = "primary",
-            shinycssloaders::withSpinner(plotOutput(ns("Plot1"), height = "465px")),
+            withSpinner(plotOutput(ns("Plot1"), height = "465px")),
             dropdownMenu = boxDropdown(
-                icon = fontawesome::fa_i(name = "info-circle", verify_fa = FALSE),
+                icon = fa_i(name = "info-circle", verify_fa = FALSE),
                 boxDropdownItem(
                     HTML(
                         paste(
@@ -321,7 +321,7 @@ Tab5_KM_Treatment_UI <- function(id) {
                 width = 25,
                 id = "Tab5_KM_Treatment_Sidebar_Yes",
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 selectizeInput(
                     ns("Tab5_KM_Treatment_Survival_Time"),
                     "Survival Time:",
@@ -347,22 +347,22 @@ Tab5_KM_Treatment_UI <- function(id) {
                     inputId = ns("Tab5_KM_Treatment_Yes_Display_CI"),
                     label_on = "Display CI",
                     label_off = "Display CI",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab5_KM_Treatment_Yes_Display_Risk_Table"),
                     label_on = "Display Risk Table",
                     label_off = "Display Risk Table",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab5_KM_Treatment_Yes_Display_Pval"),
                     label_on = "Display P-value",
                     label_off = "Display P-value",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 selectInput(
                     ns("Tab5_KM_Treatment_Yes_Legend_Position"),
@@ -433,32 +433,32 @@ Tab5_KM_Treatment_UI <- function(id) {
             width = 12,
             collapsible = TRUE,
             status = "primary",
-            shinycssloaders::withSpinner(plotOutput(ns("Plot2"), height = "465px")),
+            withSpinner(plotOutput(ns("Plot2"), height = "465px")),
             sidebar = boxSidebar(
                 width = 25,
                 id = "Tab5_KM_Treatment_Sidebar_No",
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 prettyToggle(
                     inputId = ns("Tab5_KM_Treatment_No_Display_CI"),
                     label_on = "Display CI",
                     label_off = "Display CI",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab5_KM_Treatment_No_Display_Risk_Table"),
                     label_on = "Display Risk Table",
                     label_off = "Display Risk Table",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab5_KM_Treatment_No_Display_Pval"),
                     label_on = "Display P-value",
                     label_off = "Display P-value",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 selectInput(
                     ns("Tab5_KM_Treatment_No_Legend_Position"),
@@ -528,7 +528,7 @@ Tab5_KM_Treatment_UI <- function(id) {
             style = "overflow-y: hidden",
             status = "primary",
             collapsible = TRUE,
-            shinycssloaders::withSpinner(verbatimTextOutput(ns("KMlogrankYes")))
+            withSpinner(verbatimTextOutput(ns("KMlogrankYes")))
         ),
         box(
             title = "Logrank Test for Treatment - No",
@@ -537,7 +537,7 @@ Tab5_KM_Treatment_UI <- function(id) {
             style = "overflow-y: hidden",
             status = "primary",
             collapsible = TRUE,
-            shinycssloaders::withSpinner(verbatimTextOutput(ns("KMlogrankNo")))
+            withSpinner(verbatimTextOutput(ns("KMlogrankNo")))
         )
     )
 }

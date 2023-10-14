@@ -10,12 +10,12 @@ Tab11_Download_Code_UI <- function(id) {
             status = "primary",
             solidHeader = TRUE,
             style = "height:800px",
-            shinycssloaders::withSpinner(DT::dataTableOutput(ns("InputLog"))),
+            withSpinner(dataTableOutput(ns("InputLog"))),
             sidebar = boxSidebar(
                 id = "Tab11_Log_Options",
                 width = 25,
                 background = "#599740",
-                icon = shiny::icon("rectangle-list"),
+                icon = icon("rectangle-list"),
                 h4(strong("Dataframe Options")),
                 selectInput(
                     ns("Tab11_Order_Log_By"),

@@ -38,7 +38,7 @@ Tab5_KM_Plot_Server <- function(id, datalist, data) {
 
         datafit <- metaReactive2({
             metaExpr({
-                survival::survfit(
+                survfit(
                     Surv(as.numeric(Time), as.numeric(as.character(
                         Cen
                     ))) ~ Strata,
@@ -56,7 +56,7 @@ Tab5_KM_Plot_Server <- function(id, datalist, data) {
                     theme_void()
             } else {
                 metaExpr({
-                    survminer::ggsurvplot(
+                    ggsurvplot(
                         ..(datafit()),
                         censor.shape = "",
                         data = ..(surv_data()),
@@ -112,7 +112,7 @@ Tab5_KM_Plot_Server <- function(id, datalist, data) {
                 return(NULL)
             } else {
                 metaExpr({
-                    survival::survdiff(Surv(
+                    survdiff(Surv(
                         ..(datalist[[data]](
                         ))[, ..(input$Tab5_KM_Clinical_Survival_Time)],
                         as.numeric(..(
@@ -172,7 +172,7 @@ Tab5_KM_Plot_Quart_Server <- function(id, datalist, data) {
 
         survfitCNA <- metaReactive2({
             metaExpr({
-                survival::survfit(
+                survfit(
                     Surv(as.numeric(Time), as.numeric(as.character(
                         cen
                     ))) ~ Strata,
@@ -190,7 +190,7 @@ Tab5_KM_Plot_Quart_Server <- function(id, datalist, data) {
                     theme_void()
             } else {
                 metaExpr({
-                    survminer::ggsurvplot(
+                    ggsurvplot(
                         ..(survfitCNA()),
                         censor.shape = "",
                         xlab = ..(input$Tab5_KM_CNA_X_Axis_Title),
@@ -244,7 +244,7 @@ Tab5_KM_Plot_Quart_Server <- function(id, datalist, data) {
                 return(NULL)
             } else {
                 metaExpr({
-                    survival::survdiff(Surv(
+                    survdiff(Surv(
                         ..(datalist[[data]](
                         ))[, ..(input$Tab5_KM_CNA_Survival_Time)],
                         as.numeric(..(
@@ -322,7 +322,7 @@ Tab5_KM_Plot_Treatment_Server <- function(id, datalist, data) {
 
         datafit_R <- metaReactive2({
             metaExpr({
-                survival::survfit(
+                survfit(
                     Surv(as.numeric(Time), as.numeric(as.character(
                         Cen
                     ))) ~ Strata,
@@ -341,7 +341,7 @@ Tab5_KM_Plot_Treatment_Server <- function(id, datalist, data) {
                     theme_void()
             } else {
                 metaExpr({
-                    survminer::ggsurvplot(
+                    ggsurvplot(
                         ..(datafit_R()),
                         censor.shape = "",
                         xlab = ..(
@@ -408,7 +408,7 @@ Tab5_KM_Plot_Treatment_Server <- function(id, datalist, data) {
                 return(NULL)
             } else {
                 metaExpr({
-                    survival::survdiff(Surv(
+                    survdiff(Surv(
                         ..(dataRYes())[, ..(input$Tab5_KM_Treatment_Survival_Time)],
                         as.numeric(..(
                             dataRYes()
@@ -432,7 +432,7 @@ Tab5_KM_Plot_Treatment_Server <- function(id, datalist, data) {
                 return(NULL)
             } else {
                 metaExpr({
-                    survival::survdiff(Surv(
+                    survdiff(Surv(
                         ..(dataRNo())[, ..(input$Tab5_KM_Treatment_Survival_Time)],
                         as.numeric(..(
                             dataRNo()
@@ -459,7 +459,7 @@ Tab5_KM_Plot_Treatment_Server <- function(id, datalist, data) {
 
         datafit_NR <- metaReactive2({
             metaExpr({
-                survival::survfit(
+                survfit(
                     Surv(as.numeric(Time), as.numeric(as.character(
                         Cen
                     ))) ~ Strata,
@@ -478,7 +478,7 @@ Tab5_KM_Plot_Treatment_Server <- function(id, datalist, data) {
                     theme_void()
             } else {
                 metaExpr({
-                    survminer::ggsurvplot(
+                    ggsurvplot(
                         ..(datafit_NR()),
                         censor.shape = "",
                         xlab = ..(
@@ -549,7 +549,7 @@ Tab5_KM_Plot_Treatment_Server <- function(id, datalist, data) {
                         units = "in",
                         res = 1200
                     )
-                    print(KMR1Plot())
+                    KMR1Plot()
                     dev.off()
                 }
             )
@@ -565,7 +565,7 @@ Tab5_KM_Plot_Treatment_Server <- function(id, datalist, data) {
                         width = input$Tab5_KM_Treatment_Yes_Width,
                         height = input$Tab5_KM_Treatment_Yes_Height
                     )
-                    print(KMR1Plot())
+                    KMR1Plot()
                     dev.off()
                 }
             )
@@ -582,7 +582,7 @@ Tab5_KM_Plot_Treatment_Server <- function(id, datalist, data) {
                     units = "in",
                     res = 1200
                 )
-                print(KMR2Plot())
+                KMR2Plot()
                 dev.off()
             }
         )
@@ -597,7 +597,7 @@ Tab5_KM_Plot_Treatment_Server <- function(id, datalist, data) {
                     width = input$Tab5_KM_Treatment_No_Width,
                     height = input$Tab5_KM_Treatment_No_Height
                 )
-                print(KMR2Plot())
+                KMR2Plot()
                 dev.off()
             }
         )

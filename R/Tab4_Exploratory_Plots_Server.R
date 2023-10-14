@@ -427,7 +427,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
         long_fileHist <- metaReactive2({
             if (input$Tab4_Faceted_Histogram_Display_NAs == FALSE) {
                 metaExpr({
-                    reshape2::melt(..(datalist[[data]]())[, c(
+                    melt(..(datalist[[data]]())[, c(
                         ..(input$Tab4_Select_Plot_Variable),
                         ..(
                             input$Tab4_Histogram_Select_Facet_Variable
@@ -441,7 +441,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                 })
             } else {
                 metaExpr({
-                    reshape2::melt(..(datalist[[data]]())[, c(
+                    melt(..(datalist[[data]]())[, c(
                         ..(input$Tab4_Select_Plot_Variable),
                         ..(
                             input$Tab4_Histogram_Select_Facet_Variable
@@ -524,7 +524,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                     units = "in",
                     res = 1200
                 )
-                print(CNAHistogram())
+                plot(CNAHistogram())
                 dev.off()
             }
         )
@@ -539,7 +539,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                     width = input$Tab4_Histogram_Width,
                     height = input$Tab4_Histogram_Height
                 )
-                print(CNAHistogram())
+                CNAHistogram()
                 dev.off()
             }
         )
@@ -561,7 +561,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                         units = "in",
                         res = 1200
                     )
-                    print(CNAHisttab())
+                    plot(CNAHisttab())
                     dev.off()
                 }
             )
@@ -577,7 +577,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                         width = input$Tab4_Faceted_Histogram_Width,
                         height = input$Tab4_Faceted_Histogram_Height
                     )
-                    print(CNAHisttab())
+                    CNAHisttab()
                     dev.off()
                 }
             )
@@ -745,7 +745,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                     units = "in",
                     res = 1200
                 )
-                print(CNADense())
+                plot(CNADense())
                 dev.off()
             }
         )
@@ -761,7 +761,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                     width = input$Tab4_Density_Plot_Width,
                     height = input$Tab4_Density_Plot_Height
                 )
-                print(CNADense())
+                CNADense()
                 dev.off()
             }
         )
@@ -777,15 +777,15 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                     colourCount <-
                         ..(input$Tab4_Segmented_Density_Plot_Number_of_Segments)
                     getPalette <-
-                        colorRampPalette(RColorBrewer::brewer.pal(9, "Blues"))
+                        colorRampPalette(brewer.pal(9, "Blues"))
                     lab <-
-                        as.character(1:..(
-                            input$Tab4_Segmented_Density_Plot_Number_of_Segments
+                        as.character(seq.int(from = 1, 
+                                             to = ..(input$Tab4_Segmented_Density_Plot_Number_of_Segments)
                         ))
                     dt <- data.frame(
-                        x = c(1:length(..(
+                        x = c(seq.int(from = 1, to = length(..(
                             datalist[[data]]()
-                        )[, ..(input$Tab4_Select_Plot_Variable)])),
+                        )[, ..(input$Tab4_Select_Plot_Variable)]))),
                         y = ..(datalist[[data]]())[, ..(input$Tab4_Select_Plot_Variable)]
                     )
                     dt <- na.omit(dt)
@@ -848,11 +848,11 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                     colourCount <-
                         ..(input$Tab4_Segmented_Density_Plot_Number_of_Segments)
                     getPalette <-
-                        colorRampPalette(RColorBrewer::brewer.pal(9, "Blues"))
+                        colorRampPalette(brewer.pal(9, "Blues"))
                     dt <- data.frame(
-                        x = c(1:length(..(
+                        x = c(seq.int(from = 1, to = length(..(
                             datalist[[data]]()
-                        )[, ..(input$Tab4_Select_Plot_Variable)])),
+                        )[, ..(input$Tab4_Select_Plot_Variable)]))),
                         y = ..(datalist[[data]]())[, ..(input$Tab4_Select_Plot_Variable)]
                     )
                     dt <- na.omit(dt)
@@ -930,7 +930,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                         units = "in",
                         res = 1200
                     )
-                    print(CNADist1Plot())
+                    plot(CNADist1Plot())
                     dev.off()
                 }
             )
@@ -946,7 +946,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                         width = input$Tab4_Segmented_Density_Plot_Width,
                         height = input$Tab4_Segmented_Density_Plot_Height
                     )
-                    print(CNADist1Plot())
+                    CNADist1Plot()
                     dev.off()
                 }
             )
@@ -967,7 +967,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
         long_file <- metaReactive2({
             if (input$Tab4_Faceted_Density_Plot_Display_NAs == FALSE) {
                 metaExpr({
-                    reshape2::melt(..(datalist[[data]]())[, c(
+                    melt(..(datalist[[data]]())[, c(
                         ..(input$Tab4_Select_Plot_Variable),
                         ..(
                             input$Tab4_Density_Plot_Select_Facet_Variable
@@ -981,7 +981,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                 })
             } else {
                 metaExpr({
-                    reshape2::melt(..(datalist[[data]]())[, c(
+                    melt(..(datalist[[data]]())[, c(
                         ..(input$Tab4_Select_Plot_Variable),
                         ..(
                             input$Tab4_Density_Plot_Select_Facet_Variable
@@ -1067,7 +1067,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                         units = "in",
                         res = 1200
                     )
-                    print(CNADist2Plot())
+                    plot(CNADist2Plot())
                     dev.off()
                 }
             )
@@ -1083,7 +1083,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                         width = input$Tab4_Faceted_Density_Plot_Width,
                         height = input$Tab4_Faceted_Density_Plot_Height
                     )
-                    print(CNADist2Plot())
+                    CNADist2Plot()
                     dev.off()
                 }
             )
@@ -1262,7 +1262,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                     units = "in",
                     res = 1200
                 )
-                print(CNABoth())
+                plot(CNABoth())
                 dev.off()
             }
         )
@@ -1277,7 +1277,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                     width = input$Tab4_Both_Plot_Width,
                     height = input$Tab4_Both_Plot_Height
                 )
-                print(CNABoth())
+                CNABoth()
                 dev.off()
             }
         )
@@ -1287,7 +1287,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
         long_file1 <- metaReactive2({
             if (input$Tab4_Faceted_Both_Plot_Display_NAs == FALSE) {
                 metaExpr({
-                    reshape2::melt(..(datalist[[data]]())[, c(
+                    melt(..(datalist[[data]]())[, c(
                         ..(input$Tab4_Select_Plot_Variable),
                         ..(
                             input$Tab4_Both_Plot_Select_Facet_Variable
@@ -1301,7 +1301,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                 })
             } else {
                 metaExpr({
-                    reshape2::melt(..(datalist[[data]]())[, c(
+                    melt(..(datalist[[data]]())[, c(
                         ..(input$Tab4_Select_Plot_Variable),
                         ..(
                             input$Tab4_Both_Plot_Select_Facet_Variable
@@ -1405,7 +1405,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                         units = "in",
                         res = 1200
                     )
-                    print(CNADist2Plot1())
+                    plot(CNADist2Plot1())
                     dev.off()
                 }
             )
@@ -1421,7 +1421,7 @@ Tab4_Hist_Server <- function(id, datalist, data) {
                         width = input$Tab4_Faceted_Both_Plot_Width,
                         height = input$Tab4_Faceted_Both_Plot_Height
                     )
-                    print(CNADist2Plot1())
+                    CNADist2Plot1()
                     dev.off()
                 }
             )

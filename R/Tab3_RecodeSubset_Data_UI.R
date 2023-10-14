@@ -40,7 +40,7 @@ Tab3_Factor_Levels_UI <- function(id) {
             width = 12,
             status = "primary",
             title = ("Clinical Variable Levels"),
-            shinycssloaders::withSpinner(verbatimTextOutput(ns("DataLevels")),
+            withSpinner(verbatimTextOutput(ns("DataLevels")),
                 proxy.height = "280px"
             )
         )
@@ -58,7 +58,7 @@ Tab3_Subset_UI <- function(id) {
             solidHeader = TRUE,
             status = "primary",
             width = 12,
-            shinycssloaders::withSpinner(DT::dataTableOutput(ns("TableRecode1")),
+            withSpinner(dataTableOutput(ns("TableRecode1")),
                 proxy.height = "460px"
             ),
             sidebar = boxSidebar(
@@ -113,7 +113,7 @@ Tab3_Subset_UI <- function(id) {
             width = 12,
             status = "primary",
             style = "height:300px; overflow-y: scroll;",
-            shinycssloaders::withSpinner(verbatimTextOutput(ns("TableLevels")),
+            withSpinner(verbatimTextOutput(ns("TableLevels")),
                 proxy.height = "180px"
             )
         )
@@ -161,7 +161,7 @@ Tab3_Recode_UI <- function(id) {
             width = 9,
             status = "primary",
             style = "height:500px",
-            shinycssloaders::withSpinner(dataTableOutput(ns("TableRecode")),
+            withSpinner(dataTableOutput(ns("TableRecode")),
                 proxy.height = "480px"
             )
         )
@@ -231,15 +231,15 @@ Tab3_CNACalc_UI <- function(id) {
                         inputId = ns("Tab3_CNA_Remove_NAs_Yes_or_No"),
                         label_on = "Remove NAs",
                         label_off = "Remove NAs",
-                        icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                        icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                        icon_on = fa_i(name = "check", verify_fa = FALSE),
+                        icon_off = fa_i(name = "times", verify_fa = FALSE)
                     ),
                     prettyToggle(
                         inputId = ns("Tab3_Segment_CNA_Yes_or_No"),
                         label_on = "Segment Data",
                         label_off = "Segment Data",
-                        icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                        icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                        icon_on = fa_i(name = "check", verify_fa = FALSE),
+                        icon_off = fa_i(name = "times", verify_fa = FALSE)
                     ),
                     numericInput(
                         inputId = ns("Tab3_Number_of_Segments"),
@@ -254,7 +254,7 @@ Tab3_CNACalc_UI <- function(id) {
             width = 12,
             status = "primary",
             title = ("CNA Score Exploration"),
-            shinycssloaders::withSpinner(dataTableOutput(ns("TableCNACalc")),
+            withSpinner(dataTableOutput(ns("TableCNACalc")),
                 proxy.height = "510px"
             )
         )
@@ -290,15 +290,15 @@ Tab3_Data_Down_UI <- function(id) {
                     inputId = ns("Tab3_Download_File_Quote"),
                     label_on = "Include Quotes",
                     label_off = "Include Quotes",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 prettyToggle(
                     inputId = ns("Tab3_Download_File_Row_Names"),
                     label_on = "Include Row Names",
                     label_off = "Include Row Names",
-                    icon_on = fontawesome::fa_i(name = "check", verify_fa = FALSE),
-                    icon_off = fontawesome::fa_i(name = "times", verify_fa = FALSE)
+                    icon_on = fa_i(name = "check", verify_fa = FALSE),
+                    icon_off = fa_i(name = "times", verify_fa = FALSE)
                 ),
                 tags$hr(width = "93%"),
                 downloadButton(ns("Tab3_Download_File"), "Download Data",
@@ -310,7 +310,7 @@ Tab3_Data_Down_UI <- function(id) {
             width = 12,
             status = "primary",
             title = ("Preview and Download Processed Data"),
-            shinycssloaders::withSpinner(dataTableOutput(ns("TableData")),
+            withSpinner(dataTableOutput(ns("TableData")),
                 proxy.height = "510px"
             )
         )

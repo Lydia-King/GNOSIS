@@ -30,7 +30,7 @@ Tab6_Chi_Square_Server <-
             data_Association2 <- metaReactive2({
                 metaExpr({
                     my_list <- list()
-                    for (i in 1:length(..(input$Tab6_Select_Categorical_Variable_2))) {
+                    for (i in seq.int(from = 1, to = length(..(input$Tab6_Select_Categorical_Variable_2)))) {
                         my_list[[i]] <- table(
                             ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_1)],
                             ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_2)[i]]
@@ -78,17 +78,17 @@ Tab6_Chi_Square_Server <-
                 )
                 if (isTRUE(
                     input$Tab6_Select_Categorical_Variable_1 == "None Selected" |
-                        input$Tab6_Select_Categorical_Variable_2 == "None Selected"
+                    input$Tab6_Select_Categorical_Variable_2 == "None Selected"
                 )) {
                     return(NULL)
                 } else {
                     metaExpr({
-                        for (i in 1:length(c(
+                        for (i in seq.int(from = 1, to = length(c(
                             ..(
                                 input$Tab6_Select_Categorical_Variable_2
                             )
-                        ))) {
-                            cat(noquote(
+                        )))) {
+                            show_object(noquote(
                                 paste(
                                     "Categorical Variable 1:",
                                     ..(
@@ -98,11 +98,10 @@ Tab6_Chi_Square_Server <-
                                     "Categorical Variable 2:",
                                     ..(
                                         input$Tab6_Select_Categorical_Variable_2
-                                    )[i],
-                                    "\n"
+                                    )[i]
                                 )
                             ))
-                            print(stats::chisq.test(..(
+                            show_object(chisq.test(..(
                                 data_Association2()
                             )[[i]]))
                         }
@@ -160,12 +159,12 @@ Tab6_Chi_Square_Server <-
                 } else {
                     metaExpr({
                         Chi_List <- list()
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Categorical_Variable_2
-                        ))) {
+                        )))) {
                             name <- ..(input$Tab6_Select_Categorical_Variable_2)[i]
                             Chi_List[[name]] <-
-                                stats::chisq.test(..(data_Association2())[[i]])
+                                chisq.test(..(data_Association2())[[i]])
                         }
                         Chi_List
                     })
@@ -220,9 +219,9 @@ Tab6_Chi_Square_Server <-
                     metaExpr({
                         Variables <- Pval <- X <- df <- c()
 
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Categorical_Variable_2
-                        ))) {
+                        )))) {
                             Variables <- c(
                                 Variables,
                                 paste(
@@ -237,7 +236,7 @@ Tab6_Chi_Square_Server <-
                                 )
                             )
                             Test <-
-                                stats::chisq.test(..(data_Association2())[[i]])
+                                chisq.test(..(data_Association2())[[i]])
                             X <-
                                 c(X, round(as.numeric(Test$statistic), digits = 3))
                             df <- c(df, as.numeric(Test$parameter))
@@ -316,7 +315,7 @@ Tab6_FE_Sim_Server <-
             data_Association2 <- metaReactive2({
                 metaExpr({
                     my_list <- list()
-                    for (i in 1:length(..(input$Tab6_Select_Categorical_Variable_2))) {
+                    for (i in seq.int(from = 1, to = length(..(input$Tab6_Select_Categorical_Variable_2)))) {
                         my_list[[i]] <- table(
                             ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_1)],
                             ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_2)[i]]
@@ -371,12 +370,12 @@ Tab6_FE_Sim_Server <-
                     return(NULL)
                 } else {
                     metaExpr({
-                        for (i in 1:length(c(
+                        for (i in seq.int(from = 1, to = length(c(
                             ..(
                                 input$Tab6_Select_Categorical_Variable_2
                             )
-                        ))) {
-                            cat(noquote(
+                        )))) {
+                            show_object(noquote(
                                 paste(
                                     "Categorical Variable 1:",
                                     ..(
@@ -386,11 +385,10 @@ Tab6_FE_Sim_Server <-
                                     "Categorical Variable 2:",
                                     ..(
                                         input$Tab6_Select_Categorical_Variable_2
-                                    )[i],
-                                    "\n"
+                                    )[i]
                                 )
                             ))
-                            print(stats::fisher.test(
+                            show_object(fisher.test(
                                 ..(data_Association2())[[i]],
                                 simulate.p.value = TRUE
                             ))
@@ -445,11 +443,11 @@ Tab6_FE_Sim_Server <-
                 } else {
                     metaExpr({
                         SimF_List <- list()
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Categorical_Variable_2
-                        ))) {
+                        )))) {
                             name <- ..(input$Tab6_Select_Categorical_Variable_2)[i]
-                            SimF_List[[name]] <- stats::fisher.test(..(data_Association2())[[i]],
+                            SimF_List[[name]] <- fisher.test(..(data_Association2())[[i]],
                                 simulate.p.value = TRUE
                             )
                         }
@@ -500,9 +498,9 @@ Tab6_FE_Sim_Server <-
                     metaExpr({
                         Variables <- Pval <- c()
 
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Categorical_Variable_2
-                        ))) {
+                        )))) {
                             tryCatch(
                                 {
                                     Variables <- c(
@@ -518,7 +516,7 @@ Tab6_FE_Sim_Server <-
                                             sep = " "
                                         )
                                     )
-                                    Test <- stats::fisher.test(..(data_Association2())[[i]],
+                                    Test <- fisher.test(..(data_Association2())[[i]],
                                         simulate.p.value = TRUE
                                     )
                                     Pval <-
@@ -528,10 +526,9 @@ Tab6_FE_Sim_Server <-
                                         )
                                 },
                                 error = function(e) {
-                                    cat(
+                                    show_object(paste(
                                         "ERROR :",
-                                        conditionMessage(e),
-                                        "\n"
+                                        conditionMessage(e))
                                     )
                                 }
                             )
@@ -556,7 +553,7 @@ Tab6_FE_Sim_Server <-
             })
 
             output$Cat2Ad <- metaRender(renderDataTable, {
-                DT::datatable(
+                datatable(
                     ..(data_Association2Ad()),
                     options = list(
                         lengthMenu = c(10, 30, 50, 100),
@@ -607,7 +604,7 @@ Tab6_FE_Server <-
             data_Association2 <- metaReactive2({
                 metaExpr({
                     my_list <- list()
-                    for (i in 1:length(..(input$Tab6_Select_Categorical_Variable_2))) {
+                    for (i in seq.int(from = 1, to = length(..(input$Tab6_Select_Categorical_Variable_2)))) {
                         my_list[[i]] <- table(
                             ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_1)],
                             ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_2)[i]]
@@ -656,14 +653,14 @@ Tab6_FE_Server <-
                     return(NULL)
                 } else {
                     metaExpr({
-                        for (i in 1:length(c(
+                        for (i in seq.int(from = 1, to = length(c(
                             ..(
                                 input$Tab6_Select_Categorical_Variable_2
-                            )
+                            ))
                         ))) {
                             tryCatch(
                                 {
-                                    cat(noquote(
+                                    show_object(noquote(
                                         paste(
                                             "Categorical Variable 1:",
                                             ..(
@@ -673,20 +670,18 @@ Tab6_FE_Server <-
                                             "Categorical Variable 2:",
                                             ..(
                                                 input$Tab6_Select_Categorical_Variable_2
-                                            )[i],
-                                            "\n"
+                                            )[i]
                                         )
                                     ))
-                                    print(stats::fisher.test(
+                                    show_object(fisher.test(
                                         ..(data_Association2())[[i]],
                                         simulate.p.value = FALSE
                                     ))
                                 },
                                 error = function(e) {
-                                    cat(
+                                    show_object(paste(
                                         "ERROR :",
-                                        conditionMessage(e),
-                                        "\n"
+                                        conditionMessage(e))
                                     )
                                 }
                             )
@@ -741,21 +736,20 @@ Tab6_FE_Server <-
                 } else {
                     metaExpr({
                         F_List <- list()
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Categorical_Variable_2
-                        ))) {
+                        )))) {
                             name <- ..(input$Tab6_Select_Categorical_Variable_2)[i]
                             tryCatch(
                                 {
-                                    F_List[[name]] <- stats::fisher.test(..(data_Association2())[[i]],
+                                    F_List[[name]] <- fisher.test(..(data_Association2())[[i]],
                                         simulate.p.value = FALSE
                                     )
                                 },
                                 error = function(e) {
-                                    cat(
+                                    show_object(paste(
                                         "ERROR :",
-                                        conditionMessage(e),
-                                        "\n"
+                                        conditionMessage(e))
                                     )
                                 }
                             )
@@ -805,12 +799,12 @@ Tab6_FE_Server <-
                 } else {
                     metaExpr({
                         Variables <- Pval <- c()
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Categorical_Variable_2
-                        ))) {
+                        )))) {
                             tryCatch(
                                 {
-                                    Test <- stats::fisher.test(..(data_Association2())[[i]])
+                                    Test <- fisher.test(..(data_Association2())[[i]])
                                     Pval <-
                                         c(
                                             Pval,
@@ -831,10 +825,9 @@ Tab6_FE_Server <-
                                     )
                                 },
                                 error = function(e) {
-                                    cat(
+                                    show_object(paste(
                                         "ERROR :",
-                                        conditionMessage(e),
-                                        "\n"
+                                        conditionMessage(e))
                                     )
                                 }
                             )
@@ -858,7 +851,7 @@ Tab6_FE_Server <-
             })
 
             output$Cat3Ad <- metaRender(renderDataTable, {
-                DT::datatable(
+                datatable(
                     ..(data_Association3Ad()),
                     options = list(
                         lengthMenu = c(10, 30, 50, 100),
@@ -951,10 +944,10 @@ Tab6_ANOVA_Server <-
                     return(NULL)
                 } else {
                     metaExpr({
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Continuous_Variable_1
-                        ))) {
-                            cat(noquote(
+                        )))) {
+                            show_object(noquote(
                                 paste(
                                     "Categorical Variable:",
                                     ..(
@@ -964,12 +957,10 @@ Tab6_ANOVA_Server <-
                                     "Continuous Variable:",
                                     ..(
                                         input$Tab6_Select_Continuous_Variable_1
-                                    )[i],
-                                    "\n",
-                                    "\n"
+                                    )[i]
                                 )
                             ))
-                            print(car::leveneTest(
+                            show_object(leveneTest(
                                 ..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]] ~
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                 ..(datalist1[[data]]()),
@@ -1026,11 +1017,11 @@ Tab6_ANOVA_Server <-
                 } else {
                     metaExpr({
                         Levene_List <- list()
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Continuous_Variable_1
-                        ))) {
+                        )))) {
                             name <- ..(input$Tab6_Select_Continuous_Variable_1)[i]
-                            Levene_List[[name]] <- car::leveneTest(
+                            Levene_List[[name]] <- leveneTest(
                                 ..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]] ~
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                 ..(datalist1[[data]]()),
@@ -1090,10 +1081,10 @@ Tab6_ANOVA_Server <-
                     return(NULL)
                 } else {
                     metaExpr({
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Continuous_Variable_1
-                        ))) {
-                            cat(noquote(
+                        )))) {
+                            show_object(noquote(
                                 paste(
                                     "Categorical Variable:",
                                     ..(
@@ -1103,11 +1094,10 @@ Tab6_ANOVA_Server <-
                                     "Continuous Variable:",
                                     ..(
                                         input$Tab6_Select_Continuous_Variable_1
-                                    )[i],
-                                    "\n"
+                                    )[i]
                                 )
                             ))
-                            print(stats::fligner.test(
+                            show_object(fligner.test(
                                 ..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]] ~
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                 ..(datalist1[[data]]())
@@ -1163,11 +1153,11 @@ Tab6_ANOVA_Server <-
                 } else {
                     metaExpr({
                         Fligner_List <- list()
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Continuous_Variable_1
-                        ))) {
+                        )))) {
                             name <- ..(input$Tab6_Select_Continuous_Variable_1)[i]
-                            Fligner_List[[name]] <- stats::fligner.test(
+                            Fligner_List[[name]] <- fligner.test(
                                 ..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]] ~
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                 ..(datalist1[[data]]())
@@ -1227,12 +1217,12 @@ Tab6_ANOVA_Server <-
                     return(NULL)
                 } else {
                     metaExpr({
-                        for (i in 1:length(c(
+                        for (i in seq.int(from = 1, to = length(c(
                             ..(
                                 input$Tab6_Select_Continuous_Variable_1
-                            )
+                            ))
                         ))) {
-                            cat(noquote(
+                            show_object(noquote(
                                 paste(
                                     "Categorical Variable:",
                                     ..(
@@ -1242,9 +1232,7 @@ Tab6_ANOVA_Server <-
                                     "Continuous Variable:",
                                     ..(
                                         input$Tab6_Select_Continuous_Variable_1
-                                    )[i],
-                                    "\n",
-                                    "\n"
+                                    )[i]
                                 )
                             ))
                             Data1 <- ..(datalist1[[data]]()) %>%
@@ -1253,13 +1241,13 @@ Tab6_ANOVA_Server <-
                                         input$Tab6_Select_Categorical_Variable_3
                                     )
                                 )) %>%
-                                rstatix::shapiro_test(!!as.name(
+                                shapiro_test(!!as.name(
                                     ..(
                                         input$Tab6_Select_Continuous_Variable_1
                                     )[i]
                                 ))
-                            print(as.data.frame(Data1))
-                            print(stats::shapiro.test(..(datalist1[[data]](
+                            show_object(as.data.frame(Data1))
+                            show_object(shapiro.test(..(datalist1[[data]](
                             ))[, ..(input$Tab6_Select_Continuous_Variable_1)[i]]))
                         }
                     })
@@ -1311,11 +1299,11 @@ Tab6_ANOVA_Server <-
                 } else {
                     metaExpr({
                         Shapiro_List <- list()
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Continuous_Variable_1
-                        ))) {
+                        )))) {
                             name <- ..(input$Tab6_Select_Continuous_Variable_1)[i]
-                            Shapiro_List[[name]] <- stats::shapiro.test(..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]])
+                            Shapiro_List[[name]] <- shapiro.test(..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]])
                             Shapiro_List
                         }
                     })
@@ -1372,17 +1360,17 @@ Tab6_ANOVA_Server <-
                     return(NULL)
                 } else {
                     metaExpr({
-                        for (i in 1:length(c(
+                        for (i in seq.int(from = 1, to = length(c(
                             ..(
                                 input$Tab6_Select_Continuous_Variable_1
-                            )
+                            ))
                         ))) {
-                            res.aov <- stats::aov(
+                            res.aov <- aov(
                                 ..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]] ~
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                 data = ..(datalist1[[data]]())
                             )
-                            cat(noquote(
+                            show_object(noquote(
                                 paste(
                                     "Categorical Variable:",
                                     ..(
@@ -1392,12 +1380,10 @@ Tab6_ANOVA_Server <-
                                     "Continuous Variable:",
                                     ..(
                                         input$Tab6_Select_Continuous_Variable_1
-                                    )[i],
-                                    "\n",
-                                    "\n"
+                                    )[i]
                                 )
                             ))
-                            print(summary(res.aov))
+                            show_object(summary(res.aov))
                         }
                     })
                 }
@@ -1449,11 +1435,11 @@ Tab6_ANOVA_Server <-
                 } else {
                     metaExpr({
                         ANOVA_List <- list()
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Continuous_Variable_1
-                        ))) {
+                        )))) {
                             name <- ..(input$Tab6_Select_Continuous_Variable_1)[i]
-                            ANOVA_List[[name]] <- summary(stats::aov(
+                            ANOVA_List[[name]] <- summary(aov(
                                 ..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]] ~
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                 data = ..(datalist1[[data]]())
@@ -1507,10 +1493,10 @@ Tab6_ANOVA_Server <-
                     metaExpr({
                         Variables <- Pval <- c()
 
-                        for (i in 1:length(c(
+                        for (i in seq.int(from = 1, to = length(c(
                             ..(
                                 input$Tab6_Select_Continuous_Variable_1
-                            )
+                            ))
                         ))) {
                             Variables <-
                                 c(
@@ -1526,7 +1512,7 @@ Tab6_ANOVA_Server <-
                                         sep = " "
                                     )
                                 )
-                            Test <- summary(stats::aov(
+                            Test <- summary(aov(
                                 ..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]] ~
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                 data = ..(datalist1[[data]]())
@@ -1557,7 +1543,7 @@ Tab6_ANOVA_Server <-
             })
 
             output$ANOVAAd <- metaRender(renderDataTable, {
-                DT::datatable(
+                datatable(
                     ..(data_ANOVAAd()),
                     options = list(
                         lengthMenu = c(10, 30, 50, 100),
@@ -1646,15 +1632,15 @@ Tab6_KW_Server <-
                     return(NULL)
                 } else {
                     metaExpr({
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Continuous_Variable_1
-                        ))) {
-                            Kw <- stats::kruskal.test(
+                        )))) {
+                            Kw <- kruskal.test(
                                 ..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]] ~
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                 data = ..(datalist1[[data]]())
                             )
-                            cat(noquote(
+                            show_object(noquote(
                                 paste(
                                     "Categorical Variable:",
                                     ..(
@@ -1664,11 +1650,10 @@ Tab6_KW_Server <-
                                     "Continuous Variable:",
                                     ..(
                                         input$Tab6_Select_Continuous_Variable_1
-                                    )[i],
-                                    "\n"
+                                    )[i]
                                 )
                             ))
-                            print(Kw)
+                            show_object(Kw)
                         }
                     })
                 }
@@ -1716,11 +1701,11 @@ Tab6_KW_Server <-
                 } else {
                     metaExpr({
                         KW_List <- list()
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Continuous_Variable_1
-                        ))) {
+                        )))) {
                             name <- ..(input$Tab6_Select_Continuous_Variable_1)[i]
-                            KW_List[[name]] <- stats::kruskal.test(
+                            KW_List[[name]] <- kruskal.test(
                                 ..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]] ~
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                 data = ..(datalist1[[data]]())
@@ -1775,9 +1760,9 @@ Tab6_KW_Server <-
                     metaExpr({
                         Variables <- Statistic <- df <- Pval <- c()
 
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Continuous_Variable_1
-                        ))) {
+                        )))) {
                             Variables <-
                                 c(
                                     Variables,
@@ -1792,7 +1777,7 @@ Tab6_KW_Server <-
                                         sep = " "
                                     )
                                 )
-                            Test <- stats::kruskal.test(
+                            Test <- kruskal.test(
                                 ..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]] ~
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                 data = ..(datalist1[[data]]())
@@ -1827,7 +1812,7 @@ Tab6_KW_Server <-
             })
 
             output$KWAd <- metaRender(renderDataTable, {
-                DT::datatable(..(data_KWAdj()),
+                datatable(..(data_KWAdj()),
                     options = list(
                         lengthMenu = c(10, 30, 50, 100),
                         pageLength = 10,
@@ -1934,10 +1919,10 @@ Tab6_PWC_Server <-
                     return(NULL)
                 } else {
                     metaExpr({
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Continuous_Variable_1
-                        ))) {
-                            cat(noquote(
+                        )))) {
+                            show_object(noquote(
                                 paste(
                                     "Categorical Variable:",
                                     ..(
@@ -1947,12 +1932,10 @@ Tab6_PWC_Server <-
                                     "Continuous Variable:",
                                     ..(
                                         input$Tab6_Select_Continuous_Variable_1
-                                    )[i],
-                                    "\n",
-                                    "\n"
+                                    )[i]
                                 )
                             ))
-                            print(stats::pairwise.t.test(
+                            show_object(pairwise.t.test(
                                 ..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]],
                                 ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                 p.adjust.method = "BH"
@@ -2023,12 +2006,12 @@ Tab6_PWC_Server <-
                 } else {
                     metaExpr({
                         PairwiseT_List <- list()
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Continuous_Variable_1
-                        ))) {
+                        )))) {
                             name <- ..(input$Tab6_Select_Continuous_Variable_1)[i]
                             PairwiseT_List[[name]] <-
-                                stats::pairwise.t.test(..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]],
+                                pairwise.t.test(..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]],
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                     p.adjust.method = "BH"
                                 )
@@ -2101,10 +2084,10 @@ Tab6_PWC_Server <-
                     return(NULL)
                 } else {
                     metaExpr({
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Continuous_Variable_1
-                        ))) {
-                            cat(noquote(
+                        )))) {
+                            show_object(noquote(
                                 paste(
                                     "Categorical Variable:",
                                     ..(
@@ -2114,12 +2097,11 @@ Tab6_PWC_Server <-
                                     "Continuous Variable:",
                                     ..(
                                         input$Tab6_Select_Continuous_Variable_1
-                                    )[i],
-                                    "\n"
+                                    )[i]
                                 )
                             ))
-                            print(
-                                DescTools::DunnTest(
+                            show_object(
+                                DunnTest(
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]],
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                     method = "BH",
@@ -2192,12 +2174,12 @@ Tab6_PWC_Server <-
                 } else {
                     metaExpr({
                         PairwiseD_List <- list()
-                        for (i in 1:length(..(
+                        for (i in seq.int(from = 1, to = length(..(
                             input$Tab6_Select_Continuous_Variable_1
-                        ))) {
+                        )))) {
                             name <- ..(input$Tab6_Select_Continuous_Variable_1)[i]
                             PairwiseD_List[[name]] <-
-                                DescTools::DunnTest(
+                                DunnTest(
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Continuous_Variable_1)[i]],
                                     ..(datalist1[[data]]())[, ..(input$Tab6_Select_Categorical_Variable_3)],
                                     method = "BH",
@@ -2294,7 +2276,7 @@ Tab6_CG_Server <-
                     return(NULL)
                 } else {
                     metaExpr({
-                        res <- compareGroups::compareGroups(
+                        res <- compareGroups(
                             as.formula(paste(
                                 ..(input$Tab6_Select_Response_Variable),
                                 "~",
@@ -2315,10 +2297,10 @@ Tab6_CG_Server <-
             })
 
             output$CG <- metaRender(renderPrint, {
-                print(..(Compare_Code()))
+                show_object(..(Compare_Code()))
             })
             output$CG_Table <- metaRender(renderPrint, {
-                compareGroups::createTable(..(Compare_Code()))
+                createTable(..(Compare_Code()))
             })
         })
     }

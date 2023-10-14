@@ -344,7 +344,7 @@ Tab1_Input_Files_API_UI <- function(id) {
                 width = 12,
                 status = "primary",
                 solidHeader = TRUE,
-                shinycssloaders::withSpinner(DT::dataTableOutput(ns("cBioData"))),
+                withSpinner(dataTableOutput(ns("cBioData"))),
                 style = "height:800px"
             )
         )
@@ -364,9 +364,9 @@ Tab1_Input_Files_Preview_Clin_UI <-
                     width = 12,
                     status = "primary",
                     solidHeader = TRUE,
-                    shinyjs::useShinyjs(),
+                    useShinyjs(),
                     textOutput(ns("text")),
-                    shinycssloaders::withSpinner(DT::dataTableOutput(ns("Preview"))),
+                    withSpinner(dataTableOutput(ns("Preview"))),
                     style = "height:800px"
                 )
             )
@@ -386,9 +386,9 @@ Tab1_Input_Files_Preview_CNA_UI <-
                     width = 12,
                     status = "primary",
                     solidHeader = TRUE,
-                    shinyjs::useShinyjs(),
+                    useShinyjs(),
                     textOutput(ns("text")),
-                    shinycssloaders::withSpinner(DT::dataTableOutput(ns("Preview"))),
+                    withSpinner(dataTableOutput(ns("Preview"))),
                     style = "height:800px"
                 )
             )
@@ -408,9 +408,9 @@ Tab1_Input_Files_Preview_MAF_UI <-
                     width = 12,
                     status = "primary",
                     solidHeader = TRUE,
-                    shinyjs::useShinyjs(),
+                    useShinyjs(),
                     textOutput(ns("text")),
-                    shinycssloaders::withSpinner(DT::dataTableOutput(ns("Preview"))),
+                    withSpinner(dataTableOutput(ns("Preview"))),
                     style = "height:800px"
                 )
             )
