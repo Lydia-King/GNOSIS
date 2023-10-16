@@ -3,7 +3,6 @@ tags <- shiny::tags
 validate <- shiny::validate
 levels <- base::levels
 unique <- base::unique
-vapply <- base::vapply
 hide <- shinyjs::hide
 show <- shinyjs::show
 show_object <- methods::show
